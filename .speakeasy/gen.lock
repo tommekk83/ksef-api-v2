@@ -1,0 +1,1282 @@
+lockVersion: 2.0.0
+id: 104d8983-d344-4148-bbc0-75d230777f47
+management:
+  docChecksum: 6253fc96c3e79e2a068c953b5057dfbf
+  docVersion: v2
+  speakeasyVersion: 1.611.0
+  generationVersion: 2.694.1
+  releaseVersion: 0.3.1
+  configChecksum: f983991abdbecbf5907f2fe2ae21fcd9
+features:
+  php:
+    constsAndDefaults: 0.2.0
+    core: 3.8.10
+    deprecations: 2.81.1
+    flattening: 2.81.1
+    globalSecurity: 2.81.8
+    globalSecurityFlattening: 0.1.2
+    globalServerURLs: 2.82.2
+    groups: 2.81.2
+    methodArguments: 0.1.0
+    nameOverrides: 2.81.2
+    nullables: 1.0.1
+    responseFormat: 0.1.0
+generatedFiles:
+  - .gitattributes
+  - USAGE.md
+  - composer.json
+  - docs/Models/Components/AttachmentPermissionGrantRequest.md
+  - docs/Models/Components/AttachmentPermissionRevokeRequest.md
+  - docs/Models/Components/AuthenticationChallengeResponse.md
+  - docs/Models/Components/AuthenticationInitResponse.md
+  - docs/Models/Components/AuthenticationInitResponseAuthenticationToken.md
+  - docs/Models/Components/AuthenticationListItem.md
+  - docs/Models/Components/AuthenticationListResponse.md
+  - docs/Models/Components/AuthenticationMethod.md
+  - docs/Models/Components/AuthenticationOperationStatusResponse.md
+  - docs/Models/Components/AuthenticationToken.md
+  - docs/Models/Components/AuthenticationTokenContextIdentifier.md
+  - docs/Models/Components/AuthenticationTokenRefreshResponse.md
+  - docs/Models/Components/AuthenticationTokenRefreshResponseAccessToken.md
+  - docs/Models/Components/AuthenticationTokenStatus.md
+  - docs/Models/Components/AuthenticationTokensResponse.md
+  - docs/Models/Components/AuthenticationTokensResponseAccessToken.md
+  - docs/Models/Components/AuthorIdentifier.md
+  - docs/Models/Components/AuthorIdentifierType.md
+  - docs/Models/Components/AuthorizedSubject.md
+  - docs/Models/Components/BatchFilePartInfo.md
+  - docs/Models/Components/Buyer.md
+  - docs/Models/Components/BuyerIdentifierType.md
+  - docs/Models/Components/Certificate.md
+  - docs/Models/Components/CertificateEnrollmentDataResponse.md
+  - docs/Models/Components/CertificateEnrollmentStatusResponse.md
+  - docs/Models/Components/CertificateLimitsResponse.md
+  - docs/Models/Components/CertificateListItem.md
+  - docs/Models/Components/CertificateListItemStatus.md
+  - docs/Models/Components/CommonSessionStatus.md
+  - docs/Models/Components/ContextIdentifierType.md
+  - docs/Models/Components/CurrencyCode.md
+  - docs/Models/Components/EnrollCertificateResponse.md
+  - docs/Models/Components/Enrollment.md
+  - docs/Models/Components/EntityAuthorizationGrant.md
+  - docs/Models/Components/EntityAuthorizationPermissionType.md
+  - docs/Models/Components/EntityAuthorizationPermissionsSubjectIdentifierType.md
+  - docs/Models/Components/EntityAuthorizationsAuthorizedEntityIdentifierType.md
+  - docs/Models/Components/EntityAuthorizationsAuthorizingEntityIdentifierType.md
+  - docs/Models/Components/EntityPermission.md
+  - docs/Models/Components/EntityPermissionType.md
+  - docs/Models/Components/EntityPermissionsSubjectIdentifierType.md
+  - docs/Models/Components/EntityPermissionsSubordinateEntityIdentifierType.md
+  - docs/Models/Components/EntityRole.md
+  - docs/Models/Components/EntityRoleType.md
+  - docs/Models/Components/EuEntityAdministrationPermissionsContextIdentifierType.md
+  - docs/Models/Components/EuEntityAdministrationPermissionsSubjectIdentifierType.md
+  - docs/Models/Components/EuEntityPermission.md
+  - docs/Models/Components/EuEntityPermissionType.md
+  - docs/Models/Components/EuEntityPermissionsAuthorIdentifierType.md
+  - docs/Models/Components/EuEntityPermissionsQueryPermissionType.md
+  - docs/Models/Components/EuEntityPermissionsQueryRequest.md
+  - docs/Models/Components/EuEntityPermissionsSubjectIdentifierType.md
+  - docs/Models/Components/Exception.md
+  - docs/Models/Components/ExceptionDetails.md
+  - docs/Models/Components/ExportInvoicesResponse.md
+  - docs/Models/Components/FormCode.md
+  - docs/Models/Components/GenerateTokenRequest.md
+  - docs/Models/Components/GenerateTokenResponse.md
+  - docs/Models/Components/IndirectPermissionType.md
+  - docs/Models/Components/IndirectPermissionsSubjectIdentifierType.md
+  - docs/Models/Components/IndirectPermissionsTargetIdentifierType.md
+  - docs/Models/Components/InvoiceMetadata.md
+  - docs/Models/Components/InvoiceMetadataInvoiceType.md
+  - docs/Models/Components/InvoiceMetadataThirdSubject.md
+  - docs/Models/Components/InvoicePackagePart.md
+  - docs/Models/Components/InvoicePermissionType.md
+  - docs/Models/Components/InvoiceQueryDateType.md
+  - docs/Models/Components/InvoiceQuerySubjectType.md
+  - docs/Models/Components/InvoicesExportStatusResponse.md
+  - docs/Models/Components/InvoicingMode.md
+  - docs/Models/Components/KsefCertificateType.md
+  - docs/Models/Components/OpenBatchSessionResponse.md
+  - docs/Models/Components/OpenOnlineSessionResponse.md
+  - docs/Models/Components/Package.md
+  - docs/Models/Components/ParentEntityIdentifierType.md
+  - docs/Models/Components/PartUploadRequest.md
+  - docs/Models/Components/PermissionState.md
+  - docs/Models/Components/PermissionsOperationResponse.md
+  - docs/Models/Components/PermissionsOperationStatusResponse.md
+  - docs/Models/Components/PersonCreateRequest.md
+  - docs/Models/Components/PersonPermission.md
+  - docs/Models/Components/PersonPermissionScope.md
+  - docs/Models/Components/PersonPermissionType.md
+  - docs/Models/Components/PersonPermissionsAuthorIdentifierType.md
+  - docs/Models/Components/PersonPermissionsAuthorizedIdentifierType.md
+  - docs/Models/Components/PersonPermissionsQueryType.md
+  - docs/Models/Components/PersonPermissionsSubjectIdentifierType.md
+  - docs/Models/Components/PersonPermissionsTargetIdentifierType.md
+  - docs/Models/Components/PersonRemoveRequest.md
+  - docs/Models/Components/PublicKeyCertificate.md
+  - docs/Models/Components/PublicKeyCertificateUsage.md
+  - docs/Models/Components/QueryCertificatesRequest.md
+  - docs/Models/Components/QueryCertificatesResponse.md
+  - docs/Models/Components/QueryEntityAuthorizationPermissionsResponse.md
+  - docs/Models/Components/QueryEntityRolesResponse.md
+  - docs/Models/Components/QueryEuEntityPermissionsResponse.md
+  - docs/Models/Components/QueryInvoicesMetadataReponse.md
+  - docs/Models/Components/QueryPersonPermissionsResponse.md
+  - docs/Models/Components/QuerySubordinateEntityRolesResponse.md
+  - docs/Models/Components/QuerySubunitPermissionsResponse.md
+  - docs/Models/Components/QueryTokensResponse.md
+  - docs/Models/Components/QueryType.md
+  - docs/Models/Components/RefreshToken.md
+  - docs/Models/Components/RetrieveCertificatesListItem.md
+  - docs/Models/Components/RetrieveCertificatesResponse.md
+  - docs/Models/Components/RevocationReason.md
+  - docs/Models/Components/RevokeCertificateRequest.md
+  - docs/Models/Components/Security.md
+  - docs/Models/Components/Seller.md
+  - docs/Models/Components/SendInvoiceResponse.md
+  - docs/Models/Components/SessionInvoiceStatusResponse.md
+  - docs/Models/Components/SessionInvoicesResponse.md
+  - docs/Models/Components/SessionStatusResponse.md
+  - docs/Models/Components/SessionType.md
+  - docs/Models/Components/SessionsQueryResponse.md
+  - docs/Models/Components/SessionsQueryResponseItem.md
+  - docs/Models/Components/Status.md
+  - docs/Models/Components/StatusInfo.md
+  - docs/Models/Components/SubjectCreateRequest.md
+  - docs/Models/Components/SubjectIdentifierType.md
+  - docs/Models/Components/SubjectRemoveRequest.md
+  - docs/Models/Components/SubjectType.md
+  - docs/Models/Components/SubordinateEntityIdentifier.md
+  - docs/Models/Components/SubordinateEntityRole.md
+  - docs/Models/Components/SubordinateEntityRoleType.md
+  - docs/Models/Components/SubordinateEntityRolesQueryRequest.md
+  - docs/Models/Components/SubordinateRoleSubordinateEntityIdentifierType.md
+  - docs/Models/Components/Subunit.md
+  - docs/Models/Components/SubunitIdentifier.md
+  - docs/Models/Components/SubunitPermission.md
+  - docs/Models/Components/SubunitPermissionScope.md
+  - docs/Models/Components/SubunitPermissionsAuthorIdentifierType.md
+  - docs/Models/Components/SubunitPermissionsContextIdentifierType.md
+  - docs/Models/Components/SubunitPermissionsQueryRequest.md
+  - docs/Models/Components/SubunitPermissionsSubjectIdentifierType.md
+  - docs/Models/Components/SubunitPermissionsSubunitIdentifierType.md
+  - docs/Models/Components/TargetIdentifierType.md
+  - docs/Models/Components/TestDataAuthorizedIdentifierType.md
+  - docs/Models/Components/TestDataContextIdentifierType.md
+  - docs/Models/Components/TestDataPermission.md
+  - docs/Models/Components/TestDataPermissionType.md
+  - docs/Models/Components/TestDataPermissionsGrantRequest.md
+  - docs/Models/Components/TestDataPermissionsGrantRequestAuthorizedIdentifier.md
+  - docs/Models/Components/TestDataPermissionsGrantRequestContextIdentifier.md
+  - docs/Models/Components/TestDataPermissionsRevokeRequest.md
+  - docs/Models/Components/TestDataPermissionsRevokeRequestAuthorizedIdentifier.md
+  - docs/Models/Components/TestDataPermissionsRevokeRequestContextIdentifier.md
+  - docs/Models/Components/ThirdSubjectIdentifierType.md
+  - docs/Models/Components/TokenPermissionType.md
+  - docs/Models/Components/Type.md
+  - docs/Models/Components/Upo.md
+  - docs/Models/Components/UpoPageResponse.md
+  - docs/Models/Errors/ExceptionResponse.md
+  - docs/Models/Operations/AllowedIps.md
+  - docs/Models/Operations/AuthorIdentifier.md
+  - docs/Models/Operations/AuthorizingIdentifier.md
+  - docs/Models/Operations/BatchFile.md
+  - docs/Models/Operations/BatchOpenEncryption.md
+  - docs/Models/Operations/BatchOpenFormCode.md
+  - docs/Models/Operations/BatchOpenRequest.md
+  - docs/Models/Operations/BatchOpenResponse.md
+  - docs/Models/Operations/DeleteApiV2AuthSessionsCurrentResponse.md
+  - docs/Models/Operations/DeleteApiV2AuthSessionsReferenceNumberRequest.md
+  - docs/Models/Operations/DeleteApiV2AuthSessionsReferenceNumberResponse.md
+  - docs/Models/Operations/DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdRequest.md
+  - docs/Models/Operations/DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse.md
+  - docs/Models/Operations/DeleteApiV2PermissionsCommonGrantsPermissionIdRequest.md
+  - docs/Models/Operations/DeleteApiV2PermissionsCommonGrantsPermissionIdResponse.md
+  - docs/Models/Operations/DeleteApiV2TokensReferenceNumberRequest.md
+  - docs/Models/Operations/DeleteApiV2TokensReferenceNumberResponse.md
+  - docs/Models/Operations/Filters.md
+  - docs/Models/Operations/GetApiV2AuthReferenceNumberRequest.md
+  - docs/Models/Operations/GetApiV2AuthReferenceNumberResponse.md
+  - docs/Models/Operations/GetApiV2AuthSessionsRequest.md
+  - docs/Models/Operations/GetApiV2AuthSessionsResponse.md
+  - docs/Models/Operations/GetApiV2CertificatesEnrollmentsDataResponse.md
+  - docs/Models/Operations/GetApiV2CertificatesEnrollmentsReferenceNumberRequest.md
+  - docs/Models/Operations/GetApiV2CertificatesEnrollmentsReferenceNumberResponse.md
+  - docs/Models/Operations/GetApiV2CertificatesLimitsResponse.md
+  - docs/Models/Operations/GetApiV2InvoicesExportsOperationReferenceNumberRequest.md
+  - docs/Models/Operations/GetApiV2InvoicesExportsOperationReferenceNumberResponse.md
+  - docs/Models/Operations/GetApiV2InvoicesKsefKsefNumberRequest.md
+  - docs/Models/Operations/GetApiV2InvoicesKsefKsefNumberResponse.md
+  - docs/Models/Operations/GetApiV2PermissionsOperationsOperationReferenceNumberRequest.md
+  - docs/Models/Operations/GetApiV2PermissionsOperationsOperationReferenceNumberResponse.md
+  - docs/Models/Operations/GetApiV2PermissionsQueryEntitiesRolesRequest.md
+  - docs/Models/Operations/GetApiV2PermissionsQueryEntitiesRolesResponse.md
+  - docs/Models/Operations/GetApiV2SecurityPublicKeyCertificatesResponse.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesFailedRequest.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesFailedResponse.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberRequest.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoRequest.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoRequest.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesRequest.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesResponse.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberRequest.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberResponse.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberRequest.md
+  - docs/Models/Operations/GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberResponse.md
+  - docs/Models/Operations/GetApiV2SessionsRequest.md
+  - docs/Models/Operations/GetApiV2SessionsResponse.md
+  - docs/Models/Operations/GetApiV2TokensReferenceNumberRequest.md
+  - docs/Models/Operations/GetApiV2TokensReferenceNumberResponse.md
+  - docs/Models/Operations/GetApiV2TokensRequest.md
+  - docs/Models/Operations/GetApiV2TokensResponse.md
+  - docs/Models/Operations/IpAddressPolicy.md
+  - docs/Models/Operations/OnClientIpChange.md
+  - docs/Models/Operations/OnlineSessionOpenEncryption.md
+  - docs/Models/Operations/OnlineSessionOpenFormCode.md
+  - docs/Models/Operations/OnlineSessionOpenRequest.md
+  - docs/Models/Operations/OnlineSessionOpenResponse.md
+  - docs/Models/Operations/PermissionState.md
+  - docs/Models/Operations/PostApiV2AuthChallengeResponse.md
+  - docs/Models/Operations/PostApiV2AuthKsefTokenContextIdentifier.md
+  - docs/Models/Operations/PostApiV2AuthKsefTokenRequest.md
+  - docs/Models/Operations/PostApiV2AuthKsefTokenResponse.md
+  - docs/Models/Operations/PostApiV2AuthTokenRedeemResponse.md
+  - docs/Models/Operations/PostApiV2AuthTokenRefreshResponse.md
+  - docs/Models/Operations/PostApiV2AuthXadesSignatureRequest.md
+  - docs/Models/Operations/PostApiV2AuthXadesSignatureResponse.md
+  - docs/Models/Operations/PostApiV2CertificatesCertificateSerialNumberRevokeRequest.md
+  - docs/Models/Operations/PostApiV2CertificatesCertificateSerialNumberRevokeResponse.md
+  - docs/Models/Operations/PostApiV2CertificatesEnrollmentsRequest.md
+  - docs/Models/Operations/PostApiV2CertificatesEnrollmentsResponse.md
+  - docs/Models/Operations/PostApiV2CertificatesQueryRequest.md
+  - docs/Models/Operations/PostApiV2CertificatesQueryResponse.md
+  - docs/Models/Operations/PostApiV2CertificatesRetrieveRequest.md
+  - docs/Models/Operations/PostApiV2CertificatesRetrieveResponse.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsAmount.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsBuyer.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsDateRange.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsEncryption.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsFormType.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsIdentifierType.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsInvoicingMode.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsRequest.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsResponse.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsSeller.md
+  - docs/Models/Operations/PostApiV2InvoicesExportsType.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataAmount.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataBuyer.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataDateRange.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataFormType.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataIdentifierType.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataInvoicingMode.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataRequest.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataRequestBody.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataResponse.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataSeller.md
+  - docs/Models/Operations/PostApiV2InvoicesQueryMetadataType.md
+  - docs/Models/Operations/PostApiV2PermissionsAuthorizationsGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsAuthorizationsGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsAuthorizationsGrantsSubjectIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsEntitiesGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsEntitiesGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsEntitiesGrantsSubjectIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsEuEntitiesGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsEuEntitiesGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsEuEntitiesGrantsSubjectIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsIndirectGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsIndirectGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsIndirectGrantsSubjectIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsIndirectGrantsTargetIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsPersonsGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsPersonsGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsPersonsGrantsSubjectIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsAuthorizedIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryEuEntitiesGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryEuEntitiesGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsAuthorizedIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsRequestBody.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsTargetIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsQuerySubordinateEntitiesRolesRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsQuerySubunitsGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsQuerySubunitsGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsSubunitsGrantsContextIdentifier.md
+  - docs/Models/Operations/PostApiV2PermissionsSubunitsGrantsRequest.md
+  - docs/Models/Operations/PostApiV2PermissionsSubunitsGrantsResponse.md
+  - docs/Models/Operations/PostApiV2PermissionsSubunitsGrantsSubjectIdentifier.md
+  - docs/Models/Operations/PostApiV2SessionsBatchReferenceNumberCloseRequest.md
+  - docs/Models/Operations/PostApiV2SessionsBatchReferenceNumberCloseResponse.md
+  - docs/Models/Operations/PostApiV2SessionsOnlineReferenceNumberCloseRequest.md
+  - docs/Models/Operations/PostApiV2SessionsOnlineReferenceNumberCloseResponse.md
+  - docs/Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesRequest.md
+  - docs/Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody.md
+  - docs/Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesResponse.md
+  - docs/Models/Operations/PostApiV2TestdataAttachmentResponse.md
+  - docs/Models/Operations/PostApiV2TestdataAttachmentRevokeResponse.md
+  - docs/Models/Operations/PostApiV2TestdataPermissionsResponse.md
+  - docs/Models/Operations/PostApiV2TestdataPermissionsRevokeResponse.md
+  - docs/Models/Operations/PostApiV2TestdataPersonRemoveResponse.md
+  - docs/Models/Operations/PostApiV2TestdataPersonResponse.md
+  - docs/Models/Operations/PostApiV2TestdataSubjectRemoveResponse.md
+  - docs/Models/Operations/PostApiV2TestdataSubjectResponse.md
+  - docs/Models/Operations/PostApiV2TokensResponse.md
+  - docs/Models/Operations/SchemaType.md
+  - docs/sdks/auth/README.md
+  - docs/sdks/authorizations/README.md
+  - docs/sdks/authsessions/README.md
+  - docs/sdks/certificates/README.md
+  - docs/sdks/certyfikaty/README.md
+  - docs/sdks/client/README.md
+  - docs/sdks/invoiceexports/README.md
+  - docs/sdks/invoices/README.md
+  - docs/sdks/onlinesessioninvoices/README.md
+  - docs/sdks/permissions/README.md
+  - docs/sdks/publickeycertificates/README.md
+  - docs/sdks/sessioninvoices/README.md
+  - docs/sdks/sessions/README.md
+  - docs/sdks/sessionsbatch/README.md
+  - docs/sdks/testdata1/README.md
+  - docs/sdks/testdata2/README.md
+  - docs/sdks/tokens/README.md
+  - phpstan.neon
+  - phpunit.xml
+  - pint.json
+  - rector.php
+  - src/Auth.php
+  - src/AuthSessions.php
+  - src/Authorizations.php
+  - src/Certificates.php
+  - src/Certyfikaty.php
+  - src/Client.php
+  - src/ClientBuilder.php
+  - src/Hooks/AfterErrorContext.php
+  - src/Hooks/AfterErrorHook.php
+  - src/Hooks/AfterSuccessContext.php
+  - src/Hooks/AfterSuccessHook.php
+  - src/Hooks/BeforeRequestContext.php
+  - src/Hooks/BeforeRequestHook.php
+  - src/Hooks/Credentials.php
+  - src/Hooks/ErrorResponseContext.php
+  - src/Hooks/FailEarlyException.php
+  - src/Hooks/HookContext.php
+  - src/Hooks/Hooks.php
+  - src/Hooks/SDKHooks.php
+  - src/Hooks/SDKInitHook.php
+  - src/Hooks/Session.php
+  - src/Hooks/TokenResponse.php
+  - src/InvoiceExports.php
+  - src/Invoices.php
+  - src/Models/Components/AttachmentPermissionGrantRequest.php
+  - src/Models/Components/AttachmentPermissionRevokeRequest.php
+  - src/Models/Components/AuthenticationChallengeResponse.php
+  - src/Models/Components/AuthenticationInitResponse.php
+  - src/Models/Components/AuthenticationInitResponseAuthenticationToken.php
+  - src/Models/Components/AuthenticationListItem.php
+  - src/Models/Components/AuthenticationListResponse.php
+  - src/Models/Components/AuthenticationMethod.php
+  - src/Models/Components/AuthenticationOperationStatusResponse.php
+  - src/Models/Components/AuthenticationToken.php
+  - src/Models/Components/AuthenticationTokenContextIdentifier.php
+  - src/Models/Components/AuthenticationTokenRefreshResponse.php
+  - src/Models/Components/AuthenticationTokenRefreshResponseAccessToken.php
+  - src/Models/Components/AuthenticationTokenStatus.php
+  - src/Models/Components/AuthenticationTokensResponse.php
+  - src/Models/Components/AuthenticationTokensResponseAccessToken.php
+  - src/Models/Components/AuthorIdentifier.php
+  - src/Models/Components/AuthorIdentifierType.php
+  - src/Models/Components/AuthorizedSubject.php
+  - src/Models/Components/BatchFilePartInfo.php
+  - src/Models/Components/Buyer.php
+  - src/Models/Components/BuyerIdentifierType.php
+  - src/Models/Components/Certificate.php
+  - src/Models/Components/CertificateEnrollmentDataResponse.php
+  - src/Models/Components/CertificateEnrollmentStatusResponse.php
+  - src/Models/Components/CertificateLimitsResponse.php
+  - src/Models/Components/CertificateListItem.php
+  - src/Models/Components/CertificateListItemStatus.php
+  - src/Models/Components/CommonSessionStatus.php
+  - src/Models/Components/ContextIdentifierType.php
+  - src/Models/Components/CurrencyCode.php
+  - src/Models/Components/EnrollCertificateResponse.php
+  - src/Models/Components/Enrollment.php
+  - src/Models/Components/EntityAuthorizationGrant.php
+  - src/Models/Components/EntityAuthorizationPermissionType.php
+  - src/Models/Components/EntityAuthorizationPermissionsSubjectIdentifierType.php
+  - src/Models/Components/EntityAuthorizationsAuthorizedEntityIdentifierType.php
+  - src/Models/Components/EntityAuthorizationsAuthorizingEntityIdentifierType.php
+  - src/Models/Components/EntityPermission.php
+  - src/Models/Components/EntityPermissionType.php
+  - src/Models/Components/EntityPermissionsSubjectIdentifierType.php
+  - src/Models/Components/EntityPermissionsSubordinateEntityIdentifierType.php
+  - src/Models/Components/EntityRole.php
+  - src/Models/Components/EntityRoleType.php
+  - src/Models/Components/EuEntityAdministrationPermissionsContextIdentifierType.php
+  - src/Models/Components/EuEntityAdministrationPermissionsSubjectIdentifierType.php
+  - src/Models/Components/EuEntityPermission.php
+  - src/Models/Components/EuEntityPermissionType.php
+  - src/Models/Components/EuEntityPermissionsAuthorIdentifierType.php
+  - src/Models/Components/EuEntityPermissionsQueryPermissionType.php
+  - src/Models/Components/EuEntityPermissionsQueryRequest.php
+  - src/Models/Components/EuEntityPermissionsSubjectIdentifierType.php
+  - src/Models/Components/Exception.php
+  - src/Models/Components/ExceptionDetails.php
+  - src/Models/Components/ExportInvoicesResponse.php
+  - src/Models/Components/FormCode.php
+  - src/Models/Components/GenerateTokenRequest.php
+  - src/Models/Components/GenerateTokenResponse.php
+  - src/Models/Components/IndirectPermissionType.php
+  - src/Models/Components/IndirectPermissionsSubjectIdentifierType.php
+  - src/Models/Components/IndirectPermissionsTargetIdentifierType.php
+  - src/Models/Components/InvoiceMetadata.php
+  - src/Models/Components/InvoiceMetadataInvoiceType.php
+  - src/Models/Components/InvoiceMetadataThirdSubject.php
+  - src/Models/Components/InvoicePackagePart.php
+  - src/Models/Components/InvoicePermissionType.php
+  - src/Models/Components/InvoiceQueryDateType.php
+  - src/Models/Components/InvoiceQuerySubjectType.php
+  - src/Models/Components/InvoicesExportStatusResponse.php
+  - src/Models/Components/InvoicingMode.php
+  - src/Models/Components/KsefCertificateType.php
+  - src/Models/Components/OpenBatchSessionResponse.php
+  - src/Models/Components/OpenOnlineSessionResponse.php
+  - src/Models/Components/Package.php
+  - src/Models/Components/ParentEntityIdentifierType.php
+  - src/Models/Components/PartUploadRequest.php
+  - src/Models/Components/PermissionState.php
+  - src/Models/Components/PermissionsOperationResponse.php
+  - src/Models/Components/PermissionsOperationStatusResponse.php
+  - src/Models/Components/PersonCreateRequest.php
+  - src/Models/Components/PersonPermission.php
+  - src/Models/Components/PersonPermissionScope.php
+  - src/Models/Components/PersonPermissionType.php
+  - src/Models/Components/PersonPermissionsAuthorIdentifierType.php
+  - src/Models/Components/PersonPermissionsAuthorizedIdentifierType.php
+  - src/Models/Components/PersonPermissionsQueryType.php
+  - src/Models/Components/PersonPermissionsSubjectIdentifierType.php
+  - src/Models/Components/PersonPermissionsTargetIdentifierType.php
+  - src/Models/Components/PersonRemoveRequest.php
+  - src/Models/Components/PublicKeyCertificate.php
+  - src/Models/Components/PublicKeyCertificateUsage.php
+  - src/Models/Components/QueryCertificatesRequest.php
+  - src/Models/Components/QueryCertificatesResponse.php
+  - src/Models/Components/QueryEntityAuthorizationPermissionsResponse.php
+  - src/Models/Components/QueryEntityRolesResponse.php
+  - src/Models/Components/QueryEuEntityPermissionsResponse.php
+  - src/Models/Components/QueryInvoicesMetadataReponse.php
+  - src/Models/Components/QueryPersonPermissionsResponse.php
+  - src/Models/Components/QuerySubordinateEntityRolesResponse.php
+  - src/Models/Components/QuerySubunitPermissionsResponse.php
+  - src/Models/Components/QueryTokensResponse.php
+  - src/Models/Components/QueryType.php
+  - src/Models/Components/RefreshToken.php
+  - src/Models/Components/RetrieveCertificatesListItem.php
+  - src/Models/Components/RetrieveCertificatesResponse.php
+  - src/Models/Components/RevocationReason.php
+  - src/Models/Components/RevokeCertificateRequest.php
+  - src/Models/Components/Security.php
+  - src/Models/Components/Seller.php
+  - src/Models/Components/SendInvoiceResponse.php
+  - src/Models/Components/SessionInvoiceStatusResponse.php
+  - src/Models/Components/SessionInvoicesResponse.php
+  - src/Models/Components/SessionStatusResponse.php
+  - src/Models/Components/SessionType.php
+  - src/Models/Components/SessionsQueryResponse.php
+  - src/Models/Components/SessionsQueryResponseItem.php
+  - src/Models/Components/Status.php
+  - src/Models/Components/StatusInfo.php
+  - src/Models/Components/SubjectCreateRequest.php
+  - src/Models/Components/SubjectIdentifierType.php
+  - src/Models/Components/SubjectRemoveRequest.php
+  - src/Models/Components/SubjectType.php
+  - src/Models/Components/SubordinateEntityIdentifier.php
+  - src/Models/Components/SubordinateEntityRole.php
+  - src/Models/Components/SubordinateEntityRoleType.php
+  - src/Models/Components/SubordinateEntityRolesQueryRequest.php
+  - src/Models/Components/SubordinateRoleSubordinateEntityIdentifierType.php
+  - src/Models/Components/Subunit.php
+  - src/Models/Components/SubunitIdentifier.php
+  - src/Models/Components/SubunitPermission.php
+  - src/Models/Components/SubunitPermissionScope.php
+  - src/Models/Components/SubunitPermissionsAuthorIdentifierType.php
+  - src/Models/Components/SubunitPermissionsContextIdentifierType.php
+  - src/Models/Components/SubunitPermissionsQueryRequest.php
+  - src/Models/Components/SubunitPermissionsSubjectIdentifierType.php
+  - src/Models/Components/SubunitPermissionsSubunitIdentifierType.php
+  - src/Models/Components/TargetIdentifierType.php
+  - src/Models/Components/TestDataAuthorizedIdentifierType.php
+  - src/Models/Components/TestDataContextIdentifierType.php
+  - src/Models/Components/TestDataPermission.php
+  - src/Models/Components/TestDataPermissionType.php
+  - src/Models/Components/TestDataPermissionsGrantRequest.php
+  - src/Models/Components/TestDataPermissionsGrantRequestAuthorizedIdentifier.php
+  - src/Models/Components/TestDataPermissionsGrantRequestContextIdentifier.php
+  - src/Models/Components/TestDataPermissionsRevokeRequest.php
+  - src/Models/Components/TestDataPermissionsRevokeRequestAuthorizedIdentifier.php
+  - src/Models/Components/TestDataPermissionsRevokeRequestContextIdentifier.php
+  - src/Models/Components/ThirdSubjectIdentifierType.php
+  - src/Models/Components/TokenPermissionType.php
+  - src/Models/Components/Type.php
+  - src/Models/Components/Upo.php
+  - src/Models/Components/UpoPageResponse.php
+  - src/Models/Errors/APIException.php
+  - src/Models/Errors/ExceptionResponse.php
+  - src/Models/Errors/ExceptionResponseThrowable.php
+  - src/Models/Operations/AllowedIps.php
+  - src/Models/Operations/AuthorIdentifier.php
+  - src/Models/Operations/AuthorizingIdentifier.php
+  - src/Models/Operations/BatchFile.php
+  - src/Models/Operations/BatchOpenEncryption.php
+  - src/Models/Operations/BatchOpenFormCode.php
+  - src/Models/Operations/BatchOpenRequest.php
+  - src/Models/Operations/BatchOpenResponse.php
+  - src/Models/Operations/DeleteApiV2AuthSessionsCurrentResponse.php
+  - src/Models/Operations/DeleteApiV2AuthSessionsReferenceNumberRequest.php
+  - src/Models/Operations/DeleteApiV2AuthSessionsReferenceNumberResponse.php
+  - src/Models/Operations/DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdRequest.php
+  - src/Models/Operations/DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse.php
+  - src/Models/Operations/DeleteApiV2PermissionsCommonGrantsPermissionIdRequest.php
+  - src/Models/Operations/DeleteApiV2PermissionsCommonGrantsPermissionIdResponse.php
+  - src/Models/Operations/DeleteApiV2TokensReferenceNumberRequest.php
+  - src/Models/Operations/DeleteApiV2TokensReferenceNumberResponse.php
+  - src/Models/Operations/Filters.php
+  - src/Models/Operations/GetApiV2AuthReferenceNumberRequest.php
+  - src/Models/Operations/GetApiV2AuthReferenceNumberResponse.php
+  - src/Models/Operations/GetApiV2AuthSessionsRequest.php
+  - src/Models/Operations/GetApiV2AuthSessionsResponse.php
+  - src/Models/Operations/GetApiV2CertificatesEnrollmentsDataResponse.php
+  - src/Models/Operations/GetApiV2CertificatesEnrollmentsReferenceNumberRequest.php
+  - src/Models/Operations/GetApiV2CertificatesEnrollmentsReferenceNumberResponse.php
+  - src/Models/Operations/GetApiV2CertificatesLimitsResponse.php
+  - src/Models/Operations/GetApiV2InvoicesExportsOperationReferenceNumberRequest.php
+  - src/Models/Operations/GetApiV2InvoicesExportsOperationReferenceNumberResponse.php
+  - src/Models/Operations/GetApiV2InvoicesKsefKsefNumberRequest.php
+  - src/Models/Operations/GetApiV2InvoicesKsefKsefNumberResponse.php
+  - src/Models/Operations/GetApiV2PermissionsOperationsOperationReferenceNumberRequest.php
+  - src/Models/Operations/GetApiV2PermissionsOperationsOperationReferenceNumberResponse.php
+  - src/Models/Operations/GetApiV2PermissionsQueryEntitiesRolesRequest.php
+  - src/Models/Operations/GetApiV2PermissionsQueryEntitiesRolesResponse.php
+  - src/Models/Operations/GetApiV2SecurityPublicKeyCertificatesResponse.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesFailedRequest.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesFailedResponse.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberRequest.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoRequest.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoRequest.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesRequest.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberInvoicesResponse.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberRequest.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberResponse.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberRequest.php
+  - src/Models/Operations/GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberResponse.php
+  - src/Models/Operations/GetApiV2SessionsRequest.php
+  - src/Models/Operations/GetApiV2SessionsResponse.php
+  - src/Models/Operations/GetApiV2TokensReferenceNumberRequest.php
+  - src/Models/Operations/GetApiV2TokensReferenceNumberResponse.php
+  - src/Models/Operations/GetApiV2TokensRequest.php
+  - src/Models/Operations/GetApiV2TokensResponse.php
+  - src/Models/Operations/IpAddressPolicy.php
+  - src/Models/Operations/OnClientIpChange.php
+  - src/Models/Operations/OnlineSessionOpenEncryption.php
+  - src/Models/Operations/OnlineSessionOpenFormCode.php
+  - src/Models/Operations/OnlineSessionOpenRequest.php
+  - src/Models/Operations/OnlineSessionOpenResponse.php
+  - src/Models/Operations/PermissionState.php
+  - src/Models/Operations/PostApiV2AuthChallengeResponse.php
+  - src/Models/Operations/PostApiV2AuthKsefTokenContextIdentifier.php
+  - src/Models/Operations/PostApiV2AuthKsefTokenRequest.php
+  - src/Models/Operations/PostApiV2AuthKsefTokenResponse.php
+  - src/Models/Operations/PostApiV2AuthTokenRedeemResponse.php
+  - src/Models/Operations/PostApiV2AuthTokenRefreshResponse.php
+  - src/Models/Operations/PostApiV2AuthXadesSignatureRequest.php
+  - src/Models/Operations/PostApiV2AuthXadesSignatureResponse.php
+  - src/Models/Operations/PostApiV2CertificatesCertificateSerialNumberRevokeRequest.php
+  - src/Models/Operations/PostApiV2CertificatesCertificateSerialNumberRevokeResponse.php
+  - src/Models/Operations/PostApiV2CertificatesEnrollmentsRequest.php
+  - src/Models/Operations/PostApiV2CertificatesEnrollmentsResponse.php
+  - src/Models/Operations/PostApiV2CertificatesQueryRequest.php
+  - src/Models/Operations/PostApiV2CertificatesQueryResponse.php
+  - src/Models/Operations/PostApiV2CertificatesRetrieveRequest.php
+  - src/Models/Operations/PostApiV2CertificatesRetrieveResponse.php
+  - src/Models/Operations/PostApiV2InvoicesExportsAmount.php
+  - src/Models/Operations/PostApiV2InvoicesExportsBuyer.php
+  - src/Models/Operations/PostApiV2InvoicesExportsDateRange.php
+  - src/Models/Operations/PostApiV2InvoicesExportsEncryption.php
+  - src/Models/Operations/PostApiV2InvoicesExportsFormType.php
+  - src/Models/Operations/PostApiV2InvoicesExportsIdentifierType.php
+  - src/Models/Operations/PostApiV2InvoicesExportsInvoicingMode.php
+  - src/Models/Operations/PostApiV2InvoicesExportsRequest.php
+  - src/Models/Operations/PostApiV2InvoicesExportsResponse.php
+  - src/Models/Operations/PostApiV2InvoicesExportsSeller.php
+  - src/Models/Operations/PostApiV2InvoicesExportsType.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataAmount.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataBuyer.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataDateRange.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataFormType.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataIdentifierType.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataInvoicingMode.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataRequest.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataRequestBody.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataResponse.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataSeller.php
+  - src/Models/Operations/PostApiV2InvoicesQueryMetadataType.php
+  - src/Models/Operations/PostApiV2PermissionsAuthorizationsGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsAuthorizationsGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsAuthorizationsGrantsSubjectIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsEntitiesGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsEntitiesGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsEntitiesGrantsSubjectIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsEuEntitiesGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsEuEntitiesGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsEuEntitiesGrantsSubjectIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsIndirectGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsIndirectGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsIndirectGrantsSubjectIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsIndirectGrantsTargetIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsPersonsGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsPersonsGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsPersonsGrantsSubjectIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsAuthorizedIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody.php
+  - src/Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsQueryEuEntitiesGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsQueryEuEntitiesGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsAuthorizedIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsRequestBody.php
+  - src/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsQueryPersonsGrantsTargetIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsQuerySubordinateEntitiesRolesRequest.php
+  - src/Models/Operations/PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse.php
+  - src/Models/Operations/PostApiV2PermissionsQuerySubunitsGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsQuerySubunitsGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsSubunitsGrantsContextIdentifier.php
+  - src/Models/Operations/PostApiV2PermissionsSubunitsGrantsRequest.php
+  - src/Models/Operations/PostApiV2PermissionsSubunitsGrantsResponse.php
+  - src/Models/Operations/PostApiV2PermissionsSubunitsGrantsSubjectIdentifier.php
+  - src/Models/Operations/PostApiV2SessionsBatchReferenceNumberCloseRequest.php
+  - src/Models/Operations/PostApiV2SessionsBatchReferenceNumberCloseResponse.php
+  - src/Models/Operations/PostApiV2SessionsOnlineReferenceNumberCloseRequest.php
+  - src/Models/Operations/PostApiV2SessionsOnlineReferenceNumberCloseResponse.php
+  - src/Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesRequest.php
+  - src/Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody.php
+  - src/Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesResponse.php
+  - src/Models/Operations/PostApiV2TestdataAttachmentResponse.php
+  - src/Models/Operations/PostApiV2TestdataAttachmentRevokeResponse.php
+  - src/Models/Operations/PostApiV2TestdataPermissionsResponse.php
+  - src/Models/Operations/PostApiV2TestdataPermissionsRevokeResponse.php
+  - src/Models/Operations/PostApiV2TestdataPersonRemoveResponse.php
+  - src/Models/Operations/PostApiV2TestdataPersonResponse.php
+  - src/Models/Operations/PostApiV2TestdataSubjectRemoveResponse.php
+  - src/Models/Operations/PostApiV2TestdataSubjectResponse.php
+  - src/Models/Operations/PostApiV2TokensResponse.php
+  - src/Models/Operations/SchemaType.php
+  - src/OnlineSessionInvoices.php
+  - src/Permissions.php
+  - src/PublicKeyCertificates.php
+  - src/SDKConfiguration.php
+  - src/SessionInvoices.php
+  - src/Sessions.php
+  - src/SessionsBatch.php
+  - src/TestData1.php
+  - src/Testdata2.php
+  - src/Tokens.php
+  - src/Utils/BigDecimalHandler.php
+  - src/Utils/BigIntHandler.php
+  - src/Utils/DateHandler.php
+  - src/Utils/DateTimeHandler.php
+  - src/Utils/DefaultRequest.php
+  - src/Utils/DefaultResponse.php
+  - src/Utils/DefaultStream.php
+  - src/Utils/DefaultUri.php
+  - src/Utils/EnumHandler.php
+  - src/Utils/FormMetadata.php
+  - src/Utils/Headers.php
+  - src/Utils/JSON.php
+  - src/Utils/MixedJSONHandler.php
+  - src/Utils/MultipartMetadata.php
+  - src/Utils/Options.php
+  - src/Utils/ParamsMetadata.php
+  - src/Utils/PathParameters.php
+  - src/Utils/PhpDocTypeParser.php
+  - src/Utils/QueryParameters.php
+  - src/Utils/RequestBodies.php
+  - src/Utils/RequestMetadata.php
+  - src/Utils/Retry/PermanentError.php
+  - src/Utils/Retry/RetryConfig.php
+  - src/Utils/Retry/RetryConfigBackoff.php
+  - src/Utils/Retry/RetryConfigNone.php
+  - src/Utils/Retry/RetryStrategy.php
+  - src/Utils/Retry/RetryUtils.php
+  - src/Utils/Retry/TemporaryError.php
+  - src/Utils/Security.php
+  - src/Utils/SecurityClient.php
+  - src/Utils/SecurityMetadata.php
+  - src/Utils/ServerDetails.php
+  - src/Utils/SpeakeasyMetadata.php
+  - src/Utils/UnionHandler.php
+  - src/Utils/Utils.php
+examples:
+  get_/api/v2/auth/sessions:
+    speakeasy-default-get-/api/v2-/auth/sessions:
+      parameters:
+        query:
+          pageSize: 10
+      responses:
+        "200":
+          application/json: {"items": []}
+        "400":
+          application/json: {}
+  delete_/api/v2/auth/sessions/current:
+    speakeasy-default-delete-/api/v2-/auth/sessions/current:
+      responses:
+        "400":
+          application/json: {}
+  delete_/api/v2/auth/sessions/{referenceNumber}:
+    speakeasy-default-delete-/api/v2-/auth/sessions/{reference-number}:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "400":
+          application/json: {}
+  get_/api/v2/certificates/limits:
+    speakeasy-default-get-/api/v2-/certificates/limits:
+      responses:
+        "200":
+          application/json: {"canRequest": true, "enrollment": {"remaining": 340340, "limit": 701908}, "certificate": {"remaining": 30099, "limit": 223638}}
+        "400":
+          application/json: {}
+  get_/api/v2/certificates/enrollments/data:
+    speakeasy-default-get-/api/v2-/certificates/enrollments/data:
+      responses:
+        "200":
+          application/json: {"commonName": "<value>", "countryName": "<value>"}
+        "400":
+          application/json: {}
+  post_/api/v2/certificates/enrollments:
+    speakeasy-default-post-/api/v2-/certificates/enrollments:
+      responses:
+        "202":
+          application/json: {"referenceNumber": "<value>", "timestamp": "2023-08-20T15:19:39.550Z"}
+        "400":
+          application/json: {}
+  get_/api/v2/certificates/enrollments/{referenceNumber}:
+    speakeasy-default-get-/api/v2-/certificates/enrollments/{reference-number}:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"requestDate": "2025-05-31T19:05:18.870Z", "status": {"code": 665032, "description": "strong or memorise"}}
+        "400":
+          application/json: {}
+  post_/api/v2/certificates/retrieve:
+    speakeasy-default-post-/api/v2-/certificates/retrieve:
+      responses:
+        "200":
+          application/json: {"certificates": []}
+        "400":
+          application/json: {}
+  post_/api/v2/certificates/{certificateSerialNumber}/revoke:
+    speakeasy-default-post-/api/v2-/certificates/{certificate-serial-number}/revoke:
+      parameters:
+        path:
+          certificateSerialNumber: "<value>"
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/certificates/query:
+    speakeasy-default-post-/api/v2-/certificates/query:
+      parameters:
+        query:
+          pageSize: 10
+          pageOffset: 0
+      responses:
+        "200":
+          application/json: {"certificates": [{"certificateSerialNumber": "<value>", "name": "<value>", "type": "Authentication", "commonName": "<value>", "status": "Active", "subjectIdentifier": "<value>", "subjectIdentifierType": "<value>", "validFrom": "2024-01-22T08:21:53.267Z", "validTo": "2025-01-07T06:37:04.724Z"}], "hasMore": false}
+        "400":
+          application/json: {}
+  get_/api/v2/security/public-key-certificates:
+    speakeasy-default-get-/api/v2-/security/public-key-certificates:
+      responses:
+        "200":
+          application/json: [{"certificate": "<value>", "validFrom": "2024-05-24T18:11:05.099Z", "validTo": "2023-08-31T13:50:18.983Z", "usage": []}]
+        "400":
+          application/json: {}
+  post_/api/v2/testdata/subject:
+    speakeasy-default-post-/api/v2-/testdata/subject:
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/testdata/subject/remove:
+    speakeasy-default-post-/api/v2-/testdata/subject/remove:
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/testdata/person:
+    speakeasy-default-post-/api/v2-/testdata/person:
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/testdata/person/remove:
+    speakeasy-default-post-/api/v2-/testdata/person/remove:
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/testdata/permissions:
+    speakeasy-default-post-/api/v2-/testdata/permissions:
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/testdata/permissions/revoke:
+    speakeasy-default-post-/api/v2-/testdata/permissions/revoke:
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/testdata/attachment:
+    speakeasy-default-post-/api/v2-/testdata/attachment:
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/testdata/attachment/revoke:
+    speakeasy-default-post-/api/v2-/testdata/attachment/revoke:
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/persons/grants:
+    speakeasy-default-post-/api/v2-/permissions/persons/grants:
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/entities/grants:
+    speakeasy-default-post-/api/v2-/permissions/entities/grants:
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/authorizations/grants:
+    speakeasy-default-post-/api/v2-/permissions/authorizations/grants:
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/indirect/grants:
+    speakeasy-default-post-/api/v2-/permissions/indirect/grants:
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/subunits/grants:
+    speakeasy-default-post-/api/v2-/permissions/subunits/grants:
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/eu-entities/administration/grants:
+    speakeasy-default-post-/api/v2-/permissions/eu-entities/administration/grants:
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/eu-entities/grants:
+    speakeasy-default-post-/api/v2-/permissions/eu-entities/grants:
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  delete_/api/v2/permissions/common/grants/{permissionId}:
+    speakeasy-default-delete-/api/v2-/permissions/common/grants/{permission-id}:
+      parameters:
+        path:
+          permissionId: "<id>"
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  delete_/api/v2/permissions/authorizations/grants/{permissionId}:
+    speakeasy-default-delete-/api/v2-/permissions/authorizations/grants/{permission-id}:
+      parameters:
+        path:
+          permissionId: "<id>"
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  get_/api/v2/permissions/operations/{operationReferenceNumber}:
+    speakeasy-default-get-/api/v2-/permissions/operations/{operation-reference-number}:
+      parameters:
+        path:
+          operationReferenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"status": {"code": 290734, "description": "jittery contractor psst knowledgeably how perfectly"}}
+        "400":
+          application/json: {}
+  get_/api/v2/invoices/ksef/{ksefNumber}:
+    speakeasy-default-get-/api/v2-/invoices/ksef/{ksef-number}:
+      parameters:
+        path:
+          ksefNumber: "<value>"
+      responses:
+        "200":
+          application/xml: "<value>"
+        "400":
+          application/json: {}
+  post_/api/v2/invoices/query/metadata:
+    speakeasy-default-post-/api/v2-/invoices/query/metadata:
+      parameters:
+        query:
+          pageOffset: 0
+          pageSize: 10
+      responses:
+        "200":
+          application/json: {"totalCount": 954023, "hasMore": true, "invoices": [{"ksefNumber": "<value>", "invoiceNumber": "<value>", "issueDate": "2023-04-13", "invoicingDate": "2023-11-28T18:11:29.483Z", "acquisitionDate": "2024-01-09T03:26:32.339Z", "permanentStorageDate": "2025-09-30T08:38:51.489Z", "seller": {"identifier": "<value>"}, "buyer": {"identifierType": "VatUe"}, "netAmount": 5794.78, "grossAmount": 9222.98, "vatAmount": 23.41, "currency": "CFA Franc BEAC", "invoiceType": "VatRr", "formCode": {"systemCode": "<value>", "schemaVersion": "<value>", "value": "<value>"}, "isSelfInvoicing": false, "hasAttachment": false}]}
+        "400":
+          application/json: {}
+  post_/api/v2/invoices/exports:
+    speakeasy-default-post-/api/v2-/invoices/exports:
+      responses:
+        "201":
+          application/json: {}
+        "400":
+          application/json: {}
+  get_/api/v2/invoices/exports/{operationReferenceNumber}:
+    speakeasy-default-get-/api/v2-/invoices/exports/{operation-reference-number}:
+      parameters:
+        path:
+          operationReferenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"status": {"code": 446293, "description": "of even gosh elegantly rowdy hawk yum astride inasmuch interestingly"}}
+        "400":
+          application/json: {}
+  get_/api/v2/sessions:
+    speakeasy-default-get-/api/v2-/sessions:
+      parameters:
+        query:
+          sessionType: "Batch"
+      responses:
+        "200":
+          application/json: {"sessions": [{"referenceNumber": "<value>", "status": {"code": 543823, "description": "jumbo pile hold forenenst yowza camouflage pupil meanwhile inasmuch homely"}, "dateCreated": "2023-12-26T04:03:49.391Z", "dateUpdated": "2025-06-30T21:26:29.606Z", "totalInvoiceCount": 622511, "successfulInvoiceCount": 463884, "failedInvoiceCount": 134980}]}
+        "400":
+          application/json: {}
+  get_/api/v2/sessions/{referenceNumber}:
+    speakeasy-default-get-/api/v2-/sessions/{reference-number}:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"status": {"code": 419681, "description": "fooey controvert untimely heavy similar"}}
+        "400":
+          application/json: {}
+  get_/api/v2/sessions/{referenceNumber}/invoices:
+    speakeasy-default-get-/api/v2-/sessions/{reference-number}/invoices:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+        query:
+          pageSize: 10
+      responses:
+        "200":
+          application/json: {"invoices": [{"ordinalNumber": 528628, "invoicingDate": "2025-07-15T05:27:23.334Z", "status": {"code": 149876, "description": "rundown swear how"}}]}
+        "400":
+          application/json: {}
+  get_/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}:
+    speakeasy-default-get-/api/v2-/sessions/{reference-number}/invoices/{invoice-reference-number}:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+          invoiceReferenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"ordinalNumber": 756589, "invoicingDate": "2025-03-04T07:31:06.386Z", "status": {"code": 597590, "description": "devastation frail once openly institutionalize wherever"}}
+        "400":
+          application/json: {}
+  get_/api/v2/sessions/{referenceNumber}/invoices/failed:
+    speakeasy-default-get-/api/v2-/sessions/{reference-number}/invoices/failed:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+        query:
+          pageSize: 10
+      responses:
+        "200":
+          application/json: {"invoices": [{"ordinalNumber": 547049, "invoicingDate": "2025-09-08T19:35:45.496Z", "status": {"code": 449054, "description": "valiantly upon unimpressively materialise although"}}]}
+        "400":
+          application/json: {}
+  get_/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo:
+    speakeasy-default-get-/api/v2-/sessions/{reference-number}/invoices/ksef/{ksef-number}/upo:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+          ksefNumber: "<value>"
+      responses:
+        "200":
+          application/xml: "<value>"
+        "400":
+          application/json: {}
+  get_/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo:
+    speakeasy-default-get-/api/v2-/sessions/{reference-number}/invoices/{invoice-reference-number}/upo:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+          invoiceReferenceNumber: "<value>"
+      responses:
+        "200":
+          application/xml: "<value>"
+        "400":
+          application/json: {}
+  get_/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}:
+    speakeasy-default-get-/api/v2-/sessions/{reference-number}/upo/{upo-reference-number}:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+          upoReferenceNumber: "<value>"
+      responses:
+        "200":
+          application/xml: "<value>"
+        "400":
+          application/json: {}
+  post_/api/v2/tokens:
+    speakeasy-default-post-/api/v2-/tokens:
+      responses:
+        "202":
+          application/json: {}
+        "400":
+          application/json: {}
+  get_/api/v2/tokens:
+    speakeasy-default-get-/api/v2-/tokens:
+      parameters:
+        query:
+          pageSize: 10
+      responses:
+        "200":
+          application/json: {"tokens": []}
+        "400":
+          application/json: {}
+  get_/api/v2/tokens/{referenceNumber}:
+    speakeasy-default-get-/api/v2-/tokens/{reference-number}:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {}
+        "400":
+          application/json: {}
+  delete_/api/v2/tokens/{referenceNumber}:
+    speakeasy-default-delete-/api/v2-/tokens/{reference-number}:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/auth/challenge:
+    speakeasy-default-post-/api/v2-/auth/challenge:
+      responses:
+        "200":
+          application/json: {"challenge": "<value>", "timestamp": "2023-11-21T07:14:11.125Z"}
+        "400":
+          application/json: {}
+  post_/api/v2/auth/xades-signature:
+    speakeasy-default-post-/api/v2-/auth/xades-signature:
+      requestBody:
+        application/xml: "<value>"
+      responses:
+        "202":
+          application/json: {"referenceNumber": "<value>", "authenticationToken": {"token": "<value>", "validUntil": "2025-04-12T10:33:38.087Z"}}
+        "400":
+          application/json: {}
+  post_/api/v2/auth/ksef-token:
+    speakeasy-default-post-/api/v2-/auth/ksef-token:
+      responses:
+        "202":
+          application/json: {"referenceNumber": "<value>", "authenticationToken": {"token": "<value>", "validUntil": "2025-07-18T06:59:11.710Z"}}
+        "400":
+          application/json: {}
+  get_/api/v2/auth/{referenceNumber}:
+    Kod 100 | Uwierzytelnianie w toku:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"startDate": "0001-01-01T00:00:00+00:00", "authenticationMethod": "Token", "status": {"code": 100, "description": "Uwierzytelnianie w toku"}}
+    Kod 200 | Uwierzytelnianie zakończone sukcesem:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"startDate": "0001-01-01T00:00:00+00:00", "authenticationMethod": "Token", "status": {"code": 200, "description": "Uwierzytelnianie zakończone sukcesem"}}
+    Kod 400 | Uwierzytelnianie zakończone niepowodzeniem | Nieważny certyfikat:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"startDate": "0001-01-01T00:00:00+00:00", "authenticationMethod": "Token", "status": {"code": 400, "description": "Uwierzytelnianie zakończone niepowodzeniem", "details": ["Nieważny certyfikat."]}}
+    Kod 400 | Uwierzytelnianie zakończone niepowodzeniem | Błąd weryfikacji łańcucha certyfikatów:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"startDate": "0001-01-01T00:00:00+00:00", "authenticationMethod": "Token", "status": {"code": 400, "description": "Uwierzytelnianie zakończone niepowodzeniem", "details": ["Błąd weryfikacji łańcucha certyfikatów."]}}
+    Kod 400 | Uwierzytelnianie zakończone niepowodzeniem | Niezaufany łańcuch certyfikatów:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"startDate": "0001-01-01T00:00:00+00:00", "authenticationMethod": "Token", "status": {"code": 400, "description": "Uwierzytelnianie zakończone niepowodzeniem", "details": ["Niezaufany łańcuch certyfikatów."]}}
+    Kod 400 | Uwierzytelnianie zakończone niepowodzeniem | Certyfikat odwołany:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"startDate": "0001-01-01T00:00:00+00:00", "authenticationMethod": "Token", "status": {"code": 400, "description": "Uwierzytelnianie zakończone niepowodzeniem", "details": ["Certyfikat odwołany."]}}
+    Kod 400 | Uwierzytelnianie zakończone niepowodzeniem | Niepoprawny certyfikat:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"startDate": "0001-01-01T00:00:00+00:00", "authenticationMethod": "Token", "status": {"code": 400, "description": "Uwierzytelnianie zakończone niepowodzeniem", "details": ["Niepoprawny certyfikat."]}}
+    Kod 500 | Nieznany błąd:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "200":
+          application/json: {"startDate": "0001-01-01T00:00:00+00:00", "authenticationMethod": "Token", "status": {"code": 500, "description": "Nieznany błąd ({statusCode})"}}
+  post_/api/v2/auth/token/redeem:
+    speakeasy-default-post-/api/v2-/auth/token/redeem:
+      responses:
+        "200":
+          application/json: {"accessToken": {"token": "<value>", "validUntil": "2023-04-04T03:14:07.017Z"}, "refreshToken": {"token": "<value>", "validUntil": "2025-12-23T22:01:26.488Z"}}
+        "400":
+          application/json: {}
+  post_/api/v2/auth/token/refresh:
+    speakeasy-default-post-/api/v2-/auth/token/refresh:
+      responses:
+        "200":
+          application/json: {"accessToken": {"token": "<value>", "validUntil": "2025-02-15T12:34:53.931Z"}}
+        "400":
+          application/json: {}
+  onlineSession.open:
+    speakeasy-default-online-session-open:
+      responses:
+        "201":
+          application/json: {"referenceNumber": "<value>", "validUntil": "2023-12-02T16:45:33.326Z"}
+        "400":
+          application/json: {}
+  post_/api/v2/sessions/online/{referenceNumber}/invoices:
+    speakeasy-default-post-/api/v2-/sessions/online/{reference-number}/invoices:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "202":
+          application/json: {"referenceNumber": "<value>"}
+        "400":
+          application/json: {}
+  post_/api/v2/sessions/online/{referenceNumber}/close:
+    speakeasy-default-post-/api/v2-/sessions/online/{reference-number}/close:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "400":
+          application/json: {}
+  batch.open:
+    speakeasy-default-batch-open:
+      responses:
+        "201":
+          application/json: {"referenceNumber": "<value>", "partUploadRequests": []}
+        "400":
+          application/json: {}
+  post_/api/v2/sessions/batch/{referenceNumber}/close:
+    speakeasy-default-post-/api/v2-/sessions/batch/{reference-number}/close:
+      parameters:
+        path:
+          referenceNumber: "<value>"
+      responses:
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/query/persons/grants:
+    speakeasy-default-post-/api/v2-/permissions/query/persons/grants:
+      responses:
+        "200":
+          application/json: {"permissions": [], "hasMore": false}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/query/subunits/grants:
+    speakeasy-default-post-/api/v2-/permissions/query/subunits/grants:
+      responses:
+        "200":
+          application/json: {"permissions": [{"id": "<id>", "authorizedIdentifier": "<value>", "authorizedIdentifierType": "Nip", "subunitIdentifier": "<value>", "subunitIdentifierType": "Nip", "authorIdentifier": "<value>", "authorIdentifierType": "Pesel", "permissionScope": "CredentialsManage", "description": "why uh-huh especially consequently custom detective", "startDate": "2024-12-03T05:26:59.990Z"}], "hasMore": false}
+        "400":
+          application/json: {}
+  get_/api/v2/permissions/query/entities/roles:
+    speakeasy-default-get-/api/v2-/permissions/query/entities/roles:
+      responses:
+        "200":
+          application/json: {"roles": [{"role": "VatGroupUnit", "description": "season sniveling provision opposite", "startDate": "2025-08-08T21:58:23.328Z"}], "hasMore": true}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/query/subordinate-entities/roles:
+    speakeasy-default-post-/api/v2-/permissions/query/subordinate-entities/roles:
+      responses:
+        "200":
+          application/json: {"roles": [], "hasMore": false}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/query/authorizations/grants:
+    speakeasy-default-post-/api/v2-/permissions/query/authorizations/grants:
+      responses:
+        "200":
+          application/json: {"authorizationGrants": [{"id": "<id>", "authorizedEntityIdentifier": "<value>", "authorizedEntityIdentifierType": "Nip", "authorizingEntityIdentifier": "<value>", "authorizingEntityIdentifierType": "Nip", "authorizationScope": "SelfInvoicing", "description": "deer despite aw anenst sedately hopelessly tennis disk including athwart", "startDate": "2025-04-06T13:40:55.208Z"}], "hasMore": true}
+        "400":
+          application/json: {}
+  post_/api/v2/permissions/query/eu-entities/grants:
+    speakeasy-default-post-/api/v2-/permissions/query/eu-entities/grants:
+      responses:
+        "200":
+          application/json: {"permissions": [], "hasMore": true}
+        "400":
+          application/json: {}
+examplesVersion: 1.0.2

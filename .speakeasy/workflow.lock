@@ -1,0 +1,37 @@
+speakeasyVersion: 1.611.0
+sources:
+    KSeF API TE:
+        sourceNamespace: k-se-f-api-te
+        sourceRevisionDigest: sha256:b6fdcf4c00972c1a4f0759a684ce8234fe52870714ecf3168c7aedbb46957dad
+        sourceBlobDigest: sha256:a1bc38e98b3050127c5d38bfe158a6a402b4b6686e968f1eb1707441dfae71f4
+        tags:
+            - latest
+            - v2
+targets:
+    ksef1:
+        source: KSeF API TE
+        sourceNamespace: k-se-f-api-te
+        sourceRevisionDigest: sha256:b6fdcf4c00972c1a4f0759a684ce8234fe52870714ecf3168c7aedbb46957dad
+        sourceBlobDigest: sha256:a1bc38e98b3050127c5d38bfe158a6a402b4b6686e968f1eb1707441dfae71f4
+        codeSamplesNamespace: k-se-f-api-te-php-code-samples
+        codeSamplesRevisionDigest: sha256:282f7770ea0e37b4d831c6586f53b7a616831295982187668a73fb916a05df80
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        KSeF API TE:
+            inputs:
+                - location: openapi.yaml
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/intermedia/ksef-wpw/k-se-f-api-te
+    targets:
+        ksef1:
+            target: php
+            source: KSeF API TE
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/intermedia/ksef-wpw/k-se-f-api-te-php-code-samples
+                labelOverride:
+                    fixedValue: Php (SDK)
+                blocking: false

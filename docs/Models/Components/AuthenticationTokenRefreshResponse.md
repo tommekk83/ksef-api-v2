@@ -1,0 +1,8 @@
+# AuthenticationTokenRefreshResponse
+
+
+## Fields
+
+| Field                                                                                                                                | Type                                                                                                                                 | Required                                                                                                                             | Description                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `accessToken`                                                                                                                        | [Components\AuthenticationTokenRefreshResponseAccessToken](../../Models/Components/AuthenticationTokenRefreshResponseAccessToken.md) | :heavy_check_mark:                                                                                                                   | Token dostępu, którego należy używać w wywołaniach chronionych zasobów API.                                                          |

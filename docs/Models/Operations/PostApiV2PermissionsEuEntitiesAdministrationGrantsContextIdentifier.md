@@ -1,0 +1,14 @@
+# PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier
+
+Identyfikator zlożony z podmiotu polskiego i podmiotu unijnego.
+| Type | Value |
+| --- | --- |
+| NipVatUe | Dwuczłonowy identyfikator składający się z numeru NIP i numeru VAT-UE: `{nip}-{vat_ue}` |
+
+
+## Fields
+
+| Field                                                                                                                                                  | Type                                                                                                                                                   | Required                                                                                                                                               | Description                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `type`                                                                                                                                                 | [Components\EuEntityAdministrationPermissionsContextIdentifierType](../../Models/Components/EuEntityAdministrationPermissionsContextIdentifierType.md) | :heavy_check_mark:                                                                                                                                     | Typ identyfikatora.                                                                                                                                    |
+| `value`                                                                                                                                                | *string*                                                                                                                                               | :heavy_check_mark:                                                                                                                                     | Wartość identyfikatora.                                                                                                                                |

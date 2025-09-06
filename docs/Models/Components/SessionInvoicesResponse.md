@@ -1,0 +1,9 @@
+# SessionInvoicesResponse
+
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `continuationToken`                                                                                       | *?string*                                                                                                 | :heavy_minus_sign:                                                                                        | Token służący do pobrania kolejnej strony wyników. Jeśli jest pusty, to nie ma kolejnych stron.           |
+| `invoices`                                                                                                | array<[Components\SessionInvoiceStatusResponse](../../Models/Components/SessionInvoiceStatusResponse.md)> | :heavy_check_mark:                                                                                        | Lista pobranych faktur.                                                                                   |

@@ -1,0 +1,9 @@
+# AuthenticationListResponse
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `continuationToken`                                                                             | *?string*                                                                                       | :heavy_minus_sign:                                                                              | Token służący do pobrania kolejnej strony wyników. Jeśli jest pusty, to nie ma kolejnych stron. |
+| `items`                                                                                         | array<[Components\AuthenticationListItem](../../Models/Components/AuthenticationListItem.md)>   | :heavy_check_mark:                                                                              | Lista sesji uwierzytelniania.                                                                   |

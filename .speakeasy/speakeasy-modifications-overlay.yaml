@@ -1,0 +1,629 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Speakeasy Modifications
+  version: 0.0.2
+  x-speakeasy-metadata:
+    after: ""
+    before: ""
+    type: speakeasy-modifications
+actions:
+  - target: $["paths"]["/api/v2/testdata/subject"]["post"]
+    update:
+      x-speakeasy-group: testData
+      x-speakeasy-name-override: createSubject
+    x-speakeasy-metadata:
+      after: sdk.testData.createSubject()
+      before: sdk.Dane testowe.post_/api/v2/testdata/subject()
+      created_at: 1757147354515
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/query/authorizations/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: queryAuthorizationsGrants
+    x-speakeasy-metadata:
+      after: sdk.permissions.queryAuthorizationsGrants()
+      before: sdk.Wyszukiwanie nadanych uprawnień.post_/api/v2/permissions/query/authorizations/grants()
+      created_at: 1757147354515
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/invoices/exports/{operationReferenceNumber}"]["get"]
+    update:
+      x-speakeasy-group: invoiceExports
+      x-speakeasy-name-override: getStatus
+    x-speakeasy-metadata:
+      after: sdk.invoiceExports.getStatus()
+      before: sdk.Pobieranie faktur.get_/api/v2/invoices/exports/{operationReferenceNumber}()
+      created_at: 1757147354515
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/certificates/enrollments/data"]["get"]
+    update:
+      x-speakeasy-group: certificates
+      x-speakeasy-name-override: getEnrollmentData
+    x-speakeasy-metadata:
+      after: sdk.certificates.getEnrollmentData()
+      before: sdk.Certyfikaty.get_/api/v2/certificates/enrollments/data()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/certificates/enrollments/{referenceNumber}"]["get"]
+    update:
+      x-speakeasy-group: certificates
+      x-speakeasy-name-override: getEnrollmentStatus
+    x-speakeasy-metadata:
+      after: sdk.certificates.getEnrollmentStatus()
+      before: sdk.Certyfikaty.get_/api/v2/certificates/enrollments/{referenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/certificates/retrieve"]["post"]
+    update:
+      x-speakeasy-name-override: retrieve
+    x-speakeasy-metadata:
+      after: sdk.certyfikaty.retrieve()
+      before: sdk.Certyfikaty.post_/api/v2/certificates/retrieve()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/entities/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: grantToEntities
+    x-speakeasy-metadata:
+      after: sdk.permissions.grantToEntities()
+      before: sdk.Nadawanie uprawnień.post_/api/v2/permissions/entities/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/sessions/{referenceNumber}"]["delete"]
+    update:
+      x-speakeasy-group: authSessions
+      x-speakeasy-name-override: delete
+    x-speakeasy-metadata:
+      after: sdk.authSessions.delete()
+      before: sdk.Aktywne sesje.delete_/api/v2/auth/sessions/{referenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo"]["get"]
+    update:
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: getInvoiceUpoByKsef
+    x-speakeasy-metadata:
+      after: sdk.invoices.getInvoiceUpoByKsef()
+      before: sdk.Status wysyłki i UPO.get_/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/ksef-token"]["post"]
+    update:
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: ksefToken
+    x-speakeasy-metadata:
+      after: sdk.auth.ksefToken()
+      before: sdk.Uzyskiwanie dostępu.post_/api/v2/auth/ksef-token()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/eu-entities/administration/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: grantAdminRights
+    x-speakeasy-metadata:
+      after: sdk.permissions.grantAdminRights()
+      before: sdk.Nadawanie uprawnień.post_/api/v2/permissions/eu-entities/administration/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/online/{referenceNumber}/invoices"]["post"]
+    update:
+      x-speakeasy-group: onlineSessionInvoices
+      x-speakeasy-name-override: send
+    x-speakeasy-metadata:
+      after: sdk.onlineSessionInvoices.send()
+      before: sdk.Wysyłka interaktywna.post_/api/v2/sessions/online/{referenceNumber}/invoices()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/testdata/person/remove"]["post"]
+    update:
+      x-speakeasy-group: testData
+      x-speakeasy-name-override: removePerson
+    x-speakeasy-metadata:
+      after: sdk.testData.removePerson()
+      before: sdk.Dane testowe.post_/api/v2/testdata/person/remove()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/certificates/limits"]["get"]
+    update:
+      x-speakeasy-group: certificates
+      x-speakeasy-name-override: getLimits
+    x-speakeasy-metadata:
+      after: sdk.certificates.getLimits()
+      before: sdk.Certyfikaty.get_/api/v2/certificates/limits()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/certificates/{certificateSerialNumber}/revoke"]["post"]
+    update:
+      x-speakeasy-group: certificates
+      x-speakeasy-name-override: revoke
+    x-speakeasy-metadata:
+      after: sdk.certificates.revoke()
+      before: sdk.Certyfikaty.post_/api/v2/certificates/{certificateSerialNumber}/revoke()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/tokens/{referenceNumber}"]["get"]
+    update:
+      x-speakeasy-group: tokens
+      x-speakeasy-name-override: getStatus
+    x-speakeasy-metadata:
+      after: sdk.tokens.getStatus()
+      before: sdk.Tokeny KSeF.get_/api/v2/tokens/{referenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/invoices/query/metadata"]["post"]
+    update:
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: queryMetadata
+    x-speakeasy-metadata:
+      after: sdk.invoices.queryMetadata()
+      before: sdk.Pobieranie faktur.post_/api/v2/invoices/query/metadata()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/sessions"]["get"]
+    update:
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: getSessions
+    x-speakeasy-metadata:
+      after: sdk.auth.getSessions()
+      before: sdk.Aktywne sesje.get_/api/v2/auth/sessions()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/testdata/permissions/revoke"]["post"]
+    update:
+      x-speakeasy-group: testData
+      x-speakeasy-name-override: revokePermissions
+    x-speakeasy-metadata:
+      after: sdk.testData.revokePermissions()
+      before: sdk.Dane testowe.post_/api/v2/testdata/permissions/revoke()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/certificates/enrollments"]["post"]
+    update:
+      x-speakeasy-group: certificates
+      x-speakeasy-name-override: processEnrollment
+    x-speakeasy-metadata:
+      after: sdk.certificates.processEnrollment()
+      before: sdk.Certyfikaty.post_/api/v2/certificates/enrollments()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices"]["get"]
+    update:
+      x-speakeasy-group: sessionInvoices
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      after: sdk.sessionInvoices.list()
+      before: sdk.Status wysyłki i UPO.get_/api/v2/sessions/{referenceNumber}/invoices()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/failed"]["get"]
+    update:
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: getFailed
+    x-speakeasy-metadata:
+      after: sdk.invoices.getFailed()
+      before: sdk.Status wysyłki i UPO.get_/api/v2/sessions/{referenceNumber}/invoices/failed()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions"]["get"]
+    update:
+      x-speakeasy-group: sessions
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      after: sdk.sessions.list()
+      before: sdk.Status wysyłki i UPO.get_/api/v2/sessions()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/batch/{referenceNumber}/close"]["post"]
+    update:
+      x-speakeasy-group: sessions
+      x-speakeasy-name-override: closeBatch
+    x-speakeasy-metadata:
+      after: sdk.sessions.closeBatch()
+      before: sdk.Wysyłka wsadowa.post_/api/v2/sessions/batch/{referenceNumber}/close()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/tokens"]["get"]
+    update:
+      x-speakeasy-group: tokens
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      after: sdk.tokens.list()
+      before: sdk.Tokeny KSeF.get_/api/v2/tokens()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/testdata/subject/remove"]["post"]
+    update:
+      x-speakeasy-group: testData
+      x-speakeasy-name-override: removeSubject
+    x-speakeasy-metadata:
+      after: sdk.testData.removeSubject()
+      before: sdk.Dane testowe.post_/api/v2/testdata/subject/remove()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/testdata/permissions"]["post"]
+    update:
+      x-speakeasy-group: testdata
+      x-speakeasy-name-override: assignPermissions
+    x-speakeasy-metadata:
+      after: sdk.testdata.assignPermissions()
+      before: sdk.Dane testowe.post_/api/v2/testdata/permissions()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/tokens"]["post"]
+    update:
+      x-speakeasy-group: tokens
+      x-speakeasy-name-override: generate
+    x-speakeasy-metadata:
+      after: sdk.tokens.generate()
+      before: sdk.Tokeny KSeF.post_/api/v2/tokens()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/query/persons/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: getPersonGrants
+    x-speakeasy-metadata:
+      after: sdk.permissions.getPersonGrants()
+      before: sdk.Wyszukiwanie nadanych uprawnień.post_/api/v2/permissions/query/persons/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}"]["get"]
+    update:
+      x-speakeasy-group: sessionInvoices
+      x-speakeasy-name-override: getStatus
+    x-speakeasy-metadata:
+      after: sdk.sessionInvoices.getStatus()
+      before: sdk.Status wysyłki i UPO.get_/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/query/entities/roles"]["get"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: getEntityRoles
+    x-speakeasy-metadata:
+      after: sdk.permissions.getEntityRoles()
+      before: sdk.Wyszukiwanie nadanych uprawnień.get_/api/v2/permissions/query/entities/roles()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/{referenceNumber}"]["get"]
+    update:
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: getStatus
+    x-speakeasy-metadata:
+      after: sdk.auth.getStatus()
+      before: sdk.Uzyskiwanie dostępu.get_/api/v2/auth/{referenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/challenge"]["post"]
+    update:
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: initiate
+    x-speakeasy-metadata:
+      after: sdk.auth.initiate()
+      before: sdk.Uzyskiwanie dostępu.post_/api/v2/auth/challenge()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/query/subunits/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: querySubunitsGrants
+    x-speakeasy-metadata:
+      after: sdk.permissions.querySubunitsGrants()
+      before: sdk.Wyszukiwanie nadanych uprawnień.post_/api/v2/permissions/query/subunits/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/subunits/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: grantToSubunits
+    x-speakeasy-metadata:
+      after: sdk.permissions.grantToSubunits()
+      before: sdk.Nadawanie uprawnień.post_/api/v2/permissions/subunits/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/testdata/attachment"]["post"]
+    update:
+      x-speakeasy-group: testdata
+      x-speakeasy-name-override: addAttachment
+    x-speakeasy-metadata:
+      after: sdk.testdata.addAttachment()
+      before: sdk.Dane testowe.post_/api/v2/testdata/attachment()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/persons/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: grantToPersons
+    x-speakeasy-metadata:
+      after: sdk.permissions.grantToPersons()
+      before: sdk.Nadawanie uprawnień.post_/api/v2/permissions/persons/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/testdata/person"]["post"]
+    update:
+      x-speakeasy-group: testdata
+      x-speakeasy-name-override: createPerson
+    x-speakeasy-metadata:
+      after: sdk.testdata.createPerson()
+      before: sdk.Dane testowe.post_/api/v2/testdata/person()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/query/subordinate-entities/roles"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: getSubordinateRoles
+    x-speakeasy-metadata:
+      after: sdk.permissions.getSubordinateRoles()
+      before: sdk.Wyszukiwanie nadanych uprawnień.post_/api/v2/permissions/query/subordinate-entities/roles()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/authorizations/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: grantSubjectAuthorization
+    x-speakeasy-metadata:
+      after: sdk.permissions.grantSubjectAuthorization()
+      before: sdk.Nadawanie uprawnień.post_/api/v2/permissions/authorizations/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/token/redeem"]["post"]
+    update:
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: redeemToken
+    x-speakeasy-metadata:
+      after: sdk.auth.redeemToken()
+      before: sdk.Uzyskiwanie dostępu.post_/api/v2/auth/token/redeem()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}"]["get"]
+    update:
+      x-speakeasy-group: sessions
+      x-speakeasy-name-override: getStatus
+    x-speakeasy-metadata:
+      after: sdk.sessions.getStatus()
+      before: sdk.Status wysyłki i UPO.get_/api/v2/sessions/{referenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431360
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/query/eu-entities/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: getEuEntityGrants
+    x-speakeasy-metadata:
+      after: sdk.permissions.getEuEntityGrants()
+      before: sdk.Wyszukiwanie nadanych uprawnień.post_/api/v2/permissions/query/eu-entities/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/eu-entities/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: grantToEuEntities
+    x-speakeasy-metadata:
+      after: sdk.permissions.grantToEuEntities()
+      before: sdk.Nadawanie uprawnień.post_/api/v2/permissions/eu-entities/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/authorizations/grants/{permissionId}"]["delete"]
+    update:
+      x-speakeasy-group: permissions.authorizations
+      x-speakeasy-name-override: revoke
+    x-speakeasy-metadata:
+      after: sdk.permissions.authorizations.revoke()
+      before: sdk.Odbieranie uprawnień.delete_/api/v2/permissions/authorizations/grants/{permissionId}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/token/refresh"]["post"]
+    update:
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: refreshToken
+    x-speakeasy-metadata:
+      after: sdk.auth.refreshToken()
+      before: sdk.Uzyskiwanie dostępu.post_/api/v2/auth/token/refresh()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/operations/{operationReferenceNumber}"]["get"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: getOperationStatus
+    x-speakeasy-metadata:
+      after: sdk.permissions.getOperationStatus()
+      before: sdk.Operacje.get_/api/v2/permissions/operations/{operationReferenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/invoices/ksef/{ksefNumber}"]["get"]
+    update:
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: getByKsefNumber
+    x-speakeasy-metadata:
+      after: sdk.invoices.getByKsefNumber()
+      before: sdk.Pobieranie faktur.get_/api/v2/invoices/ksef/{ksefNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/online"]["post"]
+    update:
+      x-speakeasy-group: sessions
+      x-speakeasy-name-override: openOnline
+    x-speakeasy-metadata:
+      after: sdk.sessions.openOnline()
+      before: sdk.Wysyłka interaktywna.onlineSession.open()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/batch"]["post"]
+    update:
+      x-speakeasy-group: sessionsBatch
+      x-speakeasy-name-override: open
+    x-speakeasy-metadata:
+      after: sdk.sessionsBatch.open()
+      before: sdk.Wysyłka wsadowa.batch.open()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/security/public-key-certificates"]["get"]
+    update:
+      x-speakeasy-group: publicKeyCertificates
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      after: sdk.publicKeyCertificates.get()
+      before: sdk.Certyfikaty klucza publicznego.get_/api/v2/security/public-key-certificates()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/certificates/query"]["post"]
+    update:
+      x-speakeasy-group: certificates
+      x-speakeasy-name-override: query
+    x-speakeasy-metadata:
+      after: sdk.certificates.query()
+      before: sdk.Certyfikaty.post_/api/v2/certificates/query()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/online/{referenceNumber}/close"]["post"]
+    update:
+      x-speakeasy-group: sessions
+      x-speakeasy-name-override: closeOnline
+    x-speakeasy-metadata:
+      after: sdk.sessions.closeOnline()
+      before: sdk.Wysyłka interaktywna.post_/api/v2/sessions/online/{referenceNumber}/close()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/indirect/grants"]["post"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: grantIndirectly
+    x-speakeasy-metadata:
+      after: sdk.permissions.grantIndirectly()
+      before: sdk.Nadawanie uprawnień.post_/api/v2/permissions/indirect/grants()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo"]["get"]
+    update:
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: getInvoiceUpo
+    x-speakeasy-metadata:
+      after: sdk.invoices.getInvoiceUpo()
+      before: sdk.Status wysyłki i UPO.get_/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/permissions/common/grants/{permissionId}"]["delete"]
+    update:
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: deleteGrant
+    x-speakeasy-metadata:
+      after: sdk.permissions.deleteGrant()
+      before: sdk.Odbieranie uprawnień.delete_/api/v2/permissions/common/grants/{permissionId}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/sessions/current"]["delete"]
+    update:
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: deleteCurrentSession
+    x-speakeasy-metadata:
+      after: sdk.auth.deleteCurrentSession()
+      before: sdk.Aktywne sesje.delete_/api/v2/auth/sessions/current()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/testdata/attachment/revoke"]["post"]
+    update:
+      x-speakeasy-group: testData
+      x-speakeasy-name-override: revokeAttachment
+    x-speakeasy-metadata:
+      after: sdk.testData.revokeAttachment()
+      before: sdk.Dane testowe.post_/api/v2/testdata/attachment/revoke()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/auth/xades-signature"]["post"]
+    update:
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: authenticateWithXades
+    x-speakeasy-metadata:
+      after: sdk.auth.authenticateWithXades()
+      before: sdk.Uzyskiwanie dostępu.post_/api/v2/auth/xades-signature()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/invoices/exports"]["post"]
+    update:
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: export
+    x-speakeasy-metadata:
+      after: sdk.invoices.export()
+      before: sdk.Pobieranie faktur.post_/api/v2/invoices/exports()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/tokens/{referenceNumber}"]["delete"]
+    update:
+      x-speakeasy-group: tokens
+      x-speakeasy-name-override: delete
+    x-speakeasy-metadata:
+      after: sdk.tokens.delete()
+      before: sdk.Tokeny KSeF.delete_/api/v2/tokens/{referenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}"]["get"]
+    update:
+      x-speakeasy-group: sessions
+      x-speakeasy-name-override: getUpo
+    x-speakeasy-metadata:
+      after: sdk.sessions.getUpo()
+      before: sdk.Status wysyłki i UPO.get_/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}()
+      created_at: 1757147354516
+      reviewed_at: 1757147431361
+      type: method-name

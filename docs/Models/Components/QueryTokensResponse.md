@@ -1,0 +1,9 @@
+# QueryTokensResponse
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `continuationToken`                                                                             | *?string*                                                                                       | :heavy_minus_sign:                                                                              | Token służący do pobrania kolejnej strony wyników. Jeśli jest pusty, to nie ma kolejnych stron. |
+| `tokens`                                                                                        | array<[Components\AuthenticationToken](../../Models/Components/AuthenticationToken.md)>         | :heavy_check_mark:                                                                              | Lista tokenów uwierzytelniających.                                                              |

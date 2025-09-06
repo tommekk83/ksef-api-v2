@@ -1,0 +1,13 @@
+# Exception
+
+
+## Fields
+
+| Field                                                                             | Type                                                                              | Required                                                                          | Description                                                                       |
+| --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `exceptionDetailList`                                                             | array<[Components\ExceptionDetails](../../Models/Components/ExceptionDetails.md)> | :heavy_minus_sign:                                                                | N/A                                                                               |
+| `referenceNumber`                                                                 | *?string*                                                                         | :heavy_minus_sign:                                                                | N/A                                                                               |
+| `serviceCode`                                                                     | *?string*                                                                         | :heavy_minus_sign:                                                                | N/A                                                                               |
+| `serviceCtx`                                                                      | *?string*                                                                         | :heavy_minus_sign:                                                                | N/A                                                                               |
+| `serviceName`                                                                     | *?string*                                                                         | :heavy_minus_sign:                                                                | N/A                                                                               |
+| `timestamp`                                                                       | [\DateTime](https://www.php.net/manual/en/class.datetime.php)                     | :heavy_minus_sign:                                                                | N/A                                                                               |

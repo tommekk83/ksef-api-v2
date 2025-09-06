@@ -1,0 +1,9 @@
+# QueryEntityAuthorizationPermissionsResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `authorizationGrants`                                                                             | array<[Components\EntityAuthorizationGrant](../../Models/Components/EntityAuthorizationGrant.md)> | :heavy_check_mark:                                                                                | Lista uprawnień.                                                                                  |
+| `hasMore`                                                                                         | *bool*                                                                                            | :heavy_check_mark:                                                                                | Flaga informująca o dostępności kolejnej strony wyników.                                          |

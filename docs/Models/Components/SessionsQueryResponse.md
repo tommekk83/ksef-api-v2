@@ -1,0 +1,9 @@
+# SessionsQueryResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `continuationToken`                                                                                 | *?string*                                                                                           | :heavy_minus_sign:                                                                                  | Token służący do pobrania kolejnej strony wyników. Jeśli jest pusty, to nie ma kolejnych stron.     |
+| `sessions`                                                                                          | array<[Components\SessionsQueryResponseItem](../../Models/Components/SessionsQueryResponseItem.md)> | :heavy_check_mark:                                                                                  | Lista sesji.                                                                                        |

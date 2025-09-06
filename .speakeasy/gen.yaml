@@ -1,0 +1,51 @@
+configVersion: 2.0.0
+generation:
+  sdkClassName: Client
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+    sdkInitStyle: constructor
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    nameResolutionFeb2025: true
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+    securityFeb2025: true
+    sharedErrorComponentsApr2025: true
+  auth:
+    oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
+  sdkHooksConfigAccess: true
+  tests:
+    generateTests: true
+    generateNewTests: false
+    skipResponseBodyAssertions: false
+php:
+  version: 0.3.1
+  additionalDependencies:
+    autoload: {}
+    autoload-dev: {}
+    require: {}
+    require-dev: {}
+  baseErrorName: KsefException
+  clientServerStatusCodesAsErrors: true
+  defaultErrorName: APIException
+  flattenGlobalSecurity: true
+  imports:
+    option: openapi
+    paths:
+      callbacks: Models/Callbacks
+      errors: Models/Errors
+      operations: Models/Operations
+      shared: Models/Components
+      webhooks: Models/Webhooks
+  inputModelSuffix: input
+  laravelServiceProvider:
+    enabled: false
+    svcName: openapi
+  maxMethodParams: 4
+  methodArguments: infer-optional-args
+  namespace: Intermedia\Ksef\Apiv2
+  outputModelSuffix: output
+  packageName: intermedia/ksef-api-v2
