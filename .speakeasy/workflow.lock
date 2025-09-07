@@ -1,9 +1,9 @@
-speakeasyVersion: 1.611.0
+speakeasyVersion: 1.611.1
 sources:
     KSeF API TE:
         sourceNamespace: k-se-f-api-te
-        sourceRevisionDigest: sha256:b6fdcf4c00972c1a4f0759a684ce8234fe52870714ecf3168c7aedbb46957dad
-        sourceBlobDigest: sha256:a1bc38e98b3050127c5d38bfe158a6a402b4b6686e968f1eb1707441dfae71f4
+        sourceRevisionDigest: sha256:2f36d23b71bc4cefb4b75cf50a44919d425f8fe65826c83b88776e05b4cf95ed
+        sourceBlobDigest: sha256:35f54d7f27aaf8a8ea7d65f8e41d9fce9e42c92165fe020872d496b410efe227
         tags:
             - latest
             - v2
@@ -11,10 +11,10 @@ targets:
     ksef1:
         source: KSeF API TE
         sourceNamespace: k-se-f-api-te
-        sourceRevisionDigest: sha256:b6fdcf4c00972c1a4f0759a684ce8234fe52870714ecf3168c7aedbb46957dad
-        sourceBlobDigest: sha256:a1bc38e98b3050127c5d38bfe158a6a402b4b6686e968f1eb1707441dfae71f4
+        sourceRevisionDigest: sha256:2f36d23b71bc4cefb4b75cf50a44919d425f8fe65826c83b88776e05b4cf95ed
+        sourceBlobDigest: sha256:35f54d7f27aaf8a8ea7d65f8e41d9fce9e42c92165fe020872d496b410efe227
         codeSamplesNamespace: k-se-f-api-te-php-code-samples
-        codeSamplesRevisionDigest: sha256:282f7770ea0e37b4d831c6586f53b7a616831295982187668a73fb916a05df80
+        codeSamplesRevisionDigest: sha256:e162a4ea3c8879039f3f5a766aea4d5655cfcb8fc71f5aed822a4854c2451412
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -22,6 +22,8 @@ workflow:
         KSeF API TE:
             inputs:
                 - location: openapi.yaml
+            overlays:
+                - location: .speakeasy\speakeasy-modifications-overlay.yaml
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/intermedia/ksef-wpw/k-se-f-api-te
@@ -29,6 +31,10 @@ workflow:
         ksef1:
             target: php
             source: KSeF API TE
+            publish:
+                packagist:
+                    username: $packagist_username
+                    token: $packagist_token
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/intermedia/ksef-wpw/k-se-f-api-te-php-code-samples

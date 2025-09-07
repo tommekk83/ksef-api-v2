@@ -13,6 +13,10 @@ targets:
     ksef1:
         target: php
         source: KSeF API TE
+        publish:
+            packagist:
+                username: $packagist_username
+                token: $packagist_token
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/intermedia/ksef-wpw/k-se-f-api-te-php-code-samples

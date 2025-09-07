@@ -8,12 +8,6 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
         <img src="https://img.shields.io/badge/License-MIT-blue.svg" style="width: 100px; height: 28px;" />
     </a>
 </div>
-
-
-<br /><br />
-> [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/intermedia/ksef-wpw). Delete this section before > publishing to a package manager.
-
 <!-- Start Summary [summary] -->
 ## Summary
 
@@ -41,32 +35,11 @@ KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc4-te-20250827.1+d4adf52dbfb92d
 <!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
-> [!TIP]
-> To finish publishing your SDK you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
-
 The SDK relies on [Composer](https://getcomposer.org/) to manage its dependencies.
 
-To install the SDK first add the below to your `composer.json` file:
-
-```json
-{
-    "repositories": [
-        {
-            "type": "github",
-            "url": "<UNSET>.git"
-        }
-    ],
-    "require": {
-        "intermedia/ksef-api-v2": "*"
-    }
-}
-```
-
-Then run the following command:
-
+To install the SDK and add it as a dependency to an existing `composer.json` file:
 ```bash
-composer update
+composer require "intermedia/ksef-api-v2"
 ```
 <!-- End SDK Installation [installation] -->
 
@@ -99,7 +72,28 @@ if ($response->authenticationListResponse !== null) {
 }
 ```
 <!-- End SDK Example Usage [usage] -->
+### AuthTokenRequest XML generation with XAdES signature
 
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2\AuthTokenRequest;
+use Intermedia\Ksef\Apiv2\Models\Components\{TContextIdentifier, TNip, SubjectIdentifierTypeEnum};
+
+$req = new AuthTokenRequest(
+    '20250625-CR-20F5EE4000-DA48AE4124-46',
+    TContextIdentifier::fromNip(new TNip('5265877635')),
+    SubjectIdentifierTypeEnum::CERTIFICATE_SUBJECT
+);
+
+// PEM Signature (private key and public certificate in separate files)
+$signedXml = $req->signWithXadesToString('/path/to/private.pem', '/path/to/cert.pem');
+
+// or PKCS#12 (private key and public certificate in one .p12 file)
+$signedXml = $req->signWithXadesToString('/path/to/cert.p12', null, 'password_to_p12');
+```
 <!-- Start Authentication [security] -->
 ## Authentication
 
