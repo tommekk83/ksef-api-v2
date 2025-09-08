@@ -23,8 +23,11 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 php:
-  version: 0.3.25
+  version: 0.3.29
   additionalDependencies:
+    authors:
+      email: kontakt@gsmservice.pl
+      name: INTERMEDIA
     autoload: {}
     autoload-dev: {}
     require:
@@ -32,7 +35,6 @@ php:
       ext-openssl: '*'
       robrichards/xmlseclibs: ^3.1
     require-dev: {}
-  author: test
   baseErrorName: KsefException
   clientServerStatusCodesAsErrors: true
   defaultErrorName: APIException

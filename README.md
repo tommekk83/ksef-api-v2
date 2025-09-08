@@ -27,6 +27,7 @@ KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc4-te-20250827.1+d4adf52dbfb92d
   * [Authentication](#authentication)
   * [Available Resources and Operations](#available-resources-and-operations)
   * [Error Handling](#error-handling)
+  * [Server Selection](#server-selection)
 * [Development](#development)
   * [Maturity](#maturity)
   * [Contributions](#contributions)
@@ -285,6 +286,38 @@ try {
 }
 ```
 <!-- End Error Handling [errors] -->
+
+<!-- Start Server Selection [server] -->
+## Server Selection
+
+### Override Server URL Per-Client
+
+The default server can be overridden globally using the `setServerUrl(string $serverUrl)` builder method when initializing the SDK client instance. For example:
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setServerURL('https://ksef-test.mf.gov.pl')
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->auth->getCurrentSessions(
+    pageSize: 10
+);
+
+if ($response->authenticationListResponse !== null) {
+    // handle response
+}
+```
+<!-- End Server Selection [server] -->
 
 <!-- Placeholder for Future Speakeasy SDK Sections -->
 

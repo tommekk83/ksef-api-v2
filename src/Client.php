@@ -21,7 +21,7 @@ namespace Intermedia\Ksef\Apiv2;
 class Client
 {
     public const SERVERS = [
-        '/',
+        'https://ksef-test.mf.gov.pl',
     ];
 
     public Auth $auth;
