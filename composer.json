@@ -17,7 +17,8 @@
     "brick/math": ">=0.12.1",
     "ext-dom": "*",
     "ext-openssl": "*",
-    "robrichards/xmlseclibs": "^3.1"
+    "robrichards/xmlseclibs": "^3.1",
+    "phpseclib/phpseclib":"^3.0"
   },
   "require-dev": {
     "laravel/pint": ">=1.21.2",
