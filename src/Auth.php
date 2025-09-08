@@ -283,7 +283,7 @@ class Auth
      * @return Operations\PostApiV2AuthChallengeResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function initiate(?Options $options = null): Operations\PostApiV2AuthChallengeResponse
+    public function challenge(?Options $options = null): Operations\PostApiV2AuthChallengeResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/challenge');

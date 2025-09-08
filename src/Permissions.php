@@ -477,7 +477,7 @@ class Permissions
      * @return Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function grantAdminRights(?Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse
+    public function grantRights(?Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/eu-entities/administration/grants');

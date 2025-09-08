@@ -30,20 +30,6 @@ class Client
 
     public Certificates $certificates;
 
-    /**
-     * Certyfikat KSeF to cyfrowe poświadczenie tożsamości podmiotu, wydawane przez system KSeF na wniosek uwierzytelnionego podmiotu. 
-     *
-     * Certyfikat ten może być wykorzystywany do:
-     *
-     * - uwierzytelniania się w systemie KSeF,
-     * - realizacji operacji w trybie offline, w tym wystawiania faktur bezpośrednio w aplikacji użytkownika.
-     *
-     * **Uwaga**: Wnioskowanie o certyfikat KSeF jest możliwe wyłącznie po uwierzytelnieniu z wykorzystaniem podpisu (XAdES). Uwierzytelnienie przy użyciu tokenu systemowego KSeF nie pozwala na złożenie wniosku.
-     *
-     * @var Certyfikaty $$certyfikaty
-     */
-    public Certyfikaty $certyfikaty;
-
     public PublicKeyCertificates $publicKeyCertificates;
 
     public TestData1 $testData;
@@ -64,8 +50,6 @@ class Client
 
     public OnlineSessionInvoices $onlineSessionInvoices;
 
-    public SessionsBatch $sessionsBatch;
-
     /**
      * Returns a new instance of the SDK builder used to configure and create the SDK instance.
      *
@@ -85,7 +69,6 @@ class Client
         $this->auth = new Auth($this->sdkConfiguration);
         $this->authSessions = new AuthSessions($this->sdkConfiguration);
         $this->certificates = new Certificates($this->sdkConfiguration);
-        $this->certyfikaty = new Certyfikaty($this->sdkConfiguration);
         $this->publicKeyCertificates = new PublicKeyCertificates($this->sdkConfiguration);
         $this->testData = new TestData1($this->sdkConfiguration);
         $this->testdata = new Testdata2($this->sdkConfiguration);
@@ -96,7 +79,6 @@ class Client
         $this->sessionInvoices = new SessionInvoices($this->sdkConfiguration);
         $this->tokens = new Tokens($this->sdkConfiguration);
         $this->onlineSessionInvoices = new OnlineSessionInvoices($this->sdkConfiguration);
-        $this->sessionsBatch = new SessionsBatch($this->sdkConfiguration);
         $this->initHooks();
 
     }

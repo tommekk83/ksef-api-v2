@@ -7,7 +7,7 @@
 
 * [getSessions](#getsessions) - Pobranie listy aktywnych sesji
 * [deleteCurrentSession](#deletecurrentsession) - Unieważnienie aktualnej sesji uwierzytelnienia
-* [initiate](#initiate) - Inicjalizacja uwierzytelnienia
+* [challenge](#challenge) - Inicjalizacja uwierzytelnienia
 * [authenticateWithXades](#authenticatewithxades) - Uwierzytelnienie z wykorzystaniem podpisu XAdES
 * [ksefToken](#kseftoken) - Uwierzytelnienie z wykorzystaniem tokena KSeF
 * [getStatus](#getstatus) - Pobranie statusu uwierzytelniania
@@ -110,7 +110,7 @@ if ($response->statusCode === 200) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## initiate
+## challenge
 
 Generuje unikalny challenge wymagany w kolejnym kroku operacji uwierzytelnienia.
 
@@ -132,7 +132,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->auth->initiate(
+$response = $sdk->auth->challenge(
 
 );
 

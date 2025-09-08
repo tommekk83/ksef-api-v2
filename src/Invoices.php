@@ -220,7 +220,7 @@ class Invoices
      * @return Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getInvoiceUpoByKsef(string $referenceNumber, string $ksefNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
+    public function getInvoiceUpoByKsefNumber(string $referenceNumber, string $ksefNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
     {
         $request = new Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoRequest(
             referenceNumber: $referenceNumber,

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 104d8983-d344-4148-bbc0-75d230777f47
 management:
-  docChecksum: 6253fc96c3e79e2a068c953b5057dfbf
+  docChecksum: d783d24dbaedf23e1a1ba7e9367f19e4
   docVersion: v2
   speakeasyVersion: 1.611.1
   generationVersion: 2.694.1
-  releaseVersion: 0.3.7
-  configChecksum: de09133a4eddd5fca1d81429c0193138
+  releaseVersion: 0.3.14
+  configChecksum: 83e1b9cebfa3299c038ab143c77b0cd1
   published: true
 features:
   php:
@@ -339,7 +339,6 @@ generatedFiles:
   - docs/sdks/authorizations/README.md
   - docs/sdks/authsessions/README.md
   - docs/sdks/certificates/README.md
-  - docs/sdks/certyfikaty/README.md
   - docs/sdks/client/README.md
   - docs/sdks/invoiceexports/README.md
   - docs/sdks/invoices/README.md
@@ -348,7 +347,6 @@ generatedFiles:
   - docs/sdks/publickeycertificates/README.md
   - docs/sdks/sessioninvoices/README.md
   - docs/sdks/sessions/README.md
-  - docs/sdks/sessionsbatch/README.md
   - docs/sdks/testdata1/README.md
   - docs/sdks/testdata2/README.md
   - docs/sdks/tokens/README.md
@@ -360,7 +358,6 @@ generatedFiles:
   - src/AuthSessions.php
   - src/Authorizations.php
   - src/Certificates.php
-  - src/Certyfikaty.php
   - src/Client.php
   - src/ClientBuilder.php
   - src/Hooks/AfterErrorContext.php
@@ -697,7 +694,6 @@ generatedFiles:
   - src/SDKConfiguration.php
   - src/SessionInvoices.php
   - src/Sessions.php
-  - src/SessionsBatch.php
   - src/TestData1.php
   - src/Testdata2.php
   - src/Tokens.php

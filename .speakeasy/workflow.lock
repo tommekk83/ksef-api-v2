@@ -2,8 +2,8 @@ speakeasyVersion: 1.611.1
 sources:
     KSeF API TE:
         sourceNamespace: k-se-f-api-te
-        sourceRevisionDigest: sha256:2f36d23b71bc4cefb4b75cf50a44919d425f8fe65826c83b88776e05b4cf95ed
-        sourceBlobDigest: sha256:35f54d7f27aaf8a8ea7d65f8e41d9fce9e42c92165fe020872d496b410efe227
+        sourceRevisionDigest: sha256:d532f2c9321988b01f6276b27d0671e3dec3ac803543d63c71bbc219dfdebdee
+        sourceBlobDigest: sha256:30d6b9022f78d468029b56b0e32df9aa16688faa09552255365ba4c148a6c299
         tags:
             - latest
             - v2
@@ -11,10 +11,10 @@ targets:
     ksef1:
         source: KSeF API TE
         sourceNamespace: k-se-f-api-te
-        sourceRevisionDigest: sha256:2f36d23b71bc4cefb4b75cf50a44919d425f8fe65826c83b88776e05b4cf95ed
-        sourceBlobDigest: sha256:35f54d7f27aaf8a8ea7d65f8e41d9fce9e42c92165fe020872d496b410efe227
+        sourceRevisionDigest: sha256:d532f2c9321988b01f6276b27d0671e3dec3ac803543d63c71bbc219dfdebdee
+        sourceBlobDigest: sha256:30d6b9022f78d468029b56b0e32df9aa16688faa09552255365ba4c148a6c299
         codeSamplesNamespace: k-se-f-api-te-php-code-samples
-        codeSamplesRevisionDigest: sha256:e162a4ea3c8879039f3f5a766aea4d5655cfcb8fc71f5aed822a4854c2451412
+        codeSamplesRevisionDigest: sha256:5bb5bb1014bbbafc42e7855cd452a807b2e320e84561f05997775c95a81d00be
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

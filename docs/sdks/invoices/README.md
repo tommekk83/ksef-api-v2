@@ -9,7 +9,7 @@
 * [queryMetadata](#querymetadata) - Pobranie listy metadanych faktur
 * [export](#export) - [mock] Eksport paczki faktur
 * [getFailed](#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
-* [getInvoiceUpoByKsef](#getinvoiceupobyksef) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
+* [getInvoiceUpoByKsefNumber](#getinvoiceupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
 * [getInvoiceUpo](#getinvoiceupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
 
 ## getByKsefNumber
@@ -222,7 +222,7 @@ if ($response->sessionInvoicesResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## getInvoiceUpoByKsef
+## getInvoiceUpoByKsefNumber
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
@@ -246,7 +246,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->invoices->getInvoiceUpoByKsef(
+$response = $sdk->invoices->getInvoiceUpoByKsefNumber(
     referenceNumber: '<value>',
     ksefNumber: '<value>'
 

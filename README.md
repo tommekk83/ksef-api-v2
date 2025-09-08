@@ -8,6 +8,7 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
         <img src="https://img.shields.io/badge/License-MIT-blue.svg" style="width: 100px; height: 28px;" />
     </a>
 </div>
+
 <!-- Start Summary [summary] -->
 ## Summary
 
@@ -72,7 +73,7 @@ if ($response->authenticationListResponse !== null) {
 }
 ```
 <!-- End SDK Example Usage [usage] -->
-### AuthTokenRequest XML generation with XAdES signature
+### AuthTokenRequest XML generation with XAdES signature example
 
 ```php
 declare(strict_types=1);
@@ -141,7 +142,7 @@ if ($response->authenticationListResponse !== null) {
 
 * [getSessions](docs/sdks/auth/README.md#getsessions) - Pobranie listy aktywnych sesji
 * [deleteCurrentSession](docs/sdks/auth/README.md#deletecurrentsession) - Unieważnienie aktualnej sesji uwierzytelnienia
-* [initiate](docs/sdks/auth/README.md#initiate) - Inicjalizacja uwierzytelnienia
+* [challenge](docs/sdks/auth/README.md#challenge) - Inicjalizacja uwierzytelnienia
 * [authenticateWithXades](docs/sdks/auth/README.md#authenticatewithxades) - Uwierzytelnienie z wykorzystaniem podpisu XAdES
 * [ksefToken](docs/sdks/auth/README.md#kseftoken) - Uwierzytelnienie z wykorzystaniem tokena KSeF
 * [getStatus](docs/sdks/auth/README.md#getstatus) - Pobranie statusu uwierzytelniania
@@ -158,12 +159,9 @@ if ($response->authenticationListResponse !== null) {
 * [getEnrollmentData](docs/sdks/certificates/README.md#getenrollmentdata) - Pobranie danych do wniosku certyfikacyjnego
 * [processEnrollment](docs/sdks/certificates/README.md#processenrollment) - Wysyłka wniosku certyfikacyjnego
 * [getEnrollmentStatus](docs/sdks/certificates/README.md#getenrollmentstatus) - Pobranie statusu przetwarzania wniosku certyfikacyjnego
+* [retrieve](docs/sdks/certificates/README.md#retrieve) - Pobranie certyfikatu lub listy certyfikatów
 * [revoke](docs/sdks/certificates/README.md#revoke) - Unieważnienie certyfikatu
 * [query](docs/sdks/certificates/README.md#query) - Pobranie listy metadanych certyfikatów
-
-### [certyfikaty](docs/sdks/certyfikaty/README.md)
-
-* [retrieve](docs/sdks/certyfikaty/README.md#retrieve) - Pobranie certyfikatu lub listy certyfikatów
 
 
 ### [invoiceExports](docs/sdks/invoiceexports/README.md)
@@ -176,7 +174,7 @@ if ($response->authenticationListResponse !== null) {
 * [queryMetadata](docs/sdks/invoices/README.md#querymetadata) - Pobranie listy metadanych faktur
 * [export](docs/sdks/invoices/README.md#export) - [mock] Eksport paczki faktur
 * [getFailed](docs/sdks/invoices/README.md#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
-* [getInvoiceUpoByKsef](docs/sdks/invoices/README.md#getinvoiceupobyksef) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
+* [getInvoiceUpoByKsefNumber](docs/sdks/invoices/README.md#getinvoiceupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
 * [getInvoiceUpo](docs/sdks/invoices/README.md#getinvoiceupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
 
 ### [onlineSessionInvoices](docs/sdks/onlinesessioninvoices/README.md)
@@ -190,7 +188,7 @@ if ($response->authenticationListResponse !== null) {
 * [grantSubjectAuthorization](docs/sdks/permissions/README.md#grantsubjectauthorization) - Nadanie uprawnień podmiotowych
 * [grantIndirectly](docs/sdks/permissions/README.md#grantindirectly) - Nadanie uprawnień w sposób pośredni
 * [grantToSubunits](docs/sdks/permissions/README.md#granttosubunits) - Nadanie uprawnień administratora podmiotu podrzędnego
-* [grantAdminRights](docs/sdks/permissions/README.md#grantadminrights) - Nadanie uprawnień administratora podmiotu unijnego
+* [grantRights](docs/sdks/permissions/README.md#grantrights) - Nadanie uprawnień administratora podmiotu unijnego
 * [grantToEuEntities](docs/sdks/permissions/README.md#granttoeuentities) - Nadanie uprawnień reprezentanta podmiotu unijnego
 * [deleteGrant](docs/sdks/permissions/README.md#deletegrant) - Odebranie uprawnień
 * [getOperationStatus](docs/sdks/permissions/README.md#getoperationstatus) - Pobranie statusu operacji
@@ -221,11 +219,8 @@ if ($response->authenticationListResponse !== null) {
 * [getUpo](docs/sdks/sessions/README.md#getupo) - Pobranie UPO dla sesji
 * [openOnline](docs/sdks/sessions/README.md#openonline) - Otwarcie sesji interaktywnej
 * [closeOnline](docs/sdks/sessions/README.md#closeonline) - Zamknięcie sesji interaktywnej
+* [openBatch](docs/sdks/sessions/README.md#openbatch) - Otwarcie sesji wsadowej
 * [closeBatch](docs/sdks/sessions/README.md#closebatch) - Zamknięcie sesji wsadowej
-
-### [sessionsBatch](docs/sdks/sessionsbatch/README.md)
-
-* [open](docs/sdks/sessionsbatch/README.md#open) - Otwarcie sesji wsadowej
 
 ### [testdata](docs/sdks/testdata2/README.md)
 

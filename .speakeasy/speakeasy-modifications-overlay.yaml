@@ -2,7 +2,7 @@ overlay: 1.0.0
 x-speakeasy-jsonpath: rfc9535
 info:
   title: Speakeasy Modifications
-  version: 0.0.2
+  version: 0.0.7
   x-speakeasy-metadata:
     after: ""
     before: ""
@@ -627,3 +627,34 @@ actions:
       created_at: 1757147354516
       reviewed_at: 1757147431361
       type: method-name
+  - target: $["paths"]["/api/v2/certificates/retrieve"]["post"]
+    update:
+      x-speakeasy-group: certificates
+    x-speakeasy-metadata:
+      created_at: 1757314503493
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo"]["get"]["x-speakeasy-name-override"]
+    update: getInvoiceUpoByKsefNumber
+    x-speakeasy-metadata:
+      created_at: 1757314608888
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/eu-entities/administration/grants"]["post"]["x-speakeasy-name-override"]
+    update: grantRights
+    x-speakeasy-metadata:
+      created_at: 1757314801072
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/challenge"]["post"]["x-speakeasy-name-override"]
+    update: challenge
+    x-speakeasy-metadata:
+      created_at: 1757315467413
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/batch"]["post"]["x-speakeasy-group"]
+    update: sessions
+    x-speakeasy-metadata:
+      created_at: 1757315467413
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/batch"]["post"]["x-speakeasy-name-override"]
+    update: openBatch
+    x-speakeasy-metadata:
+      created_at: 1757315467413
+      type: user-edit

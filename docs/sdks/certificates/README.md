@@ -9,6 +9,7 @@
 * [getEnrollmentData](#getenrollmentdata) - Pobranie danych do wniosku certyfikacyjnego
 * [processEnrollment](#processenrollment) - Wysyłka wniosku certyfikacyjnego
 * [getEnrollmentStatus](#getenrollmentstatus) - Pobranie statusu przetwarzania wniosku certyfikacyjnego
+* [retrieve](#retrieve) - Pobranie certyfikatu lub listy certyfikatów
 * [revoke](#revoke) - Unieważnienie certyfikatu
 * [query](#query) - Pobranie listy metadanych certyfikatów
 
@@ -200,6 +201,60 @@ if ($response->certificateEnrollmentStatusResponse !== null) {
 ### Response
 
 **[?Operations\GetApiV2CertificatesEnrollmentsReferenceNumberResponse](../../Models/Operations/GetApiV2CertificatesEnrollmentsReferenceNumberResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## retrieve
+
+Zwraca certyfikaty o podanych numerach seryjnych w formacie DER zakodowanym w Base64.
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="post_/api/v2/certificates/retrieve" method="post" path="/api/v2/certificates/retrieve" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Operations;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+$request = new Operations\PostApiV2CertificatesRetrieveRequest(
+    certificateSerialNumbers: [
+        '0321C82DA41B4362',
+        '0321F21DA462A362',
+    ],
+);
+
+$response = $sdk->certificates->retrieve(
+    request: $request
+);
+
+if ($response->retrieveCertificatesResponse !== null) {
+    // handle response
+}
+```
+
+### Parameters
+
+| Parameter                                                                                                          | Type                                                                                                               | Required                                                                                                           | Description                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `$request`                                                                                                         | [Operations\PostApiV2CertificatesRetrieveRequest](../../Models/Operations/PostApiV2CertificatesRetrieveRequest.md) | :heavy_check_mark:                                                                                                 | The request object to use for the request.                                                                         |
+
+### Response
+
+**[?Operations\PostApiV2CertificatesRetrieveResponse](../../Models/Operations/PostApiV2CertificatesRetrieveResponse.md)**
 
 ### Errors
 

@@ -302,6 +302,7 @@ paths:
       security:
         - Bearer: []
       x-speakeasy-name-override: retrieve
+      x-speakeasy-group: certificates
   /api/v2/certificates/{certificateSerialNumber}/revoke:
     post:
       tags:
@@ -934,7 +935,7 @@ paths:
       x-required-permissions:
         - CredentialsManage
       x-speakeasy-group: permissions
-      x-speakeasy-name-override: grantAdminRights
+      x-speakeasy-name-override: grantRights
   /api/v2/permissions/eu-entities/grants:
     post:
       tags:
@@ -1703,7 +1704,7 @@ paths:
       x-required-permissions:
         - InvoiceWrite
       x-speakeasy-group: invoices
-      x-speakeasy-name-override: getInvoiceUpoByKsef
+      x-speakeasy-name-override: getInvoiceUpoByKsefNumber
   /api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo:
     get:
       tags:
@@ -1981,7 +1982,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
       x-speakeasy-group: auth
-      x-speakeasy-name-override: initiate
+      x-speakeasy-name-override: challenge
   /api/v2/auth/xades-signature:
     post:
       tags:
@@ -2485,8 +2486,8 @@ paths:
         - Bearer: []
       x-required-permissions:
         - InvoiceWrite
-      x-speakeasy-group: sessionsBatch
-      x-speakeasy-name-override: open
+      x-speakeasy-group: sessions
+      x-speakeasy-name-override: openBatch
   /api/v2/sessions/batch/{referenceNumber}/close:
     post:
       tags:

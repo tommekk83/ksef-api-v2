@@ -10,7 +10,7 @@
 * [grantSubjectAuthorization](#grantsubjectauthorization) - Nadanie uprawnień podmiotowych
 * [grantIndirectly](#grantindirectly) - Nadanie uprawnień w sposób pośredni
 * [grantToSubunits](#granttosubunits) - Nadanie uprawnień administratora podmiotu podrzędnego
-* [grantAdminRights](#grantadminrights) - Nadanie uprawnień administratora podmiotu unijnego
+* [grantRights](#grantrights) - Nadanie uprawnień administratora podmiotu unijnego
 * [grantToEuEntities](#granttoeuentities) - Nadanie uprawnień reprezentanta podmiotu unijnego
 * [deleteGrant](#deletegrant) - Odebranie uprawnień
 * [getOperationStatus](#getoperationstatus) - Pobranie statusu operacji
@@ -349,7 +349,7 @@ if ($response->permissionsOperationResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## grantAdminRights
+## grantRights
 
 Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu unijnego.
 
@@ -388,7 +388,7 @@ $request = new Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequ
     description: 'Administrator podmiotu unijnego DE123456789012',
 );
 
-$response = $sdk->permissions->grantAdminRights(
+$response = $sdk->permissions->grantRights(
     request: $request
 );
 

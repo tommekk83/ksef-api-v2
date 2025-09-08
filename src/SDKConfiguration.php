@@ -24,11 +24,11 @@ class SDKConfiguration
 
     public string $openapiDocVersion = 'v2';
 
-    public string $sdkVersion = '0.3.7';
+    public string $sdkVersion = '0.3.14';
 
     public string $genVersion = '2.694.1';
 
-    public string $userAgent = 'speakeasy-sdk/php 0.3.7 2.694.1 v2 intermedia/ksef-api-v2';
+    public string $userAgent = 'speakeasy-sdk/php 0.3.14 2.694.1 v2 intermedia/ksef-api-v2';
 
     public ?RetryConfig $retryConfig = null;
 
