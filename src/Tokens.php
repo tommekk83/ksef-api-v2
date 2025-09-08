@@ -56,7 +56,7 @@ class Tokens
      * @return Operations\DeleteApiV2TokensReferenceNumberResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function delete(string $referenceNumber, ?Options $options = null): Operations\DeleteApiV2TokensReferenceNumberResponse
+    public function revoke(string $referenceNumber, ?Options $options = null): Operations\DeleteApiV2TokensReferenceNumberResponse
     {
         $request = new Operations\DeleteApiV2TokensReferenceNumberRequest(
             referenceNumber: $referenceNumber,
@@ -123,7 +123,7 @@ class Tokens
      * @return Operations\GetApiV2TokensResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function list(?array $status = null, ?string $xContinuationToken = null, ?int $pageSize = null, ?Options $options = null): Operations\GetApiV2TokensResponse
+    public function getList(?array $status = null, ?string $xContinuationToken = null, ?int $pageSize = null, ?Options $options = null): Operations\GetApiV2TokensResponse
     {
         $request = new Operations\GetApiV2TokensRequest(
             status: $status,

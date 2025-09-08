@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 104d8983-d344-4148-bbc0-75d230777f47
 management:
-  docChecksum: d783d24dbaedf23e1a1ba7e9367f19e4
+  docChecksum: 747db5e99f52db0305885a7adb3f4c38
   docVersion: v2
   speakeasyVersion: 1.611.1
   generationVersion: 2.694.1
-  releaseVersion: 0.3.14
-  configChecksum: 83e1b9cebfa3299c038ab143c77b0cd1
+  releaseVersion: 0.3.24
+  configChecksum: 2c1b938566aacafc2a4cff063920566c
   published: true
 features:
   php:
@@ -336,30 +336,24 @@ generatedFiles:
   - docs/Models/Operations/PostApiV2TokensResponse.md
   - docs/Models/Operations/SchemaType.md
   - docs/sdks/auth/README.md
-  - docs/sdks/authorizations/README.md
-  - docs/sdks/authsessions/README.md
   - docs/sdks/certificates/README.md
   - docs/sdks/client/README.md
-  - docs/sdks/invoiceexports/README.md
+  - docs/sdks/getinvoices/README.md
   - docs/sdks/invoices/README.md
-  - docs/sdks/onlinesessioninvoices/README.md
   - docs/sdks/permissions/README.md
-  - docs/sdks/publickeycertificates/README.md
-  - docs/sdks/sessioninvoices/README.md
+  - docs/sdks/security/README.md
   - docs/sdks/sessions/README.md
-  - docs/sdks/testdata1/README.md
-  - docs/sdks/testdata2/README.md
+  - docs/sdks/testdata/README.md
   - docs/sdks/tokens/README.md
   - phpstan.neon
   - phpunit.xml
   - pint.json
   - rector.php
   - src/Auth.php
-  - src/AuthSessions.php
-  - src/Authorizations.php
   - src/Certificates.php
   - src/Client.php
   - src/ClientBuilder.php
+  - src/GetInvoices.php
   - src/Hooks/AfterErrorContext.php
   - src/Hooks/AfterErrorHook.php
   - src/Hooks/AfterSuccessContext.php
@@ -375,7 +369,6 @@ generatedFiles:
   - src/Hooks/SDKInitHook.php
   - src/Hooks/Session.php
   - src/Hooks/TokenResponse.php
-  - src/InvoiceExports.php
   - src/Invoices.php
   - src/Models/Components/AttachmentPermissionGrantRequest.php
   - src/Models/Components/AttachmentPermissionRevokeRequest.php
@@ -688,14 +681,11 @@ generatedFiles:
   - src/Models/Operations/PostApiV2TestdataSubjectResponse.php
   - src/Models/Operations/PostApiV2TokensResponse.php
   - src/Models/Operations/SchemaType.php
-  - src/OnlineSessionInvoices.php
   - src/Permissions.php
-  - src/PublicKeyCertificates.php
   - src/SDKConfiguration.php
-  - src/SessionInvoices.php
+  - src/Security.php
   - src/Sessions.php
-  - src/TestData1.php
-  - src/Testdata2.php
+  - src/TestData.php
   - src/Tokens.php
   - src/Utils/BigDecimalHandler.php
   - src/Utils/BigIntHandler.php

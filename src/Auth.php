@@ -57,7 +57,7 @@ class Auth
      * @return Operations\DeleteApiV2AuthSessionsCurrentResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function deleteCurrentSession(?Options $options = null): Operations\DeleteApiV2AuthSessionsCurrentResponse
+    public function revokeCurrentSession(?Options $options = null): Operations\DeleteApiV2AuthSessionsCurrentResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions/current');
@@ -113,6 +113,76 @@ class Auth
     }
 
     /**
+     * Unieważnienie sesji uwierzytelnienia
+     *
+     * Unieważnia sesję o podanym numerze referencyjnym.
+     *
+     * Unieważnienie sesji sprawia, że powiązany z nią refresh token przestaje działać i nie można już za jego pomocą uzyskać kolejnych access tokenów.
+     * **Aktywne access tokeny działają do czasu minięcia ich termin ważności.**
+     *
+     * @param  string  $referenceNumber
+     * @return Operations\DeleteApiV2AuthSessionsReferenceNumberResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function revokeSession(string $referenceNumber, ?Options $options = null): Operations\DeleteApiV2AuthSessionsReferenceNumberResponse
+    {
+        $request = new Operations\DeleteApiV2AuthSessionsReferenceNumberRequest(
+            referenceNumber: $referenceNumber,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions/{referenceNumber}', Operations\DeleteApiV2AuthSessionsReferenceNumberRequest::class, $request);
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'delete_/api/v2/auth/sessions/{referenceNumber}', [], $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
+            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+            return new Operations\DeleteApiV2AuthSessionsReferenceNumberResponse(
+                statusCode: $statusCode,
+                contentType: $contentType,
+                rawResponse: $httpResponse
+            );
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
      * Pobranie listy aktywnych sesji
      *
      * Zwraca listę aktywnych sesji uwierzytelnienia.
@@ -122,7 +192,7 @@ class Auth
      * @return Operations\GetApiV2AuthSessionsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getSessions(?string $xContinuationToken = null, ?int $pageSize = null, ?Options $options = null): Operations\GetApiV2AuthSessionsResponse
+    public function getCurrentSessions(?string $xContinuationToken = null, ?int $pageSize = null, ?Options $options = null): Operations\GetApiV2AuthSessionsResponse
     {
         $request = new Operations\GetApiV2AuthSessionsRequest(
             xContinuationToken: $xContinuationToken,
@@ -360,7 +430,7 @@ class Auth
      * @return Operations\PostApiV2AuthKsefTokenResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function ksefToken(?Operations\PostApiV2AuthKsefTokenRequest $request = null, ?Options $options = null): Operations\PostApiV2AuthKsefTokenResponse
+    public function withKsefToken(?Operations\PostApiV2AuthKsefTokenRequest $request = null, ?Options $options = null): Operations\PostApiV2AuthKsefTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/ksef-token');
@@ -592,7 +662,7 @@ class Auth
      * @return Operations\PostApiV2AuthXadesSignatureResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function authenticateWithXades(string $requestBody, ?bool $verifyCertificateChain = null, ?Options $options = null): Operations\PostApiV2AuthXadesSignatureResponse
+    public function withXades(string $requestBody, ?bool $verifyCertificateChain = null, ?Options $options = null): Operations\PostApiV2AuthXadesSignatureResponse
     {
         $request = new Operations\PostApiV2AuthXadesSignatureRequest(
             requestBody: $requestBody,

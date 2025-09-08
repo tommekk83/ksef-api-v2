@@ -45,30 +45,41 @@ class Invoices
     }
 
     /**
-     * Pobranie faktury po numerze KSeF
+     * Pobranie faktur sesji
      *
-     * Zwraca fakturę o podanym numerze KSeF.
+     * Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
      *
-     * Wymagane uprawnienia: `InvoiceRead`.
+     * Wymagane uprawnienia: `InvoiceWrite`.
      *
-     * @param  string  $ksefNumber
-     * @return Operations\GetApiV2InvoicesKsefKsefNumberResponse
+     * @param  string  $referenceNumber
+     * @param  ?string  $xContinuationToken
+     * @param  ?int  $pageSize
+     * @return Operations\GetApiV2SessionsReferenceNumberInvoicesResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getByKsefNumber(string $ksefNumber, ?Options $options = null): Operations\GetApiV2InvoicesKsefKsefNumberResponse
+    public function getList(string $referenceNumber, ?string $xContinuationToken = null, ?int $pageSize = null, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesResponse
     {
-        $request = new Operations\GetApiV2InvoicesKsefKsefNumberRequest(
-            ksefNumber: $ksefNumber,
+        $request = new Operations\GetApiV2SessionsReferenceNumberInvoicesRequest(
+            referenceNumber: $referenceNumber,
+            xContinuationToken: $xContinuationToken,
+            pageSize: $pageSize,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/ksef/{ksefNumber}', Operations\GetApiV2InvoicesKsefKsefNumberRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/invoices', Operations\GetApiV2SessionsReferenceNumberInvoicesRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/xml';
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetApiV2SessionsReferenceNumberInvoicesRequest::class, $request, $urlOverride);
+        $httpOptions = array_merge_recursive($httpOptions, Utils\Utils::getHeaders($request));
+        if (! array_key_exists('headers', $httpOptions)) {
+            $httpOptions['headers'] = [];
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/invoices/ksef/{ksefNumber}', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/sessions/{referenceNumber}/invoices', [], $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
         try {
@@ -85,16 +96,19 @@ class Invoices
             $httpResponse = $res;
         }
         if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/xml')) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
                 $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
 
-                $obj = $httpResponse->getBody()->getContents();
-
-                return new Operations\GetApiV2InvoicesKsefKsefNumberResponse(
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\SessionInvoicesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetApiV2SessionsReferenceNumberInvoicesResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
-                    res: $obj);
+                    sessionInvoicesResponse: $obj);
+
+                return $response;
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
@@ -220,7 +234,7 @@ class Invoices
      * @return Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getInvoiceUpoByKsefNumber(string $referenceNumber, string $ksefNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
+    public function getUpoByKsefNumber(string $referenceNumber, string $ksefNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
     {
         $request = new Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoRequest(
             referenceNumber: $referenceNumber,
@@ -286,6 +300,86 @@ class Invoices
     }
 
     /**
+     * Pobranie statusu faktury z sesji
+     *
+     * Zwraca fakturę przesłaną w sesji wraz ze statusem.
+     *
+     * Wymagane uprawnienia: `InvoiceWrite`.
+     *
+     * @param  string  $referenceNumber
+     * @param  string  $invoiceReferenceNumber
+     * @return Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getInvoiceStatus(string $referenceNumber, string $invoiceReferenceNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse
+    {
+        $request = new Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberRequest(
+            referenceNumber: $referenceNumber,
+            invoiceReferenceNumber: $invoiceReferenceNumber,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}', Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberRequest::class, $request);
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}', [], $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\SessionInvoiceStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    sessionInvoiceStatusResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
      * Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
      *
      * Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
@@ -297,7 +391,7 @@ class Invoices
      * @return Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getInvoiceUpo(string $referenceNumber, string $invoiceReferenceNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse
+    public function getUpo(string $referenceNumber, string $invoiceReferenceNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse
     {
         $request = new Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoRequest(
             referenceNumber: $referenceNumber,
@@ -363,121 +457,39 @@ class Invoices
     }
 
     /**
-     * [mock] Eksport paczki faktur
+     * Wysłanie faktury
      *
-     * Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
-     * Wymagane jest przekazanie informacji o szyfrowaniu w polu `Encryption`, które służą do zabezpieczenia przygotowanej paczki z fakturami.
+     * Przyjmuje zaszyfrowaną fakturę oraz jej metadane i rozpoczyna jej przetwarzanie.
      *
-     * Wymagane uprawnienia: `InvoiceRead`.
+     * > Więcej informacji:
+     * > - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
      *
-     * @param  ?Operations\PostApiV2InvoicesExportsRequest  $request
-     * @return Operations\PostApiV2InvoicesExportsResponse
+     * Wymagane uprawnienia: `InvoiceWrite`.
+     *
+     * @param  string  $referenceNumber
+     * @param  ?Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody  $requestBody
+     * @return Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function export(?Operations\PostApiV2InvoicesExportsRequest $request = null, ?Options $options = null): Operations\PostApiV2InvoicesExportsResponse
+    public function sendOnline(string $referenceNumber, ?Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody $requestBody = null, ?Options $options = null): Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesResponse
     {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/exports');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/invoices/exports', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['201'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\ExportInvoicesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2InvoicesExportsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    exportInvoicesResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy metadanych faktur
-     *
-     * Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania.
-     *
-     * Wymagane uprawnienia: `InvoiceRead`.
-     *
-     * @param  ?Operations\PostApiV2InvoicesQueryMetadataRequestBody  $requestBody
-     * @param  ?int  $pageOffset
-     * @param  ?int  $pageSize
-     * @return Operations\PostApiV2InvoicesQueryMetadataResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function queryMetadata(?Operations\PostApiV2InvoicesQueryMetadataRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2InvoicesQueryMetadataResponse
-    {
-        $request = new Operations\PostApiV2InvoicesQueryMetadataRequest(
-            pageOffset: $pageOffset,
-            pageSize: $pageSize,
+        $request = new Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequest(
+            referenceNumber: $referenceNumber,
             requestBody: $requestBody,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/query/metadata');
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/online/{referenceNumber}/invoices', Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');
         if ($body !== null) {
             $httpOptions = array_merge_recursive($httpOptions, $body);
         }
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2InvoicesQueryMetadataRequest::class, $request, $urlOverride);
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/invoices/query/metadata', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/sessions/online/{referenceNumber}/invoices', [], $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
         try {
@@ -493,18 +505,18 @@ class Invoices
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
             if (Utils\Utils::matchContentType($contentType, 'application/json')) {
                 $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
 
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryInvoicesMetadataReponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2InvoicesQueryMetadataResponse(
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\SendInvoiceResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
-                    queryInvoicesMetadataReponse: $obj);
+                    sendInvoiceResponse: $obj);
 
                 return $response;
             } else {

@@ -2,7 +2,7 @@ overlay: 1.0.0
 x-speakeasy-jsonpath: rfc9535
 info:
   title: Speakeasy Modifications
-  version: 0.0.7
+  version: 0.0.16
   x-speakeasy-metadata:
     after: ""
     before: ""
@@ -657,4 +657,219 @@ actions:
     update: openBatch
     x-speakeasy-metadata:
       created_at: 1757315467413
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/xades-signature"]["post"]["x-speakeasy-name-override"]
+    update: withXades
+    x-speakeasy-metadata:
+      created_at: 1757317047673
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/ksef-token"]["post"]["x-speakeasy-name-override"]
+    update: withKsefToken
+    x-speakeasy-metadata:
+      created_at: 1757317047673
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/sessions/current"]["delete"]["x-speakeasy-name-override"]
+    update: revokeCurrentSession
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/sessions/{referenceNumber}"]["delete"]["x-speakeasy-group"]
+    update: auth
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/sessions/{referenceNumber}"]["delete"]["x-speakeasy-name-override"]
+    update: revokeSession
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/invoices/ksef/{ksefNumber}"]["get"]["x-speakeasy-group"]
+    update: getInvoices
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/invoices/query/metadata"]["post"]["x-speakeasy-group"]
+    update: getInvoices
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/invoices/exports"]["post"]["x-speakeasy-group"]
+    update: getInvoices
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/invoices/exports/{operationReferenceNumber}"]["get"]["x-speakeasy-group"]
+    update: getInvoices
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/invoices/exports/{operationReferenceNumber}"]["get"]["x-speakeasy-name-override"]
+    update: getExportStatus
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/xades-signature"]["post"]["x-speakeasy-name-override"]
+    update: withXades
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/ksef-token"]["post"]["x-speakeasy-name-override"]
+    update: withKsefToken
+    x-speakeasy-metadata:
+      created_at: 1757318461043
+      type: user-edit
+  - target: $["paths"]["/api/v2/auth/sessions"]["get"]["x-speakeasy-name-override"]
+    update: getCurrentSessions
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/security/public-key-certificates"]["get"]["x-speakeasy-group"]
+    update: security
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/security/public-key-certificates"]["get"]["x-speakeasy-name-override"]
+    update: getPublicKeyCertificates
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices"]["get"]["x-speakeasy-group"]
+    update: invoices
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}"]["get"]["x-speakeasy-group"]
+    update: invoices
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}"]["get"]["x-speakeasy-name-override"]
+    update: getInvoiceStatus
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo"]["get"]["x-speakeasy-name-override"]
+    update: getUpoByKsefNumber
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo"]["get"]["x-speakeasy-name-override"]
+    update: getUpo
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/online/{referenceNumber}/invoices"]["post"]["x-speakeasy-group"]
+    update: invoices
+    x-speakeasy-metadata:
+      created_at: 1757319407705
+      type: user-edit
+  - target: $["paths"]["/api/v2/testdata/person"]["post"]["x-speakeasy-group"]
+    update: testData
+    x-speakeasy-metadata:
+      created_at: 1757319775019
+      type: user-edit
+  - target: $["paths"]["/api/v2/testdata/permissions"]["post"]["x-speakeasy-group"]
+    update: testData
+    x-speakeasy-metadata:
+      created_at: 1757319775019
+      type: user-edit
+  - target: $["paths"]["/api/v2/testdata/attachment"]["post"]["x-speakeasy-group"]
+    update: testData
+    x-speakeasy-metadata:
+      created_at: 1757319775019
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/online/{referenceNumber}/invoices"]["post"]["x-speakeasy-name-override"]
+    update: sendOnline
+    x-speakeasy-metadata:
+      created_at: 1757319775019
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/authorizations/grants"]["post"]["x-speakeasy-name-override"]
+    update: grantAuthorizations
+    x-speakeasy-metadata:
+      created_at: 1757320596727
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/common/grants/{permissionId}"]["delete"]["x-speakeasy-name-override"]
+    update: revoke
+    x-speakeasy-metadata:
+      created_at: 1757320596727
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/authorizations/grants/{permissionId}"]["delete"]["x-speakeasy-group"]
+    update: permissions
+    x-speakeasy-metadata:
+      created_at: 1757320596727
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/authorizations/grants/{permissionId}"]["delete"]["x-speakeasy-name-override"]
+    update: revokeAuthorizations
+    x-speakeasy-metadata:
+      created_at: 1757320596727
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions"]["get"]["x-speakeasy-name-override"]
+    update: getList
+    x-speakeasy-metadata:
+      created_at: 1757320596727
+      type: user-edit
+  - target: $["paths"]["/api/v2/sessions/{referenceNumber}/invoices"]["get"]["x-speakeasy-name-override"]
+    update: getList
+    x-speakeasy-metadata:
+      created_at: 1757320596727
+      type: user-edit
+  - target: $["paths"]["/api/v2/tokens"]["get"]["x-speakeasy-name-override"]
+    update: getList
+    x-speakeasy-metadata:
+      created_at: 1757320596727
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/query/subunits/grants"]["post"]["x-speakeasy-name-override"]
+    update: getSubunitsGrants
+    x-speakeasy-metadata:
+      created_at: 1757320596727
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/eu-entities/administration/grants"]["post"]["x-speakeasy-name-override"]
+    update: grantToEuEntitiesAdminRights
+    x-speakeasy-metadata:
+      created_at: 1757321071686
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/query/subordinate-entities/roles"]["post"]["x-speakeasy-name-override"]
+    update: getSubordinateEntitiesRoles
+    x-speakeasy-metadata:
+      created_at: 1757321071686
+      type: user-edit
+  - target: $["paths"]["/api/v2/permissions/query/authorizations/grants"]["post"]["x-speakeasy-name-override"]
+    update: getAuthorizationsGrants
+    x-speakeasy-metadata:
+      created_at: 1757321071686
+      type: user-edit
+  - target: $["paths"]["/api/v2/tokens/{referenceNumber}"]["delete"]["x-speakeasy-name-override"]
+    update: revoke
+    x-speakeasy-metadata:
+      created_at: 1757321212750
+      type: user-edit
+  - target: $["paths"]["/api/v2/certificates/query"]["post"]["x-speakeasy-name-override"]
+    update: get
+    x-speakeasy-metadata:
+      created_at: 1757321464807
+      type: user-edit
+  - target: $["paths"]["/api/v2/invoices/query/metadata"]["post"]["x-speakeasy-name-override"]
+    update: get
+    x-speakeasy-metadata:
+      created_at: 1757321464807
+      type: user-edit
+  - target: $["paths"]["/api/v2/tokens/{referenceNumber}"]["delete"]["x-speakeasy-name-override"]
+    update: revoke
+    x-speakeasy-metadata:
+      created_at: 1757321464807
+      type: user-edit
+  - target: $["paths"]["/api/v2/certificates/query"]["post"]["x-speakeasy-name-override"]
+    update: getList
+    x-speakeasy-metadata:
+      created_at: 1757321714106
+      type: user-edit
+  - target: $["paths"]["/api/v2/invoices/query/metadata"]["post"]["x-speakeasy-name-override"]
+    update: getList
+    x-speakeasy-metadata:
+      created_at: 1757321714106
+      type: user-edit
+  - target: $["paths"]["/api/v2/tokens/{referenceNumber}"]["delete"]["x-speakeasy-name-override"]
+    update: revoke
+    x-speakeasy-metadata:
+      created_at: 1757321714106
       type: user-edit

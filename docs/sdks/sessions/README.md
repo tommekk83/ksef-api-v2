@@ -5,7 +5,7 @@
 
 ### Available Operations
 
-* [list](#list) - Pobranie listy sesji
+* [getList](#getlist) - Pobranie listy sesji
 * [getStatus](#getstatus) - Pobranie statusu sesji
 * [getUpo](#getupo) - Pobranie UPO dla sesji
 * [openOnline](#openonline) - Otwarcie sesji interaktywnej
@@ -13,7 +13,7 @@
 * [openBatch](#openbatch) - Otwarcie sesji wsadowej
 * [closeBatch](#closebatch) - Zamknięcie sesji wsadowej
 
-## list
+## getList
 
 Zwraca listę sesji spełniających podane kryteria wyszukiwania.
 
@@ -41,7 +41,7 @@ $request = new Operations\GetApiV2SessionsRequest(
     sessionType: Components\SessionType::Batch,
 );
 
-$response = $sdk->sessions->list(
+$response = $sdk->sessions->getList(
     request: $request
 );
 

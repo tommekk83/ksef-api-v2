@@ -46,7 +46,7 @@ paths:
       security:
         - Bearer: []
       x-speakeasy-group: auth
-      x-speakeasy-name-override: getSessions
+      x-speakeasy-name-override: getCurrentSessions
   /api/v2/auth/sessions/current:
     delete:
       tags:
@@ -73,7 +73,7 @@ paths:
       security:
         - Bearer: []
       x-speakeasy-group: auth
-      x-speakeasy-name-override: deleteCurrentSession
+      x-speakeasy-name-override: revokeCurrentSession
   /api/v2/auth/sessions/{referenceNumber}:
     delete:
       tags:
@@ -104,8 +104,8 @@ paths:
           description: Unauthorized
       security:
         - Bearer: []
-      x-speakeasy-group: authSessions
-      x-speakeasy-name-override: delete
+      x-speakeasy-group: auth
+      x-speakeasy-name-override: revokeSession
   /api/v2/certificates/limits:
     get:
       tags:
@@ -391,7 +391,7 @@ paths:
       security:
         - Bearer: []
       x-speakeasy-group: certificates
-      x-speakeasy-name-override: query
+      x-speakeasy-name-override: getList
   /api/v2/security/public-key-certificates:
     get:
       tags:
@@ -420,8 +420,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
-      x-speakeasy-group: publicKeyCertificates
-      x-speakeasy-name-override: get
+      x-speakeasy-group: security
+      x-speakeasy-name-override: getPublicKeyCertificates
   /api/v2/testdata/subject:
     post:
       tags:
@@ -489,7 +489,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
-      x-speakeasy-group: testdata
+      x-speakeasy-group: testData
       x-speakeasy-name-override: createPerson
   /api/v2/testdata/person/remove:
     post:
@@ -535,7 +535,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
-      x-speakeasy-group: testdata
+      x-speakeasy-group: testData
       x-speakeasy-name-override: assignPermissions
   /api/v2/testdata/permissions/revoke:
     post:
@@ -581,7 +581,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
-      x-speakeasy-group: testdata
+      x-speakeasy-group: testData
       x-speakeasy-name-override: addAttachment
   /api/v2/testdata/attachment/revoke:
     post:
@@ -770,7 +770,7 @@ paths:
       x-required-permissions:
         - CredentialsManage
       x-speakeasy-group: permissions
-      x-speakeasy-name-override: grantSubjectAuthorization
+      x-speakeasy-name-override: grantAuthorizations
   /api/v2/permissions/indirect/grants:
     post:
       tags:
@@ -935,7 +935,7 @@ paths:
       x-required-permissions:
         - CredentialsManage
       x-speakeasy-group: permissions
-      x-speakeasy-name-override: grantRights
+      x-speakeasy-name-override: grantToEuEntitiesAdminRights
   /api/v2/permissions/eu-entities/grants:
     post:
       tags:
@@ -1042,7 +1042,7 @@ paths:
       x-required-permissions:
         - CredentialsManage
       x-speakeasy-group: permissions
-      x-speakeasy-name-override: deleteGrant
+      x-speakeasy-name-override: revoke
   /api/v2/permissions/authorizations/grants/{permissionId}:
     delete:
       tags:
@@ -1086,8 +1086,8 @@ paths:
         - Bearer: []
       x-required-permissions:
         - CredentialsManage
-      x-speakeasy-group: permissions.authorizations
-      x-speakeasy-name-override: revoke
+      x-speakeasy-group: permissions
+      x-speakeasy-name-override: revokeAuthorizations
   /api/v2/permissions/operations/{operationReferenceNumber}:
     get:
       tags:
@@ -1162,7 +1162,7 @@ paths:
         - Bearer: []
       x-required-permissions:
         - InvoiceRead
-      x-speakeasy-group: invoices
+      x-speakeasy-group: getInvoices
       x-speakeasy-name-override: getByKsefNumber
   /api/v2/invoices/query/metadata:
     post:
@@ -1220,8 +1220,8 @@ paths:
         - Bearer: []
       x-required-permissions:
         - InvoiceRead
-      x-speakeasy-group: invoices
-      x-speakeasy-name-override: queryMetadata
+      x-speakeasy-group: getInvoices
+      x-speakeasy-name-override: getList
   /api/v2/invoices/exports:
     post:
       tags:
@@ -1263,7 +1263,7 @@ paths:
         - Bearer: []
       x-required-permissions:
         - InvoiceRead
-      x-speakeasy-group: invoices
+      x-speakeasy-group: getInvoices
       x-speakeasy-name-override: export
   /api/v2/invoices/exports/{operationReferenceNumber}:
     get:
@@ -1302,8 +1302,8 @@ paths:
         - Bearer: []
       x-required-permissions:
         - InvoiceRead
-      x-speakeasy-group: invoiceExports
-      x-speakeasy-name-override: getStatus
+      x-speakeasy-group: getInvoices
+      x-speakeasy-name-override: getExportStatus
   /api/v2/sessions:
     get:
       tags:
@@ -1415,7 +1415,7 @@ paths:
       x-required-permissions:
         - Introspection
       x-speakeasy-group: sessions
-      x-speakeasy-name-override: list
+      x-speakeasy-name-override: getList
   /api/v2/sessions/{referenceNumber}:
     get:
       tags:
@@ -1539,8 +1539,8 @@ paths:
         - Bearer: []
       x-required-permissions:
         - InvoiceWrite
-      x-speakeasy-group: sessionInvoices
-      x-speakeasy-name-override: list
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: getList
   /api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}:
     get:
       tags:
@@ -1593,8 +1593,8 @@ paths:
         - Bearer: []
       x-required-permissions:
         - InvoiceWrite
-      x-speakeasy-group: sessionInvoices
-      x-speakeasy-name-override: getStatus
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: getInvoiceStatus
   /api/v2/sessions/{referenceNumber}/invoices/failed:
     get:
       tags:
@@ -1704,7 +1704,7 @@ paths:
       x-required-permissions:
         - InvoiceWrite
       x-speakeasy-group: invoices
-      x-speakeasy-name-override: getInvoiceUpoByKsefNumber
+      x-speakeasy-name-override: getUpoByKsefNumber
   /api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo:
     get:
       tags:
@@ -1749,7 +1749,7 @@ paths:
       x-required-permissions:
         - InvoiceWrite
       x-speakeasy-group: invoices
-      x-speakeasy-name-override: getInvoiceUpo
+      x-speakeasy-name-override: getUpo
   /api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}:
     get:
       tags:
@@ -1893,7 +1893,7 @@ paths:
       security:
         - Bearer: []
       x-speakeasy-group: tokens
-      x-speakeasy-name-override: list
+      x-speakeasy-name-override: getList
   /api/v2/tokens/{referenceNumber}:
     get:
       tags:
@@ -1958,7 +1958,7 @@ paths:
       x-required-permissions:
         - CredentialsManage
       x-speakeasy-group: tokens
-      x-speakeasy-name-override: delete
+      x-speakeasy-name-override: revoke
   /api/v2/auth/challenge:
     post:
       tags:
@@ -2039,7 +2039,7 @@ paths:
                 $ref: '#/components/schemas/ExceptionResponse'
           x-summary: Bad Request
       x-speakeasy-group: auth
-      x-speakeasy-name-override: authenticateWithXades
+      x-speakeasy-name-override: withXades
   /api/v2/auth/ksef-token:
     post:
       tags:
@@ -2086,7 +2086,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExceptionResponse'
       x-speakeasy-group: auth
-      x-speakeasy-name-override: ksefToken
+      x-speakeasy-name-override: withKsefToken
   /api/v2/auth/{referenceNumber}:
     get:
       tags:
@@ -2377,8 +2377,8 @@ paths:
         - Bearer: []
       x-required-permissions:
         - InvoiceWrite
-      x-speakeasy-group: onlineSessionInvoices
-      x-speakeasy-name-override: send
+      x-speakeasy-group: invoices
+      x-speakeasy-name-override: sendOnline
   /api/v2/sessions/online/{referenceNumber}/close:
     post:
       tags:
@@ -2678,7 +2678,7 @@ paths:
         - CredentialsRead
         - SubunitManage
       x-speakeasy-group: permissions
-      x-speakeasy-name-override: querySubunitsGrants
+      x-speakeasy-name-override: getSubunitsGrants
   /api/v2/permissions/query/entities/roles:
     get:
       tags:
@@ -2801,7 +2801,7 @@ paths:
         - CredentialsRead
         - SubunitManage
       x-speakeasy-group: permissions
-      x-speakeasy-name-override: getSubordinateRoles
+      x-speakeasy-name-override: getSubordinateEntitiesRoles
   /api/v2/permissions/query/authorizations/grants:
     post:
       tags:
@@ -2880,7 +2880,7 @@ paths:
         - CredentialsManage
         - CredentialsRead
       x-speakeasy-group: permissions
-      x-speakeasy-name-override: queryAuthorizationsGrants
+      x-speakeasy-name-override: getAuthorizationsGrants
   /api/v2/permissions/query/eu-entities/grants:
     post:
       tags:

@@ -370,7 +370,7 @@ class Certificates
      * @return Operations\PostApiV2CertificatesQueryResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function query(?Components\QueryCertificatesRequest $queryCertificatesRequest = null, ?int $pageSize = null, ?int $pageOffset = null, ?Options $options = null): Operations\PostApiV2CertificatesQueryResponse
+    public function getList(?Components\QueryCertificatesRequest $queryCertificatesRequest = null, ?int $pageSize = null, ?int $pageOffset = null, ?Options $options = null): Operations\PostApiV2CertificatesQueryResponse
     {
         $request = new Operations\PostApiV2CertificatesQueryRequest(
             pageSize: $pageSize,

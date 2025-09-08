@@ -7,18 +7,19 @@
 
 * [grantToPersons](#granttopersons) - Nadanie osobom fizycznym uprawnień do pracy w KSeF
 * [grantToEntities](#granttoentities) - Nadanie podmiotom uprawnień do obsługi faktur
-* [grantSubjectAuthorization](#grantsubjectauthorization) - Nadanie uprawnień podmiotowych
+* [grantAuthorizations](#grantauthorizations) - Nadanie uprawnień podmiotowych
 * [grantIndirectly](#grantindirectly) - Nadanie uprawnień w sposób pośredni
 * [grantToSubunits](#granttosubunits) - Nadanie uprawnień administratora podmiotu podrzędnego
-* [grantRights](#grantrights) - Nadanie uprawnień administratora podmiotu unijnego
+* [grantToEuEntitiesAdminRights](#granttoeuentitiesadminrights) - Nadanie uprawnień administratora podmiotu unijnego
 * [grantToEuEntities](#granttoeuentities) - Nadanie uprawnień reprezentanta podmiotu unijnego
-* [deleteGrant](#deletegrant) - Odebranie uprawnień
+* [revoke](#revoke) - Odebranie uprawnień
+* [revokeAuthorizations](#revokeauthorizations) - Odebranie uprawnień podmiotowych
 * [getOperationStatus](#getoperationstatus) - Pobranie statusu operacji
 * [getPersonGrants](#getpersongrants) - Pobranie listy uprawnień do pracy w KSeF nadanych osobom fizycznym lub podmiotom
-* [querySubunitsGrants](#querysubunitsgrants) - Pobranie listy uprawnień administratorów jednostek i podmiotów podrzędnych
+* [getSubunitsGrants](#getsubunitsgrants) - Pobranie listy uprawnień administratorów jednostek i podmiotów podrzędnych
 * [getEntityRoles](#getentityroles) - Pobranie listy ról podmiotu
-* [getSubordinateRoles](#getsubordinateroles) - Pobranie listy podmiotów podrzędnych
-* [queryAuthorizationsGrants](#queryauthorizationsgrants) - Pobranie listy uprawnień podmiotowych do obsługi faktur
+* [getSubordinateEntitiesRoles](#getsubordinateentitiesroles) - Pobranie listy podmiotów podrzędnych
+* [getAuthorizationsGrants](#getauthorizationsgrants) - Pobranie listy uprawnień podmiotowych do obsługi faktur
 * [getEuEntityGrants](#geteuentitygrants) - Pobranie listy uprawnień administratorów lub reprezentantów podmiotów unijnych uprawnionych do samofakturowania
 
 ## grantToPersons
@@ -157,7 +158,7 @@ if ($response->permissionsOperationResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## grantSubjectAuthorization
+## grantAuthorizations
 
 Rozpoczyna asynchroniczną operację nadawania uprawnień podmiotowych.
 
@@ -193,7 +194,7 @@ $request = new Operations\PostApiV2PermissionsAuthorizationsGrantsRequest(
     description: 'Uprawnienia do samofakturowania',
 );
 
-$response = $sdk->permissions->grantSubjectAuthorization(
+$response = $sdk->permissions->grantAuthorizations(
     request: $request
 );
 
@@ -349,7 +350,7 @@ if ($response->permissionsOperationResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## grantRights
+## grantToEuEntitiesAdminRights
 
 Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu unijnego.
 
@@ -388,7 +389,7 @@ $request = new Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequ
     description: 'Administrator podmiotu unijnego DE123456789012',
 );
 
-$response = $sdk->permissions->grantRights(
+$response = $sdk->permissions->grantToEuEntitiesAdminRights(
     request: $request
 );
 
@@ -479,7 +480,7 @@ if ($response->permissionsOperationResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## deleteGrant
+## revoke
 
 Rozpoczyna asynchroniczną operacje odbierania uprawnienia o podanym identyfikatorze.
 
@@ -514,7 +515,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->permissions->deleteGrant(
+$response = $sdk->permissions->revoke(
     permissionId: '<id>'
 );
 
@@ -532,6 +533,60 @@ if ($response->permissionsOperationResponse !== null) {
 ### Response
 
 **[?Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdResponse](../../Models/Operations/DeleteApiV2PermissionsCommonGrantsPermissionIdResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## revokeAuthorizations
+
+Rozpoczyna asynchroniczną operacje odbierania uprawnienia o podanym identyfikatorze.
+Ta metoda służy do odbierania uprawnień podmiotowych.
+
+> Więcej informacji:
+> - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84-podmiotowych)
+
+Wymagane uprawnienia: `CredentialsManage`.
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="delete_/api/v2/permissions/authorizations/grants/{permissionId}" method="delete" path="/api/v2/permissions/authorizations/grants/{permissionId}" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->permissions->revokeAuthorizations(
+    permissionId: '<id>'
+);
+
+if ($response->permissionsOperationResponse !== null) {
+    // handle response
+}
+```
+
+### Parameters
+
+| Parameter          | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `permissionId`     | *string*           | :heavy_check_mark: | Id uprawnienia.    |
+
+### Response
+
+**[?Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse](../../Models/Operations/DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse.md)**
 
 ### Errors
 
@@ -657,7 +712,7 @@ if ($response->queryPersonPermissionsResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## querySubunitsGrants
+## getSubunitsGrants
 
 Zwraca listę uprawnień administratorów jednostek i podmiotów podrzędnych.
 
@@ -690,7 +745,7 @@ $subunitPermissionsQueryRequest = new Components\SubunitPermissionsQueryRequest(
     ),
 );
 
-$response = $sdk->permissions->querySubunitsGrants(
+$response = $sdk->permissions->getSubunitsGrants(
     subunitPermissionsQueryRequest: $subunitPermissionsQueryRequest
 );
 
@@ -772,7 +827,7 @@ if ($response->queryEntityRolesResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## getSubordinateRoles
+## getSubordinateEntitiesRoles
 
 Zwraca liste podmiotów podrzędnych.
 
@@ -805,7 +860,7 @@ $subordinateEntityRolesQueryRequest = new Components\SubordinateEntityRolesQuery
     ),
 );
 
-$response = $sdk->permissions->getSubordinateRoles(
+$response = $sdk->permissions->getSubordinateEntitiesRoles(
     subordinateEntityRolesQueryRequest: $subordinateEntityRolesQueryRequest
 );
 
@@ -833,7 +888,7 @@ if ($response->querySubordinateEntityRolesResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## queryAuthorizationsGrants
+## getAuthorizationsGrants
 
 Zwraca listę uprawnień podmiotowych do obsługi faktur.
 
@@ -873,7 +928,7 @@ $requestBody = new Operations\PostApiV2PermissionsQueryAuthorizationsGrantsReque
     ],
 );
 
-$response = $sdk->permissions->queryAuthorizationsGrants(
+$response = $sdk->permissions->getAuthorizationsGrants(
     requestBody: $requestBody
 );
 

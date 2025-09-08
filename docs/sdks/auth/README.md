@@ -5,16 +5,17 @@
 
 ### Available Operations
 
-* [getSessions](#getsessions) - Pobranie listy aktywnych sesji
-* [deleteCurrentSession](#deletecurrentsession) - Unieważnienie aktualnej sesji uwierzytelnienia
+* [getCurrentSessions](#getcurrentsessions) - Pobranie listy aktywnych sesji
+* [revokeCurrentSession](#revokecurrentsession) - Unieważnienie aktualnej sesji uwierzytelnienia
+* [revokeSession](#revokesession) - Unieważnienie sesji uwierzytelnienia
 * [challenge](#challenge) - Inicjalizacja uwierzytelnienia
-* [authenticateWithXades](#authenticatewithxades) - Uwierzytelnienie z wykorzystaniem podpisu XAdES
-* [ksefToken](#kseftoken) - Uwierzytelnienie z wykorzystaniem tokena KSeF
+* [withXades](#withxades) - Uwierzytelnienie z wykorzystaniem podpisu XAdES
+* [withKsefToken](#withkseftoken) - Uwierzytelnienie z wykorzystaniem tokena KSeF
 * [getStatus](#getstatus) - Pobranie statusu uwierzytelniania
 * [redeemToken](#redeemtoken) - Pobranie tokenów dostępowych
 * [refreshToken](#refreshtoken) - Odświeżenie tokena dostępowego
 
-## getSessions
+## getCurrentSessions
 
 Zwraca listę aktywnych sesji uwierzytelnienia.
 
@@ -36,7 +37,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->auth->getSessions(
+$response = $sdk->auth->getCurrentSessions(
     pageSize: 10
 );
 
@@ -63,7 +64,7 @@ if ($response->authenticationListResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## deleteCurrentSession
+## revokeCurrentSession
 
 Unieważnia sesję powiązaną z tokenem użytym do wywołania tej operacji.
 
@@ -90,7 +91,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->auth->deleteCurrentSession(
+$response = $sdk->auth->revokeCurrentSession(
 
 );
 
@@ -102,6 +103,57 @@ if ($response->statusCode === 200) {
 ### Response
 
 **[?Operations\DeleteApiV2AuthSessionsCurrentResponse](../../Models/Operations/DeleteApiV2AuthSessionsCurrentResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## revokeSession
+
+Unieważnia sesję o podanym numerze referencyjnym.
+
+Unieważnienie sesji sprawia, że powiązany z nią refresh token przestaje działać i nie można już za jego pomocą uzyskać kolejnych access tokenów.
+**Aktywne access tokeny działają do czasu minięcia ich termin ważności.**
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="delete_/api/v2/auth/sessions/{referenceNumber}" method="delete" path="/api/v2/auth/sessions/{referenceNumber}" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->auth->revokeSession(
+    referenceNumber: '<value>'
+);
+
+if ($response->statusCode === 200) {
+    // handle response
+}
+```
+
+### Parameters
+
+| Parameter                                  | Type                                       | Required                                   | Description                                |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `referenceNumber`                          | *string*                                   | :heavy_check_mark:                         | Numer referencyjny sesji uwierzytelnienia. |
+
+### Response
+
+**[?Operations\DeleteApiV2AuthSessionsReferenceNumberResponse](../../Models/Operations/DeleteApiV2AuthSessionsReferenceNumberResponse.md)**
 
 ### Errors
 
@@ -152,7 +204,7 @@ if ($response->authenticationChallengeResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## authenticateWithXades
+## withXades
 
 Rozpoczyna operację uwierzytelniania za pomocą dokumentu XML podpisanego podpisem elektronicznym XAdES.
 
@@ -179,7 +231,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->auth->authenticateWithXades(
+$response = $sdk->auth->withXades(
     requestBody: '<?xml version="1.0" encoding="utf-8"?>\n' .
     '<AuthTokenRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://ksef.mf.gov.pl/auth/token/2.0">\n' .
     '    <Challenge>20250625-CR-20F5EE4000-DA48AE4124-46</Challenge>\n' .
@@ -216,7 +268,7 @@ if ($response->authenticationInitResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## ksefToken
+## withKsefToken
 
 Rozpoczyna operację uwierzytelniania z wykorzystaniem wcześniej wygenerowanego tokena KSeF.
 
@@ -251,7 +303,7 @@ $request = new Operations\PostApiV2AuthKsefTokenRequest(
     encryptedToken: '<value>',
 );
 
-$response = $sdk->auth->ksefToken(
+$response = $sdk->auth->withKsefToken(
     request: $request
 );
 

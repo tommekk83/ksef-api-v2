@@ -11,7 +11,7 @@
 * [getEnrollmentStatus](#getenrollmentstatus) - Pobranie statusu przetwarzania wniosku certyfikacyjnego
 * [retrieve](#retrieve) - Pobranie certyfikatu lub listy certyfikatów
 * [revoke](#revoke) - Unieważnienie certyfikatu
-* [query](#query) - Pobranie listy metadanych certyfikatów
+* [getList](#getlist) - Pobranie listy metadanych certyfikatów
 
 ## getLimits
 
@@ -314,7 +314,7 @@ if ($response->statusCode === 200) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## query
+## getList
 
 Zwraca listę certyfikatów spełniających podane kryteria wyszukiwania.
 W przypadku braku podania kryteriów wyszukiwania zwrócona zostanie nieprzefiltrowana lista.
@@ -337,7 +337,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->certificates->query(
+$response = $sdk->certificates->getList(
     pageSize: 10,
     pageOffset: 0,
     queryCertificatesRequest: $queryCertificatesRequest

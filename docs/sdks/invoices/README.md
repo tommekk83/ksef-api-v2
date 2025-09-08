@@ -5,22 +5,22 @@
 
 ### Available Operations
 
-* [getByKsefNumber](#getbyksefnumber) - Pobranie faktury po numerze KSeF
-* [queryMetadata](#querymetadata) - Pobranie listy metadanych faktur
-* [export](#export) - [mock] Eksport paczki faktur
+* [getList](#getlist) - Pobranie faktur sesji
+* [getInvoiceStatus](#getinvoicestatus) - Pobranie statusu faktury z sesji
 * [getFailed](#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
-* [getInvoiceUpoByKsefNumber](#getinvoiceupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
-* [getInvoiceUpo](#getinvoiceupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
+* [getUpoByKsefNumber](#getupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
+* [getUpo](#getupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
+* [sendOnline](#sendonline) - Wysłanie faktury
 
-## getByKsefNumber
+## getList
 
-Zwraca fakturę o podanym numerze KSeF.
+Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
 
-Wymagane uprawnienia: `InvoiceRead`.
+Wymagane uprawnienia: `InvoiceWrite`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/invoices/ksef/{ksefNumber}" method="get" path="/api/v2/invoices/ksef/{ksefNumber}" -->
+<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}/invoices" method="get" path="/api/v2/sessions/{referenceNumber}/invoices" -->
 ```php
 declare(strict_types=1);
 
@@ -36,24 +36,28 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->invoices->getByKsefNumber(
-    ksefNumber: '<value>'
+$response = $sdk->invoices->getList(
+    referenceNumber: '<value>',
+    pageSize: 10
+
 );
 
-if ($response->res !== null) {
+if ($response->sessionInvoicesResponse !== null) {
     // handle response
 }
 ```
 
 ### Parameters
 
-| Parameter           | Type                | Required            | Description         |
-| ------------------- | ------------------- | ------------------- | ------------------- |
-| `ksefNumber`        | *string*            | :heavy_check_mark:  | Numer KSeF faktury. |
+| Parameter                                          | Type                                               | Required                                           | Description                                        |
+| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `referenceNumber`                                  | *string*                                           | :heavy_check_mark:                                 | Numer referencyjny sesji.                          |
+| `xContinuationToken`                               | *?string*                                          | :heavy_minus_sign:                                 | Token służący do pobrania kolejnej strony wyników. |
+| `pageSize`                                         | *?int*                                             | :heavy_minus_sign:                                 | Rozmiar strony wyników.                            |
 
 ### Response
 
-**[?Operations\GetApiV2InvoicesKsefKsefNumberResponse](../../Models/Operations/GetApiV2InvoicesKsefKsefNumberResponse.md)**
+**[?Operations\GetApiV2SessionsReferenceNumberInvoicesResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberInvoicesResponse.md)**
 
 ### Errors
 
@@ -62,15 +66,15 @@ if ($response->res !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## queryMetadata
+## getInvoiceStatus
 
-Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania.
+Zwraca fakturę przesłaną w sesji wraz ze statusem.
 
-Wymagane uprawnienia: `InvoiceRead`.
+Wymagane uprawnienia: `InvoiceWrite`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/invoices/query/metadata" method="post" path="/api/v2/invoices/query/metadata" -->
+<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -86,80 +90,27 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->invoices->queryMetadata(
-    pageOffset: 0,
-    pageSize: 10,
-    requestBody: $requestBody
+$response = $sdk->invoices->getInvoiceStatus(
+    referenceNumber: '<value>',
+    invoiceReferenceNumber: '<value>'
 
 );
 
-if ($response->queryInvoicesMetadataReponse !== null) {
+if ($response->sessionInvoiceStatusResponse !== null) {
     // handle response
 }
 ```
 
 ### Parameters
 
-| Parameter                                                                                                                     | Type                                                                                                                          | Required                                                                                                                      | Description                                                                                                                   |
-| ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `pageOffset`                                                                                                                  | *?int*                                                                                                                        | :heavy_minus_sign:                                                                                                            | Indeks pierwszej strony wyników.                                                                                              |
-| `pageSize`                                                                                                                    | *?int*                                                                                                                        | :heavy_minus_sign:                                                                                                            | Rozmiar strony wyników.                                                                                                       |
-| `requestBody`                                                                                                                 | [?Operations\PostApiV2InvoicesQueryMetadataRequestBody](../../Models/Operations/PostApiV2InvoicesQueryMetadataRequestBody.md) | :heavy_minus_sign:                                                                                                            | Zestaw filtrów dla wyszukiwania metadanych.                                                                                   |
+| Parameter                   | Type                        | Required                    | Description                 |
+| --------------------------- | --------------------------- | --------------------------- | --------------------------- |
+| `referenceNumber`           | *string*                    | :heavy_check_mark:          | Numer referencyjny sesji.   |
+| `invoiceReferenceNumber`    | *string*                    | :heavy_check_mark:          | Numer referencyjny faktury. |
 
 ### Response
 
-**[?Operations\PostApiV2InvoicesQueryMetadataResponse](../../Models/Operations/PostApiV2InvoicesQueryMetadataResponse.md)**
-
-### Errors
-
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| Errors\ExceptionResponse | 400                      | application/json         |
-| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
-
-## export
-
-Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
-Wymagane jest przekazanie informacji o szyfrowaniu w polu `Encryption`, które służą do zabezpieczenia przygotowanej paczki z fakturami.
-
-Wymagane uprawnienia: `InvoiceRead`.
-
-### Example Usage
-
-<!-- UsageSnippet language="php" operationID="post_/api/v2/invoices/exports" method="post" path="/api/v2/invoices/exports" -->
-```php
-declare(strict_types=1);
-
-require 'vendor/autoload.php';
-
-use Intermedia\Ksef\Apiv2;
-
-$sdk = Apiv2\Client::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-
-
-$response = $sdk->invoices->export(
-    request: $request
-);
-
-if ($response->exportInvoicesResponse !== null) {
-    // handle response
-}
-```
-
-### Parameters
-
-| Parameter                                                                                                | Type                                                                                                     | Required                                                                                                 | Description                                                                                              |
-| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                               | [Operations\PostApiV2InvoicesExportsRequest](../../Models/Operations/PostApiV2InvoicesExportsRequest.md) | :heavy_check_mark:                                                                                       | The request object to use for the request.                                                               |
-
-### Response
-
-**[?Operations\PostApiV2InvoicesExportsResponse](../../Models/Operations/PostApiV2InvoicesExportsResponse.md)**
+**[?Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse.md)**
 
 ### Errors
 
@@ -222,7 +173,7 @@ if ($response->sessionInvoicesResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## getInvoiceUpoByKsefNumber
+## getUpoByKsefNumber
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
@@ -246,7 +197,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->invoices->getInvoiceUpoByKsefNumber(
+$response = $sdk->invoices->getUpoByKsefNumber(
     referenceNumber: '<value>',
     ksefNumber: '<value>'
 
@@ -275,7 +226,7 @@ if ($response->res !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## getInvoiceUpo
+## getUpo
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
@@ -299,7 +250,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->invoices->getInvoiceUpo(
+$response = $sdk->invoices->getUpo(
     referenceNumber: '<value>',
     invoiceReferenceNumber: '<value>'
 
@@ -320,6 +271,69 @@ if ($response->res !== null) {
 ### Response
 
 **[?Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## sendOnline
+
+Przyjmuje zaszyfrowaną fakturę oraz jej metadane i rozpoczyna jej przetwarzanie.
+
+> Więcej informacji:
+> - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
+
+Wymagane uprawnienia: `InvoiceWrite`.
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="post_/api/v2/sessions/online/{referenceNumber}/invoices" method="post" path="/api/v2/sessions/online/{referenceNumber}/invoices" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Operations;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+$requestBody = new Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody(
+    invoiceHash: 'EbrK4cOSjW4hEpJaHU71YXSOZZmqP5++dK9nLgTzgV4=',
+    invoiceSize: 6480,
+    encryptedInvoiceHash: 'miYb1z3Ljw5VucTZslv3Tlt+V/EK1V8Q8evD8HMQ0dc=',
+    encryptedInvoiceSize: 6496,
+    encryptedInvoiceContent: '<value>',
+);
+
+$response = $sdk->invoices->sendOnline(
+    referenceNumber: '<value>',
+    requestBody: $requestBody
+
+);
+
+if ($response->sendInvoiceResponse !== null) {
+    // handle response
+}
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                     | Type                                                                                                                                                          | Required                                                                                                                                                      | Description                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `referenceNumber`                                                                                                                                             | *string*                                                                                                                                                      | :heavy_check_mark:                                                                                                                                            | Numer referencyjny sesji                                                                                                                                      |
+| `requestBody`                                                                                                                                                 | [?Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody](../../Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody.md) | :heavy_minus_sign:                                                                                                                                            | Dane faktury                                                                                                                                                  |
+
+### Response
+
+**[?Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesResponse](../../Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesResponse.md)**
 
 ### Errors
 

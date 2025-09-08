@@ -26,29 +26,21 @@ class Client
 
     public Auth $auth;
 
-    public AuthSessions $authSessions;
-
     public Certificates $certificates;
 
-    public PublicKeyCertificates $publicKeyCertificates;
+    public Security $security;
 
-    public TestData1 $testData;
-
-    public Testdata2 $testdata;
+    public TestData $testData;
 
     public Permissions $permissions;
 
-    public Invoices $invoices;
-
-    public InvoiceExports $invoiceExports;
+    public GetInvoices $getInvoices;
 
     public Sessions $sessions;
 
-    public SessionInvoices $sessionInvoices;
+    public Invoices $invoices;
 
     public Tokens $tokens;
-
-    public OnlineSessionInvoices $onlineSessionInvoices;
 
     /**
      * Returns a new instance of the SDK builder used to configure and create the SDK instance.
@@ -67,18 +59,14 @@ class Client
         public SDKConfiguration $sdkConfiguration,
     ) {
         $this->auth = new Auth($this->sdkConfiguration);
-        $this->authSessions = new AuthSessions($this->sdkConfiguration);
         $this->certificates = new Certificates($this->sdkConfiguration);
-        $this->publicKeyCertificates = new PublicKeyCertificates($this->sdkConfiguration);
-        $this->testData = new TestData1($this->sdkConfiguration);
-        $this->testdata = new Testdata2($this->sdkConfiguration);
+        $this->security = new Security($this->sdkConfiguration);
+        $this->testData = new TestData($this->sdkConfiguration);
         $this->permissions = new Permissions($this->sdkConfiguration);
-        $this->invoices = new Invoices($this->sdkConfiguration);
-        $this->invoiceExports = new InvoiceExports($this->sdkConfiguration);
+        $this->getInvoices = new GetInvoices($this->sdkConfiguration);
         $this->sessions = new Sessions($this->sdkConfiguration);
-        $this->sessionInvoices = new SessionInvoices($this->sdkConfiguration);
+        $this->invoices = new Invoices($this->sdkConfiguration);
         $this->tokens = new Tokens($this->sdkConfiguration);
-        $this->onlineSessionInvoices = new OnlineSessionInvoices($this->sdkConfiguration);
         $this->initHooks();
 
     }

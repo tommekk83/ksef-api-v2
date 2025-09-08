@@ -6,9 +6,9 @@
 ### Available Operations
 
 * [generate](#generate) - Wygenerowanie nowego tokena
-* [list](#list) - Pobranie listy wygenerowanych tokenów
+* [getList](#getlist) - Pobranie listy wygenerowanych tokenów
 * [getStatus](#getstatus) - Pobranie statusu tokena
-* [delete](#delete) - Unieważnienie tokena
+* [revoke](#revoke) - Unieważnienie tokena
 
 ## generate
 
@@ -60,7 +60,7 @@ if ($response->generateTokenResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## list
+## getList
 
 Pobranie listy wygenerowanych tokenów
 
@@ -82,7 +82,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->tokens->list(
+$response = $sdk->tokens->getList(
     pageSize: 10
 );
 
@@ -158,7 +158,7 @@ if ($response->authenticationToken !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## delete
+## revoke
 
 Unieważniony token nie pozwoli już na uwierzytelnienie się za jego pomocą. Unieważnienie nie może zostać cofnięte.
 
@@ -182,7 +182,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->tokens->delete(
+$response = $sdk->tokens->revoke(
     referenceNumber: '<value>'
 );
 

@@ -17,15 +17,12 @@ use Speakeasy\Serializer\DeserializationContext;
 class Permissions
 {
     private SDKConfiguration $sdkConfiguration;
-    public Authorizations $authorizations;
-
     /**
      * @param  SDKConfiguration  $sdkConfig
      */
     public function __construct(public SDKConfiguration $sdkConfig)
     {
         $this->sdkConfiguration = $sdkConfig;
-        $this->authorizations = new Authorizations($this->sdkConfiguration);
     }
     /**
      * @param  string  $baseUrl
@@ -46,6 +43,88 @@ class Permissions
         }
 
         return Utils\Utils::templateUrl($baseUrl, $urlVariables);
+    }
+
+    /**
+     * Odebranie uprawnień podmiotowych
+     *
+     * Rozpoczyna asynchroniczną operacje odbierania uprawnienia o podanym identyfikatorze.
+     * Ta metoda służy do odbierania uprawnień podmiotowych.
+     *
+     * > Więcej informacji:
+     * > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84-podmiotowych)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`.
+     *
+     * @param  string  $permissionId
+     * @return Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function revokeAuthorizations(string $permissionId, ?Options $options = null): Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse
+    {
+        $request = new Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdRequest(
+            permissionId: $permissionId,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/authorizations/grants/{permissionId}', Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdRequest::class, $request);
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'delete_/api/v2/permissions/authorizations/grants/{permissionId}', [], $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
     }
 
     /**
@@ -70,7 +149,7 @@ class Permissions
      * @return Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function deleteGrant(string $permissionId, ?Options $options = null): Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdResponse
+    public function revoke(string $permissionId, ?Options $options = null): Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdResponse
     {
         $request = new Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdRequest(
             permissionId: $permissionId,
@@ -313,7 +392,7 @@ class Permissions
      * @return Operations\PostApiV2PermissionsAuthorizationsGrantsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function grantSubjectAuthorization(?Operations\PostApiV2PermissionsAuthorizationsGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsAuthorizationsGrantsResponse
+    public function grantAuthorizations(?Operations\PostApiV2PermissionsAuthorizationsGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsAuthorizationsGrantsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/authorizations/grants');
@@ -477,7 +556,7 @@ class Permissions
      * @return Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function grantRights(?Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse
+    public function grantToEuEntitiesAdminRights(?Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/eu-entities/administration/grants');
@@ -807,7 +886,7 @@ class Permissions
      * @return Operations\PostApiV2PermissionsQueryAuthorizationsGrantsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function queryAuthorizationsGrants(?Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQueryAuthorizationsGrantsResponse
+    public function getAuthorizationsGrants(?Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQueryAuthorizationsGrantsResponse
     {
         $request = new Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequest(
             pageOffset: $pageOffset,
@@ -1083,7 +1162,7 @@ class Permissions
      * @return Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getSubordinateRoles(?Components\SubordinateEntityRolesQueryRequest $subordinateEntityRolesQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse
+    public function getSubordinateEntitiesRoles(?Components\SubordinateEntityRolesQueryRequest $subordinateEntityRolesQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse
     {
         $request = new Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesRequest(
             pageOffset: $pageOffset,
@@ -1175,7 +1254,7 @@ class Permissions
      * @return Operations\PostApiV2PermissionsQuerySubunitsGrantsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function querySubunitsGrants(?Components\SubunitPermissionsQueryRequest $subunitPermissionsQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQuerySubunitsGrantsResponse
+    public function getSubunitsGrants(?Components\SubunitPermissionsQueryRequest $subunitPermissionsQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQuerySubunitsGrantsResponse
     {
         $request = new Operations\PostApiV2PermissionsQuerySubunitsGrantsRequest(
             pageOffset: $pageOffset,

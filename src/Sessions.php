@@ -138,7 +138,7 @@ class Sessions
      * @return Operations\GetApiV2SessionsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function list(Operations\GetApiV2SessionsRequest $request, ?Options $options = null): Operations\GetApiV2SessionsResponse
+    public function getList(Operations\GetApiV2SessionsRequest $request, ?Options $options = null): Operations\GetApiV2SessionsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions');

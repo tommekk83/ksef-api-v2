@@ -14,7 +14,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->auth->getSessions(
+$response = $sdk->auth->getCurrentSessions(
     pageSize: 10
 );
 
