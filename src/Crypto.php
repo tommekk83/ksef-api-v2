@@ -43,11 +43,10 @@ final class Crypto
 
     /**
      * Szyfrowanie klucza symetrycznego RSAES-OAEP (MGF1/SHA-256, SHA-256).
-     * Zwraca Base64.
      *
      * @param string $symmetricKey surowe 32 bajty
      */
-    public function encryptSymmetricKeyB64(string $symmetricKey): string
+    public function encryptSymmetricKey(string $symmetricKey): string
     {
         if (strlen($symmetricKey) !== 32) {
             throw new RuntimeException('Klucz symetryczny musi mieć dokładnie 32 bajty (AES-256).');
@@ -56,18 +55,18 @@ final class Crypto
         if ($encrypted === false) {
             throw new RuntimeException('Błąd szyfrowania RSA OAEP.');
         }
-        return base64_encode($encrypted);
+        return $encrypted;
     }
 
     /**
      * Szyfruje treść XML algorytmem AES-256-CBC (PKCS#7), prefiksując IV.
-     * Zwraca Base64( IV || ciphertext ).
+     * Zwraca ( IV || ciphertext ).
      *
      * @param string $xml          zawartość XML jako string
      * @param string $symmetricKey 32 bajty
      * @param string $iv           16 bajtów
      */
-    public function encryptXmlPayloadB64(string $xml, string $symmetricKey, string $iv): string
+    public function encryptXmlPayload(string $xml, string $symmetricKey, string $iv): string
     {
         if (strlen($symmetricKey) !== 32) {
             throw new RuntimeException('Klucz symetryczny musi mieć 32 bajty (AES-256).');
@@ -88,8 +87,8 @@ final class Crypto
             throw new RuntimeException('Błąd podczas szyfrowania XML AES-256-CBC.');
         }
 
-        // KSeF: IV jako prefiks do szyfrogramu, potem Base64
-        return base64_encode($iv . $ciphertextRaw);
+        // KSeF: IV jako prefiks do szyfrogramu
+        return $iv . $ciphertextRaw;
     }
 
     /**
@@ -99,6 +98,7 @@ final class Crypto
      *
      * @return array{
      *   encryptedSymmetricKeyB64: string,
+     *   ivB64: string,
      *   key: string,
      *   iv: string
      * }
@@ -109,7 +109,7 @@ final class Crypto
         $session = $this->generateSymetricKey();
 
         return [
-            'encryptedSymmetricKeyB64' => $this->encryptSymmetricKeyB64($session['key']),
+            'encryptedSymmetricKeyB64' => base64_encode($this->encryptSymmetricKey($session['key'])),
             'ivB64'  => base64_encode($session['iv']),
             'key' => $session['key'],
             'iv'  => $session['iv'],
