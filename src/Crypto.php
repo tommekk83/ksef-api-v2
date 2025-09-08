@@ -104,7 +104,7 @@ final class Crypto
      * }
      * @throws RandomException
      */
-    public function buildEncryptedPackage(string $xml): array
+    public function buildEncryptedPackage(): array
     {
         $session = $this->generateSymetricKey();
 
