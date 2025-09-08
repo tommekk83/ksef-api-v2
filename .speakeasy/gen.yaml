@@ -1,5 +1,6 @@
 configVersion: 2.0.0
 generation:
+  baseServerUrl: https://ksef-test.mf.gov.pl
   sdkClassName: Client
   maintainOpenAPIOrder: true
   usageSnippets:
@@ -22,7 +23,7 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 php:
-  version: 0.3.24
+  version: 0.3.25
   additionalDependencies:
     autoload: {}
     autoload-dev: {}
@@ -31,6 +32,7 @@ php:
       ext-openssl: '*'
       robrichards/xmlseclibs: ^3.1
     require-dev: {}
+  author: test
   baseErrorName: KsefException
   clientServerStatusCodesAsErrors: true
   defaultErrorName: APIException
