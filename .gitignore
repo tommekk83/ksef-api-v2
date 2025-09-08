@@ -1,3 +1,5 @@
+.env
+.env.local
 composer.lock
 vendor
 .DS_Store
