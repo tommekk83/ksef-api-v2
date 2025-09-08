@@ -4,3 +4,8 @@ vendor
 .DS_Store
 **/.speakeasy/temp/
 **/.speakeasy/logs/
+.speakeasy
+openapi.json
+openapi.yaml
+.github
+.idea
