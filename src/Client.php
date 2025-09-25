@@ -11,7 +11,7 @@ namespace Intermedia\Ksef\Apiv2;
 
 
 /**
- * Client - KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc4-te-20250827.1+d4adf52dbfb92d635d0069cba24a52e1e3d67e03)<br>
+ * Client - KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc5-te-20250925.4+c6f3445dc0dbc0f8449a2dcef51bda25b3915d0d)<br>
  *
  * **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
  * **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
@@ -42,6 +42,8 @@ class Client
 
     public Tokens $tokens;
 
+    public Peppol $peppol;
+
     /**
      * Returns a new instance of the SDK builder used to configure and create the SDK instance.
      *
@@ -67,6 +69,7 @@ class Client
         $this->sessions = new Sessions($this->sdkConfiguration);
         $this->invoices = new Invoices($this->sdkConfiguration);
         $this->tokens = new Tokens($this->sdkConfiguration);
+        $this->peppol = new Peppol($this->sdkConfiguration);
         $this->initHooks();
 
     }
