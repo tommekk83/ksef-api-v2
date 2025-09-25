@@ -180,6 +180,7 @@ enum CurrencyCode: string
     case Xbc = 'XBC';
     case Xbd = 'XBD';
     case Xcd = 'XCD';
+    case Xcg = 'XCG';
     case Xdr = 'XDR';
     case Xof = 'XOF';
     case Xpd = 'XPD';

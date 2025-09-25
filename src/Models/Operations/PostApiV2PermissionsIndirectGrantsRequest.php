@@ -49,6 +49,7 @@ class PostApiV2PermissionsIndirectGrantsRequest
      * | Type | Value |
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
+     * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
      *
      * @var ?PostApiV2PermissionsIndirectGrantsTargetIdentifier $targetIdentifier
      */

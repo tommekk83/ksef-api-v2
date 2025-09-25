@@ -10,11 +10,13 @@
 * [grantAuthorizations](#grantauthorizations) - Nadanie uprawnień podmiotowych
 * [grantIndirectly](#grantindirectly) - Nadanie uprawnień w sposób pośredni
 * [grantToSubunits](#granttosubunits) - Nadanie uprawnień administratora podmiotu podrzędnego
-* [grantToEuEntitiesAdminRights](#granttoeuentitiesadminrights) - Nadanie uprawnień administratora podmiotu unijnego
+* [grantRights](#grantrights) - Nadanie uprawnień administratora podmiotu unijnego
 * [grantToEuEntities](#granttoeuentities) - Nadanie uprawnień reprezentanta podmiotu unijnego
 * [revoke](#revoke) - Odebranie uprawnień
 * [revokeAuthorizations](#revokeauthorizations) - Odebranie uprawnień podmiotowych
 * [getOperationStatus](#getoperationstatus) - Pobranie statusu operacji
+* [checkAttachmentStatus](#checkattachmentstatus) - Sprawdzenie statusu zgody na wystawianie faktur z załącznikiem
+* [getPersonalGrants](#getpersonalgrants) - Pobranie listy własnych uprawnień
 * [getPersonGrants](#getpersongrants) - Pobranie listy uprawnień do pracy w KSeF nadanych osobom fizycznym lub podmiotom
 * [getSubunitsGrants](#getsubunitsgrants) - Pobranie listy uprawnień administratorów jednostek i podmiotów podrzędnych
 * [getEntityRoles](#getentityroles) - Pobranie listy ról podmiotu
@@ -350,7 +352,7 @@ if ($response->permissionsOperationResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## grantToEuEntitiesAdminRights
+## grantRights
 
 Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu unijnego.
 
@@ -387,9 +389,10 @@ $request = new Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequ
         value: '7762811692-DE123456789012',
     ),
     description: 'Administrator podmiotu unijnego DE123456789012',
+    subjectName: '<value>',
 );
 
-$response = $sdk->permissions->grantToEuEntitiesAdminRights(
+$response = $sdk->permissions->grantRights(
     request: $request
 );
 
@@ -495,7 +498,7 @@ Ta metoda służy do odbierania uprawnień takich jak:
 > Więcej informacji:
 > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84)
 
-Wymagane uprawnienia: `CredentialsManage`.
+Wymagane uprawnienia: `CredentialsManage`, `VatUeManage`, `SubunitManage`.
 
 ### Example Usage
 
@@ -635,6 +638,103 @@ if ($response->permissionsOperationStatusResponse !== null) {
 ### Response
 
 **[?Operations\GetApiV2PermissionsOperationsOperationReferenceNumberResponse](../../Models/Operations/GetApiV2PermissionsOperationsOperationReferenceNumberResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## checkAttachmentStatus
+
+Sprawdzenie czy obecny kontekst posiada zgodę na wystawianie faktur z załącznikiem.
+
+Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="get_/api/v2/permissions/attachments/status" method="get" path="/api/v2/permissions/attachments/status" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->permissions->checkAttachmentStatus(
+
+);
+
+if ($response->checkAttachmentPermissionStatusResponse !== null) {
+    // handle response
+}
+```
+
+### Response
+
+**[?Operations\GetApiV2PermissionsAttachmentsStatusResponse](../../Models/Operations/GetApiV2PermissionsAttachmentsStatusResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## getPersonalGrants
+
+Zwraca listę uprawnień przysługujących uwierzytelnionemu podmiotowi.
+
+> Więcej informacji:
+> - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-w%C5%82asnych-uprawnie%C5%84)
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/query/personal/grants" method="post" path="/api/v2/permissions/query/personal/grants" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->permissions->getPersonalGrants(
+    personalPermissionsQueryRequest: $personalPermissionsQueryRequest
+);
+
+if ($response->queryPersonalPermissionsResponse !== null) {
+    // handle response
+}
+```
+
+### Parameters
+
+| Parameter                                                                                                 | Type                                                                                                      | Required                                                                                                  | Description                                                                                               |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `pageOffset`                                                                                              | *?int*                                                                                                    | :heavy_minus_sign:                                                                                        | Numer strony wyników.                                                                                     |
+| `pageSize`                                                                                                | *?int*                                                                                                    | :heavy_minus_sign:                                                                                        | Rozmiar strony wyników.                                                                                   |
+| `personalPermissionsQueryRequest`                                                                         | [?Components\PersonalPermissionsQueryRequest](../../Models/Components/PersonalPermissionsQueryRequest.md) | :heavy_minus_sign:                                                                                        | N/A                                                                                                       |
+
+### Response
+
+**[?Operations\PostApiV2PermissionsQueryPersonalGrantsResponse](../../Models/Operations/PostApiV2PermissionsQueryPersonalGrantsResponse.md)**
 
 ### Errors
 

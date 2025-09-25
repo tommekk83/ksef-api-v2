@@ -12,7 +12,7 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
 <!-- Start Summary [summary] -->
 ## Summary
 
-KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc4-te-20250827.1+d4adf52dbfb92d635d0069cba24a52e1e3d67e03)<br>
+KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc5-te-20250925.4+c6f3445dc0dbc0f8449a2dcef51bda25b3915d0d)<br>
 **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
 **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
 **Rozszerzona dokumentacja API:** [ksef-docs](https://github.com/CIRFMF/ksef-docs/tree/main)
@@ -159,24 +159,28 @@ if ($response->authenticationListResponse !== null) {
 * [getEnrollmentStatus](docs/sdks/certificates/README.md#getenrollmentstatus) - Pobranie statusu przetwarzania wniosku certyfikacyjnego
 * [retrieve](docs/sdks/certificates/README.md#retrieve) - Pobranie certyfikatu lub listy certyfikatów
 * [revoke](docs/sdks/certificates/README.md#revoke) - Unieważnienie certyfikatu
-* [getList](docs/sdks/certificates/README.md#getlist) - Pobranie listy metadanych certyfikatów
+* [get](docs/sdks/certificates/README.md#get) - Pobranie listy metadanych certyfikatów
 
 
 ### [getInvoices](docs/sdks/getinvoices/README.md)
 
 * [getByKsefNumber](docs/sdks/getinvoices/README.md#getbyksefnumber) - Pobranie faktury po numerze KSeF
-* [getList](docs/sdks/getinvoices/README.md#getlist) - Pobranie listy metadanych faktur
-* [export](docs/sdks/getinvoices/README.md#export) - [mock] Eksport paczki faktur
-* [getExportStatus](docs/sdks/getinvoices/README.md#getexportstatus) - [mock] Pobranie statusu eksportu paczki faktur
+* [get](docs/sdks/getinvoices/README.md#get) - Pobranie listy metadanych faktur
+* [export](docs/sdks/getinvoices/README.md#export) - Eksport paczki faktur
+* [getExportStatus](docs/sdks/getinvoices/README.md#getexportstatus) - Pobranie statusu eksportu paczki faktur
 
 ### [invoices](docs/sdks/invoices/README.md)
 
 * [getList](docs/sdks/invoices/README.md#getlist) - Pobranie faktur sesji
 * [getInvoiceStatus](docs/sdks/invoices/README.md#getinvoicestatus) - Pobranie statusu faktury z sesji
 * [getFailed](docs/sdks/invoices/README.md#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
-* [getUpoByKsefNumber](docs/sdks/invoices/README.md#getupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
+* [getInvoiceUpoByKsefNumber](docs/sdks/invoices/README.md#getinvoiceupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
 * [getUpo](docs/sdks/invoices/README.md#getupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
 * [sendOnline](docs/sdks/invoices/README.md#sendonline) - Wysłanie faktury
+
+### [peppol](docs/sdks/peppol/README.md)
+
+* [listProviders](docs/sdks/peppol/README.md#listproviders) - Pobranie listy dostawców usług Peppol
 
 ### [permissions](docs/sdks/permissions/README.md)
 
@@ -185,11 +189,13 @@ if ($response->authenticationListResponse !== null) {
 * [grantAuthorizations](docs/sdks/permissions/README.md#grantauthorizations) - Nadanie uprawnień podmiotowych
 * [grantIndirectly](docs/sdks/permissions/README.md#grantindirectly) - Nadanie uprawnień w sposób pośredni
 * [grantToSubunits](docs/sdks/permissions/README.md#granttosubunits) - Nadanie uprawnień administratora podmiotu podrzędnego
-* [grantToEuEntitiesAdminRights](docs/sdks/permissions/README.md#granttoeuentitiesadminrights) - Nadanie uprawnień administratora podmiotu unijnego
+* [grantRights](docs/sdks/permissions/README.md#grantrights) - Nadanie uprawnień administratora podmiotu unijnego
 * [grantToEuEntities](docs/sdks/permissions/README.md#granttoeuentities) - Nadanie uprawnień reprezentanta podmiotu unijnego
 * [revoke](docs/sdks/permissions/README.md#revoke) - Odebranie uprawnień
 * [revokeAuthorizations](docs/sdks/permissions/README.md#revokeauthorizations) - Odebranie uprawnień podmiotowych
 * [getOperationStatus](docs/sdks/permissions/README.md#getoperationstatus) - Pobranie statusu operacji
+* [checkAttachmentStatus](docs/sdks/permissions/README.md#checkattachmentstatus) - Sprawdzenie statusu zgody na wystawianie faktur z załącznikiem
+* [getPersonalGrants](docs/sdks/permissions/README.md#getpersonalgrants) - Pobranie listy własnych uprawnień
 * [getPersonGrants](docs/sdks/permissions/README.md#getpersongrants) - Pobranie listy uprawnień do pracy w KSeF nadanych osobom fizycznym lub podmiotom
 * [getSubunitsGrants](docs/sdks/permissions/README.md#getsubunitsgrants) - Pobranie listy uprawnień administratorów jednostek i podmiotów podrzędnych
 * [getEntityRoles](docs/sdks/permissions/README.md#getentityroles) - Pobranie listy ról podmiotu

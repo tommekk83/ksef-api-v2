@@ -8,14 +8,28 @@ declare(strict_types=1);
 
 namespace Intermedia\Ksef\Apiv2\Models\Components;
 
-
-/** Package - Informacje o paczce faktur. */
+use Brick\DateTime\LocalDate;
+/** Package - Dane paczki faktur przygotowanej do pobrania. */
 class Package
 {
     /**
-     * Lista plików dostępnych do pobrania.
+     * Łączna liczba faktur w paczce. Maksymalna liczba faktur w paczce to 10 000.
      *
-     * Wypełniana tylko, gdy wynik zapytania jest gotowy.
+     * @var int $invoiceCount
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceCount')]
+    public int $invoiceCount;
+
+    /**
+     * Rozmiar paczki w bajtach. Maksymalny rozmiar paczki to 1 GiB (1 073 741 824 bajtów).
+     *
+     * @var int $size
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('size')]
+    public int $size;
+
+    /**
+     * Lista dostępnych części paczki do pobrania. Każda część jest zaszyfrowana algorytmem AES-256-CBC z dopełnieniem PKCS#7, przy użyciu klucza symetrycznego przekazanego podczas inicjowania eksportu. Wyniki sortowane są rosnąco według typu daty przekazanej w `DateRange` przy inicjalizacji.
      *
      * @var array<InvoicePackagePart> $parts
      */
@@ -24,11 +38,64 @@ class Package
     public array $parts;
 
     /**
+     * Określa, czy wynik eksportu został ucięty z powodu przekroczenia limitu liczby faktur lub wielkości paczki.
+     *
+     * @var bool $isTruncated
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('isTruncated')]
+    public bool $isTruncated;
+
+    /**
+     * Data wystawienia ostatniej faktury ujętej w paczce.
+     *
+     * Pole występuje wyłącznie wtedy, gdy paczka została ucięta i eksport był filtrowany po typie daty `Issue`.
+     *
+     * @var ?LocalDate $lastIssueDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('lastIssueDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?LocalDate $lastIssueDate = null;
+
+    /**
+     * Data przyjęcia ostatniej faktury ujętej w paczce.
+     *
+     * Pole występuje wyłącznie wtedy, gdy paczka została ucięta i eksport był filtrowany po typie daty `Invoicing`.
+     *
+     * @var ?\DateTime $lastInvoicingDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('lastInvoicingDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?\DateTime $lastInvoicingDate = null;
+
+    /**
+     * Data trwałego zapisu ostatniej faktury ujętej w paczce.
+     *
+     * Pole występuje wyłącznie wtedy, gdy paczka została ucięta i eksport był filtrowany po typie daty `PermanentStorage`.
+     *
+     * @var ?\DateTime $lastPermanentStorageDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('lastPermanentStorageDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?\DateTime $lastPermanentStorageDate = null;
+
+    /**
+     * @param  int  $invoiceCount
+     * @param  int  $size
      * @param  array<InvoicePackagePart>  $parts
+     * @param  bool  $isTruncated
+     * @param  ?LocalDate  $lastIssueDate
+     * @param  ?\DateTime  $lastInvoicingDate
+     * @param  ?\DateTime  $lastPermanentStorageDate
      * @phpstan-pure
      */
-    public function __construct(array $parts)
+    public function __construct(int $invoiceCount, int $size, array $parts, bool $isTruncated, ?LocalDate $lastIssueDate = null, ?\DateTime $lastInvoicingDate = null, ?\DateTime $lastPermanentStorageDate = null)
     {
+        $this->invoiceCount = $invoiceCount;
+        $this->size = $size;
         $this->parts = $parts;
+        $this->isTruncated = $isTruncated;
+        $this->lastIssueDate = $lastIssueDate;
+        $this->lastInvoicingDate = $lastInvoicingDate;
+        $this->lastPermanentStorageDate = $lastPermanentStorageDate;
     }
 }

@@ -107,12 +107,12 @@ class PersonPermission
     /**
      * Typ identyfikatora podmiotu docelowego.
      *
-     * @var ?TargetIdentifierType $targetIdentifierType
+     * @var ?PersonPermissionTargetIdentifierType $targetIdentifierType
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('targetIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\TargetIdentifierType|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonPermissionTargetIdentifierType|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?TargetIdentifierType $targetIdentifierType = null;
+    public ?PersonPermissionTargetIdentifierType $targetIdentifierType = null;
 
     /**
      * @param  string  $id
@@ -126,10 +126,10 @@ class PersonPermission
      * @param  \DateTime  $startDate
      * @param  bool  $canDelegate
      * @param  ?string  $targetIdentifier
-     * @param  ?TargetIdentifierType  $targetIdentifierType
+     * @param  ?PersonPermissionTargetIdentifierType  $targetIdentifierType
      * @phpstan-pure
      */
-    public function __construct(string $id, string $authorizedIdentifier, PersonPermissionsAuthorizedIdentifierType $authorizedIdentifierType, string $authorIdentifier, PersonPermissionsAuthorIdentifierType $authorIdentifierType, PersonPermissionScope $permissionScope, string $description, PermissionState $permissionState, \DateTime $startDate, bool $canDelegate, ?string $targetIdentifier = null, ?TargetIdentifierType $targetIdentifierType = null)
+    public function __construct(string $id, string $authorizedIdentifier, PersonPermissionsAuthorizedIdentifierType $authorizedIdentifierType, string $authorIdentifier, PersonPermissionsAuthorIdentifierType $authorIdentifierType, PersonPermissionScope $permissionScope, string $description, PermissionState $permissionState, \DateTime $startDate, bool $canDelegate, ?string $targetIdentifier = null, ?PersonPermissionTargetIdentifierType $targetIdentifierType = null)
     {
         $this->id = $id;
         $this->authorizedIdentifier = $authorizedIdentifier;

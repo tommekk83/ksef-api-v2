@@ -49,7 +49,7 @@ class Invoices
      *
      * Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  ?string  $xContinuationToken
@@ -138,7 +138,7 @@ class Invoices
      *
      * Zwraca listę niepoprawnie przetworzonych faktur przesłanych w sesji wraz z ich statusami.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  ?string  $xContinuationToken
@@ -227,14 +227,14 @@ class Invoices
      *
      * Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  string  $ksefNumber
      * @return Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getUpoByKsefNumber(string $referenceNumber, string $ksefNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
+    public function getInvoiceUpoByKsefNumber(string $referenceNumber, string $ksefNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse
     {
         $request = new Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoRequest(
             referenceNumber: $referenceNumber,
@@ -304,7 +304,7 @@ class Invoices
      *
      * Zwraca fakturę przesłaną w sesji wraz ze statusem.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  string  $invoiceReferenceNumber
@@ -384,7 +384,7 @@ class Invoices
      *
      * Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  string  $invoiceReferenceNumber
@@ -464,7 +464,7 @@ class Invoices
      * > Więcej informacji:
      * > - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  ?Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody  $requestBody

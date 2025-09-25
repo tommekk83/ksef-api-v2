@@ -20,7 +20,7 @@ class PostApiV2InvoicesQueryMetadataRequest
     public ?PostApiV2InvoicesQueryMetadataRequestBody $requestBody = null;
 
     /**
-     * Indeks pierwszej strony wyników.
+     * Indeks pierwszej strony wyników (0 = pierwsza strona).
      *
      * @var ?int $pageOffset
      */
@@ -28,7 +28,7 @@ class PostApiV2InvoicesQueryMetadataRequest
     public ?int $pageOffset = null;
 
     /**
-     * Rozmiar strony wyników.
+     * Rozmiar strony wyników. Wartość musi zawierać się w przedziale od 10 do 250.
      *
      * @var ?int $pageSize
      */

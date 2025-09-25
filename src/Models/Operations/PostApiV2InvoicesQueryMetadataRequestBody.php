@@ -31,7 +31,7 @@ class PostApiV2InvoicesQueryMetadataRequestBody
     public Components\InvoiceQuerySubjectType $subjectType;
 
     /**
-     * Typ i zakres dat, według którego mają być filtrowane faktury.
+     * Typ i zakres dat, według którego mają być filtrowane faktury. Dozwolony maksymalny okres wynosi 2 lata.
      *
      * @var PostApiV2InvoicesQueryMetadataDateRange $dateRange
      */
@@ -117,16 +117,6 @@ class PostApiV2InvoicesQueryMetadataRequestBody
     public ?bool $isSelfInvoicing = null;
 
     /**
-     *
-     * @var ?SchemaType $schemaType
-     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('schemaType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\SchemaType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?SchemaType $schemaType = null;
-
-    /**
      * Typ dokumentu.
      *
      * | Wartość | Opis |
@@ -155,17 +145,17 @@ class PostApiV2InvoicesQueryMetadataRequestBody
      * | Upr | (FA) Uproszczona |
      * | KorZal | (FA) Korygująca fakturę zaliczkową |
      * | KorRoz | (FA) Korygująca fakturę rozliczeniową |
-     * | VatPef | [Mock] (PEF) Podstawowowa |
-     * | VatPefSp | [Mock] (PEF) Specjalizowana |
-     * | KorPef | [Mock] (PEF) Korygująca |
-     * | VatRr | [Mock] (RR) Podstawowa |
-     * | KorVatRr | [Mock] (RR) Korygująca |
+     * | VatPef | (PEF) Podstawowowa |
+     * | VatPefSp | (PEF) Specjalizowana |
+     * | KorPef | (PEF) Korygująca |
+     * | VatRr | (RR) Podstawowa |
+     * | KorVatRr | (RR) Korygująca |
      *
      *
-     * @var ?array<Components\InvoiceMetadataInvoiceType> $invoiceTypes
+     * @var ?array<Components\InvoiceType> $invoiceTypes
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceTypes')]
-    #[\Speakeasy\Serializer\Annotation\Type('array<\Intermedia\Ksef\Apiv2\Models\Components\InvoiceMetadataInvoiceType>|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('array<\Intermedia\Ksef\Apiv2\Models\Components\InvoiceType>|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
     public ?array $invoiceTypes = null;
 
@@ -189,13 +179,12 @@ class PostApiV2InvoicesQueryMetadataRequestBody
      * @param  ?array<Components\CurrencyCode>  $currencyCodes
      * @param  ?PostApiV2InvoicesQueryMetadataInvoicingMode  $invoicingMode
      * @param  ?bool  $isSelfInvoicing
-     * @param  ?SchemaType  $schemaType
      * @param  ?PostApiV2InvoicesQueryMetadataFormType  $formType
-     * @param  ?array<Components\InvoiceMetadataInvoiceType>  $invoiceTypes
+     * @param  ?array<Components\InvoiceType>  $invoiceTypes
      * @param  ?bool  $hasAttachment
      * @phpstan-pure
      */
-    public function __construct(Components\InvoiceQuerySubjectType $subjectType, PostApiV2InvoicesQueryMetadataDateRange $dateRange, ?string $ksefNumber = null, ?string $invoiceNumber = null, ?PostApiV2InvoicesQueryMetadataAmount $amount = null, ?PostApiV2InvoicesQueryMetadataSeller $seller = null, ?PostApiV2InvoicesQueryMetadataBuyer $buyer = null, ?array $currencyCodes = null, ?PostApiV2InvoicesQueryMetadataInvoicingMode $invoicingMode = null, ?bool $isSelfInvoicing = null, ?SchemaType $schemaType = null, ?PostApiV2InvoicesQueryMetadataFormType $formType = null, ?array $invoiceTypes = null, ?bool $hasAttachment = null)
+    public function __construct(Components\InvoiceQuerySubjectType $subjectType, PostApiV2InvoicesQueryMetadataDateRange $dateRange, ?string $ksefNumber = null, ?string $invoiceNumber = null, ?PostApiV2InvoicesQueryMetadataAmount $amount = null, ?PostApiV2InvoicesQueryMetadataSeller $seller = null, ?PostApiV2InvoicesQueryMetadataBuyer $buyer = null, ?array $currencyCodes = null, ?PostApiV2InvoicesQueryMetadataInvoicingMode $invoicingMode = null, ?bool $isSelfInvoicing = null, ?PostApiV2InvoicesQueryMetadataFormType $formType = null, ?array $invoiceTypes = null, ?bool $hasAttachment = null)
     {
         $this->subjectType = $subjectType;
         $this->dateRange = $dateRange;
@@ -207,7 +196,6 @@ class PostApiV2InvoicesQueryMetadataRequestBody
         $this->currencyCodes = $currencyCodes;
         $this->invoicingMode = $invoicingMode;
         $this->isSelfInvoicing = $isSelfInvoicing;
-        $this->schemaType = $schemaType;
         $this->formType = $formType;
         $this->invoiceTypes = $invoiceTypes;
         $this->hasAttachment = $hasAttachment;

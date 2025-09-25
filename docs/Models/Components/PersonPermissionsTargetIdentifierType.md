@@ -3,6 +3,7 @@
 
 ## Values
 
-| Name  | Value |
-| ----- | ----- |
-| `Nip` | Nip   |
+| Name          | Value         |
+| ------------- | ------------- |
+| `Nip`         | Nip           |
+| `AllPartners` | AllPartners   |

@@ -10,3 +10,4 @@
 | `Nip`         | Nip           |
 | `InternalId`  | InternalId    |
 | `NipVatUe`    | NipVatUe      |
+| `PeppolId`    | PeppolId      |

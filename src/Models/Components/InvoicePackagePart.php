@@ -12,12 +12,20 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class InvoicePackagePart
 {
     /**
-     * Numer porządkowy pliku w ramach całego zbioru wynikowego.
+     * Numer sekwencyjny pliku części paczki.
      *
      * @var int $ordinalNumber
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('ordinalNumber')]
     public int $ordinalNumber;
+
+    /**
+     * Nazwa pliku części paczki.
+     *
+     * @var string $partName
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('partName')]
+    public string $partName;
 
     /**
      * Metoda HTTP, której należy użyć przy pobieraniu pliku.
@@ -28,7 +36,7 @@ class InvoicePackagePart
     public string $method;
 
     /**
-     * Adres URL, pod który należy wysłać żądanie pobrania pliku.
+     * Adres URL, pod który należy wysłać żądanie pobrania.
      *
      * @var string $url
      */
@@ -36,7 +44,39 @@ class InvoicePackagePart
     public string $url;
 
     /**
-     * Data wygaśnięcia linku do pobrania pliku.
+     * Rozmiar części paczki w bajtach. Maksymalny rozmiar części to 50MiB (52 428 800 bajtów).
+     *
+     * @var int $partSize
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('partSize')]
+    public int $partSize;
+
+    /**
+     * Skrót SHA256 pliku części paczki, zakodowany w formacie Base64.
+     *
+     * @var string $partHash
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('partHash')]
+    public string $partHash;
+
+    /**
+     * Rozmiar zaszyfrowanej części paczki w bajtach.
+     *
+     * @var int $encryptedPartSize
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('encryptedPartSize')]
+    public int $encryptedPartSize;
+
+    /**
+     * Skrót SHA256 zaszyfrowanej części paczki, zakodowany w formacie Base64.
+     *
+     * @var string $encryptedPartHash
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('encryptedPartHash')]
+    public string $encryptedPartHash;
+
+    /**
+     * Moment wygaśnięcia linku do pobrania części.
      *
      * @var \DateTime $expirationDate
      */
@@ -44,38 +84,27 @@ class InvoicePackagePart
     public \DateTime $expirationDate;
 
     /**
-     * Nagłówki, których należy użyć przy pobieraniu pliku.
-     *
-     * @var array<string, ?string> $headers
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('headers')]
-    #[\Speakeasy\Serializer\Annotation\Type('array<string, string|null>')]
-    public array $headers;
-
-    /**
-     * Nazwa pliku.
-     *
-     * @var string $fileName
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('fileName')]
-    public string $fileName;
-
-    /**
      * @param  int  $ordinalNumber
+     * @param  string  $partName
      * @param  string  $method
      * @param  string  $url
+     * @param  int  $partSize
+     * @param  string  $partHash
+     * @param  int  $encryptedPartSize
+     * @param  string  $encryptedPartHash
      * @param  \DateTime  $expirationDate
-     * @param  array<string, ?string>  $headers
-     * @param  string  $fileName
      * @phpstan-pure
      */
-    public function __construct(int $ordinalNumber, string $method, string $url, \DateTime $expirationDate, string $fileName, ?array $headers = [])
+    public function __construct(int $ordinalNumber, string $partName, string $method, string $url, int $partSize, string $partHash, int $encryptedPartSize, string $encryptedPartHash, \DateTime $expirationDate)
     {
         $this->ordinalNumber = $ordinalNumber;
+        $this->partName = $partName;
         $this->method = $method;
         $this->url = $url;
+        $this->partSize = $partSize;
+        $this->partHash = $partHash;
+        $this->encryptedPartSize = $encryptedPartSize;
+        $this->encryptedPartHash = $encryptedPartHash;
         $this->expirationDate = $expirationDate;
-        $this->headers = $headers;
-        $this->fileName = $fileName;
     }
 }

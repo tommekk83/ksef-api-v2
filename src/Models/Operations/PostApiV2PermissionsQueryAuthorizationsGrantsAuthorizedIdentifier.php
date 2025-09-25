@@ -15,6 +15,7 @@ use Intermedia\Ksef\Apiv2\Models\Components;
  * | Type | Value |
  * | --- | --- |
  * | Nip | 10 cyfrowy numer NIP |
+ * | PeppolId | Identyfikator dostawcy usług Peppol |
  */
 class PostApiV2PermissionsQueryAuthorizationsGrantsAuthorizedIdentifier
 {

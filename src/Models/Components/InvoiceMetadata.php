@@ -36,7 +36,7 @@ class InvoiceMetadata
     public LocalDate $issueDate;
 
     /**
-     * [Mock] Data przyjęcia faktury w systemie KSeF (do dalszego przetwarzania).
+     * Data przyjęcia faktury w systemie KSeF (do dalszego przetwarzania).
      *
      * @var \DateTime $invoicingDate
      */
@@ -52,7 +52,7 @@ class InvoiceMetadata
     public \DateTime $acquisitionDate;
 
     /**
-     * [Mock] Data trwałego zapisu faktury w repozytorium systemu KSeF.
+     * Data trwałego zapisu faktury w repozytorium systemu KSeF.
      *
      * @var \DateTime $permanentStorageDate
      */
@@ -110,6 +110,15 @@ class InvoiceMetadata
     public string $currency;
 
     /**
+     * Tryb fakturowania (online/offline).
+     *
+     * @var InvoicingMode $invoicingMode
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('invoicingMode')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\InvoicingMode')]
+    public InvoicingMode $invoicingMode;
+
+    /**
      * Rodzaj faktury.
      *
      * | Wartość | Opis |
@@ -121,18 +130,18 @@ class InvoiceMetadata
      * | Upr | (FA) Uproszczona |
      * | KorZal | (FA) Korygująca fakturę zaliczkową |
      * | KorRoz | (FA) Korygująca fakturę rozliczeniową |
-     * | VatPef | [Mock] (PEF) Podstawowowa |
-     * | VatPefSp | [Mock] (PEF) Specjalizowana |
-     * | KorPef | [Mock] (PEF) Korygująca |
-     * | VatRr | [Mock] (RR) Podstawowa |
-     * | KorVatRr | [Mock] (RR) Korygująca |
+     * | VatPef | (PEF) Podstawowowa |
+     * | VatPefSp | (PEF) Specjalizowana |
+     * | KorPef | (PEF) Korygująca |
+     * | VatRr | (RR) Podstawowa |
+     * | KorVatRr | (RR) Korygująca |
      *
      *
-     * @var InvoiceMetadataInvoiceType $invoiceType
+     * @var InvoiceType $invoiceType
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\InvoiceMetadataInvoiceType')]
-    public InvoiceMetadataInvoiceType $invoiceType;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\InvoiceType')]
+    public InvoiceType $invoiceType;
 
     /**
      * Struktura dokumentu faktury.
@@ -143,6 +152,8 @@ class InvoiceMetadata
      * | --- | --- | --- |
      * | FA (2) | 1-0E | FA |
      * | FA (3) | 1-0E | FA |
+     * | FA_PEF (3) | 2-1 | FA_PEF |
+     * | FA_KOR_PEF (3) | 2-1 | FA_PEF |
      *
      *
      * @var FormCode $formCode
@@ -168,26 +179,15 @@ class InvoiceMetadata
     public bool $hasAttachment;
 
     /**
-     * Tryb fakturowania (online/offline).
+     * Skrót SHA256 faktury.
      *
-     * @var ?InvoicingMode $invoicingMode
+     * @var string $invoiceHash
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('invoicingMode')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\InvoicingMode|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?InvoicingMode $invoicingMode = null;
+    #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceHash')]
+    public string $invoiceHash;
 
     /**
-     * [Mock] Skrót SHA256 faktury.
-     *
-     * @var ?string $fileHash
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('fileHash')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $fileHash = null;
-
-    /**
-     * [Mock] Skrót SHA256 korygowanej faktury.
+     * Skrót SHA256 korygowanej faktury.
      *
      * @var ?string $hashOfCorrectedInvoice
      */
@@ -196,7 +196,7 @@ class InvoiceMetadata
     public ?string $hashOfCorrectedInvoice = null;
 
     /**
-     * [Mock] Lista trzecich podmiotów.
+     * Lista podmiotów trzecich.
      *
      * @var ?array<InvoiceMetadataThirdSubject> $thirdSubjects
      */
@@ -206,7 +206,7 @@ class InvoiceMetadata
     public ?array $thirdSubjects = null;
 
     /**
-     * [Mock] Podmiot upoważniony.
+     * Podmiot upoważniony.
      *
      * @var ?AuthorizedSubject $authorizedSubject
      */
@@ -228,18 +228,18 @@ class InvoiceMetadata
      * @param  float  $grossAmount
      * @param  float  $vatAmount
      * @param  string  $currency
-     * @param  InvoiceMetadataInvoiceType  $invoiceType
+     * @param  InvoicingMode  $invoicingMode
+     * @param  InvoiceType  $invoiceType
      * @param  FormCode  $formCode
      * @param  bool  $isSelfInvoicing
      * @param  bool  $hasAttachment
-     * @param  ?InvoicingMode  $invoicingMode
-     * @param  ?string  $fileHash
+     * @param  string  $invoiceHash
      * @param  ?string  $hashOfCorrectedInvoice
      * @param  ?array<InvoiceMetadataThirdSubject>  $thirdSubjects
      * @param  ?AuthorizedSubject  $authorizedSubject
      * @phpstan-pure
      */
-    public function __construct(string $ksefNumber, string $invoiceNumber, LocalDate $issueDate, \DateTime $invoicingDate, \DateTime $acquisitionDate, \DateTime $permanentStorageDate, Seller $seller, Buyer $buyer, float $netAmount, float $grossAmount, float $vatAmount, string $currency, InvoiceMetadataInvoiceType $invoiceType, FormCode $formCode, bool $isSelfInvoicing, bool $hasAttachment, ?InvoicingMode $invoicingMode = null, ?string $fileHash = null, ?string $hashOfCorrectedInvoice = null, ?array $thirdSubjects = null, ?AuthorizedSubject $authorizedSubject = null)
+    public function __construct(string $ksefNumber, string $invoiceNumber, LocalDate $issueDate, \DateTime $invoicingDate, \DateTime $acquisitionDate, \DateTime $permanentStorageDate, Seller $seller, Buyer $buyer, float $netAmount, float $grossAmount, float $vatAmount, string $currency, InvoicingMode $invoicingMode, InvoiceType $invoiceType, FormCode $formCode, bool $isSelfInvoicing, bool $hasAttachment, string $invoiceHash, ?string $hashOfCorrectedInvoice = null, ?array $thirdSubjects = null, ?AuthorizedSubject $authorizedSubject = null)
     {
         $this->ksefNumber = $ksefNumber;
         $this->invoiceNumber = $invoiceNumber;
@@ -253,12 +253,12 @@ class InvoiceMetadata
         $this->grossAmount = $grossAmount;
         $this->vatAmount = $vatAmount;
         $this->currency = $currency;
+        $this->invoicingMode = $invoicingMode;
         $this->invoiceType = $invoiceType;
         $this->formCode = $formCode;
         $this->isSelfInvoicing = $isSelfInvoicing;
         $this->hasAttachment = $hasAttachment;
-        $this->invoicingMode = $invoicingMode;
-        $this->fileHash = $fileHash;
+        $this->invoiceHash = $invoiceHash;
         $this->hashOfCorrectedInvoice = $hashOfCorrectedInvoice;
         $this->thirdSubjects = $thirdSubjects;
         $this->authorizedSubject = $authorizedSubject;

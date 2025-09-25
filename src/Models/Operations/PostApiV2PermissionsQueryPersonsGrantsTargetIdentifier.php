@@ -15,6 +15,7 @@ use Intermedia\Ksef\Apiv2\Models\Components;
  * | Type | Value |
  * | --- | --- |
  * | Nip | 10 cyfrowy numer NIP |
+ * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
  */
 class PostApiV2PermissionsQueryPersonsGrantsTargetIdentifier
 {
@@ -28,19 +29,20 @@ class PostApiV2PermissionsQueryPersonsGrantsTargetIdentifier
     public Components\PersonPermissionsTargetIdentifierType $type;
 
     /**
-     * Wartość identyfikatora.
+     * Wartość identyfikatora. W przypadku typu AllPartners należy pozostawić puste. W pozostałych przypadkach pole jest wymagane.
      *
-     * @var string $value
+     * @var ?string $value
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('value')]
-    public string $value;
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?string $value = null;
 
     /**
      * @param  Components\PersonPermissionsTargetIdentifierType  $type
-     * @param  string  $value
+     * @param  ?string  $value
      * @phpstan-pure
      */
-    public function __construct(Components\PersonPermissionsTargetIdentifierType $type, string $value)
+    public function __construct(Components\PersonPermissionsTargetIdentifierType $type, ?string $value = null)
     {
         $this->type = $type;
         $this->value = $value;

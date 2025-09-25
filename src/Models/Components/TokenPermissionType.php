@@ -15,4 +15,6 @@ enum TokenPermissionType: string
     case InvoiceWrite = 'InvoiceWrite';
     case CredentialsRead = 'CredentialsRead';
     case CredentialsManage = 'CredentialsManage';
+    case SubunitManage = 'SubunitManage';
+    case EnforcementOperations = 'EnforcementOperations';
 }

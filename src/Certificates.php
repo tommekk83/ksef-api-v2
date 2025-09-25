@@ -277,11 +277,22 @@ class Certificates
      *
      * Przyjmuje wniosek certyfikacyjny i rozpoczyna jego przetwarzanie.
      *
-     * Dozwolone typy kluczy prywatnych używanych do podpisu wniosku (CSR):
-     * - RSA (OID: 1.2.840.113549.1.1.1), długość klucza co najmniej 2048 bitów,
-     * - EC (klucze oparte na krzywych eliptycznych, OID: 1.2.840.10045.2.1), długość klucza co najmniej 256 bitów.
+     * Dozwolone typy kluczy prywatnych:
+     * - RSA (OID: 1.2.840.113549.1.1.1), długość klucza równa 2048 bitów,
+     * - EC (klucze oparte na krzywych eliptycznych, OID: 1.2.840.10045.2.1), krzywa NIST P-256 (secp256r1)
      *
-     * Rekomendowane jest wykorzystywanie kluczy EC.
+     * Zalecane jest stosowanie kluczy EC.
+     *
+     * Dozwolone algorytmy podpisu:
+     * - RSA PKCS#1 v1.5,
+     * - RSA PSS,
+     * - ECDSA (format podpisu zgodny z RFC 3279)
+     *
+     * Dozwolone funkcje skrótu użyte do podpisu CSR:
+     * - SHA1,
+     * - SHA256,
+     * - SHA384,
+     * - SHA512
      *
      * > Więcej informacji:
      * > - [Wysłanie wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-client-docs/blob/main/certyfikaty-wewn%C4%99trzne-KSeF.md#4-wys%C5%82anie-wniosku-certyfikacyjnego)
@@ -370,7 +381,7 @@ class Certificates
      * @return Operations\PostApiV2CertificatesQueryResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getList(?Components\QueryCertificatesRequest $queryCertificatesRequest = null, ?int $pageSize = null, ?int $pageOffset = null, ?Options $options = null): Operations\PostApiV2CertificatesQueryResponse
+    public function get(?Components\QueryCertificatesRequest $queryCertificatesRequest = null, ?int $pageSize = null, ?int $pageOffset = null, ?Options $options = null): Operations\PostApiV2CertificatesQueryResponse
     {
         $request = new Operations\PostApiV2CertificatesQueryRequest(
             pageSize: $pageSize,

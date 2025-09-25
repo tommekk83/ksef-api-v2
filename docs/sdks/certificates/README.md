@@ -11,7 +11,7 @@
 * [getEnrollmentStatus](#getenrollmentstatus) - Pobranie statusu przetwarzania wniosku certyfikacyjnego
 * [retrieve](#retrieve) - Pobranie certyfikatu lub listy certyfikatów
 * [revoke](#revoke) - Unieważnienie certyfikatu
-* [getList](#getlist) - Pobranie listy metadanych certyfikatów
+* [get](#get) - Pobranie listy metadanych certyfikatów
 
 ## getLimits
 
@@ -108,11 +108,22 @@ if ($response->certificateEnrollmentDataResponse !== null) {
 
 Przyjmuje wniosek certyfikacyjny i rozpoczyna jego przetwarzanie.
 
-Dozwolone typy kluczy prywatnych używanych do podpisu wniosku (CSR):
-- RSA (OID: 1.2.840.113549.1.1.1), długość klucza co najmniej 2048 bitów,
-- EC (klucze oparte na krzywych eliptycznych, OID: 1.2.840.10045.2.1), długość klucza co najmniej 256 bitów.
+Dozwolone typy kluczy prywatnych:
+- RSA (OID: 1.2.840.113549.1.1.1), długość klucza równa 2048 bitów,
+- EC (klucze oparte na krzywych eliptycznych, OID: 1.2.840.10045.2.1), krzywa NIST P-256 (secp256r1)
 
-Rekomendowane jest wykorzystywanie kluczy EC.
+Zalecane jest stosowanie kluczy EC.
+
+Dozwolone algorytmy podpisu:
+- RSA PKCS#1 v1.5,
+- RSA PSS,
+- ECDSA (format podpisu zgodny z RFC 3279)
+
+Dozwolone funkcje skrótu użyte do podpisu CSR:
+- SHA1,
+- SHA256,
+- SHA384,
+- SHA512
 
 > Więcej informacji:
 > - [Wysłanie wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-client-docs/blob/main/certyfikaty-wewn%C4%99trzne-KSeF.md#4-wys%C5%82anie-wniosku-certyfikacyjnego)
@@ -314,7 +325,7 @@ if ($response->statusCode === 200) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## getList
+## get
 
 Zwraca listę certyfikatów spełniających podane kryteria wyszukiwania.
 W przypadku braku podania kryteriów wyszukiwania zwrócona zostanie nieprzefiltrowana lista.
@@ -337,7 +348,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->certificates->getList(
+$response = $sdk->certificates->get(
     pageSize: 10,
     pageOffset: 0,
     queryCertificatesRequest: $queryCertificatesRequest

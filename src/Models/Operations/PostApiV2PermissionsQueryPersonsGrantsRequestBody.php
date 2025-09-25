@@ -33,7 +33,7 @@ class PostApiV2PermissionsQueryPersonsGrantsRequestBody
      * | Nip | 10 cyfrowy numer NIP |
      * | Pesel | 11 cyfrowy numer PESEL |
      * | Fingerprint | Odcisk palca certyfikatu |
-     * | System | Identyfikator systemowy |
+     * | System | Identyfikator systemowy KSeF |
      *
      * @var ?AuthorIdentifier $authorIdentifier
      */
@@ -64,6 +64,7 @@ class PostApiV2PermissionsQueryPersonsGrantsRequestBody
      * | Type | Value |
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
+     * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
      *
      * @var ?PostApiV2PermissionsQueryPersonsGrantsTargetIdentifier $targetIdentifier
      */

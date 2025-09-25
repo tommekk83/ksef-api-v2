@@ -14,4 +14,5 @@ enum EntityAuthorizationPermissionType: string
     case SelfInvoicing = 'SelfInvoicing';
     case RRInvoicing = 'RRInvoicing';
     case TaxRepresentative = 'TaxRepresentative';
+    case PefInvoicing = 'PefInvoicing';
 }

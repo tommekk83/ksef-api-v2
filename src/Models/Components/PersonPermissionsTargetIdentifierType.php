@@ -12,4 +12,5 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 enum PersonPermissionsTargetIdentifierType: string
 {
     case Nip = 'Nip';
+    case AllPartners = 'AllPartners';
 }

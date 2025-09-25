@@ -1,12 +1,13 @@
 # AuthorizedSubject
 
-[Mock] Podmiot upoważniony.
+Podmiot upoważniony.
 
 
 ## Fields
 
-| Field                                | Type                                 | Required                             | Description                          |
-| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `identifier`                         | *?string*                            | :heavy_minus_sign:                   | Identyfikator podmiotu upoważnionego |
-| `name`                               | *?string*                            | :heavy_minus_sign:                   | Nazwa podmiotu upoważnionego         |
-| `role`                               | *?int*                               | :heavy_minus_sign:                   | Rola podmiotu upoważnionego          |
+| Field                                                                                                                   | Type                                                                                                                    | Required                                                                                                                | Description                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| ~~`identifiter`~~                                                                                                       | *?string*                                                                                                               | :heavy_minus_sign:                                                                                                      | : warning: ** DEPRECATED **: This will be removed in a future release, please migrate away from it as soon as possible. |
+| `nip`                                                                                                                   | *string*                                                                                                                | :heavy_check_mark:                                                                                                      | Nip podmiotu upoważnionego                                                                                              |
+| `name`                                                                                                                  | *?string*                                                                                                               | :heavy_minus_sign:                                                                                                      | Nazwa podmiotu upoważnionego.                                                                                           |
+| `role`                                                                                                                  | *int*                                                                                                                   | :heavy_check_mark:                                                                                                      | Rola podmiotu upoważnionego.                                                                                            |

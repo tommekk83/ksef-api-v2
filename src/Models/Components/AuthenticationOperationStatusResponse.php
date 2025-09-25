@@ -30,6 +30,7 @@ class AuthenticationOperationStatusResponse
      * | QualifiedSignature | Podpis kwalifikowany. |
      * | QualifiedSeal | Pieczęć kwalifikowana. |
      * | PersonalSignature | Podpis osobisty. |
+     * | PeppolSignature | Podpis dostawcy uslug Peppol. |
      *
      *
      * @var AuthenticationMethod $authenticationMethod
@@ -45,13 +46,17 @@ class AuthenticationOperationStatusResponse
      * | --- | --- | --- |
      * | 100 | Uwierzytelnianie w toku | - |
      * | 200 | Uwierzytelnianie zakończone sukcesem | - |
-     * | 400 | Uwierzytelnianie zakończone niepowodzeniem | Nieważny certyfikat |
-     * | 400 | Uwierzytelnianie zakończone niepowodzeniem | Błąd weryfikacji łańcucha certyfikatów |
-     * | 400 | Uwierzytelnianie zakończone niepowodzeniem | Niezaufany łańcuch certyfikatów |
-     * | 400 | Uwierzytelnianie zakończone niepowodzeniem | Certyfikat odwołany |
-     * | 400 | Uwierzytelnianie zakończone niepowodzeniem | Niepoprawny certyfikat |
-     * | 400 | Uwierzytelnianie zakończone niepowodzeniem | Brak przypisanych uprawnień |
-     * | 401 | Uwierzytelnienie unieważnione | Uwierzytelnienie i powiązane refresh tokeny zostały unieważnione przez użytkownika |
+     * | 415 | Uwierzytelnianie zakończone niepowodzeniem | Brak przypisanych uprawnień |
+     * | 425 | Uwierzytelnienie unieważnione  | Uwierzytelnienie i powiązane refresh tokeny zostały unieważnione przez użytkownika |
+     * | 450 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędnego tokenu | Nieprawidłowy token |
+     * | 450 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędnego tokenu | Nieprawidłowy czas tokena |
+     * | 450 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędnego tokenu | Token unieważniony |
+     * | 450 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędnego tokenu | Token nieaktywny |
+     * | 460 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędu certyfikatu | Nieważny certyfikat |
+     * | 460 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędu certyfikatu | Błąd weryfikacji łańcucha certyfikatów |
+     * | 460 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędu certyfikatu | Niezaufany łańcuch certyfikatów |
+     * | 460 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędu certyfikatu | Certyfikat odwołany |
+     * | 460 | Uwierzytelnianie zakończone niepowodzeniem z powodu błędu certyfikatu | Niepoprawny certyfikat |
      * | 500 | Nieznany błąd | - |
      *
      * @var StatusInfo $status

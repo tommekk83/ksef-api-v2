@@ -9,6 +9,7 @@ Metoda uwierzytelnienia.
 | QualifiedSignature | Podpis kwalifikowany. |
 | QualifiedSeal | Pieczęć kwalifikowana. |
 | PersonalSignature | Podpis osobisty. |
+| PeppolSignature | Podpis dostawcy uslug Peppol. |
 
 
 
@@ -22,3 +23,4 @@ Metoda uwierzytelnienia.
 | `QualifiedSignature`  | QualifiedSignature    |
 | `QualifiedSeal`       | QualifiedSeal         |
 | `PersonalSignature`   | PersonalSignature     |
+| `PeppolSignature`     | PeppolSignature       |

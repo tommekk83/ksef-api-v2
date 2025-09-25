@@ -23,21 +23,19 @@ class InvoiceMetadataThirdSubject
      * | None | Brak identyfikatora podmiotu trzeciego |
      *
      *
-     * @var ?ThirdSubjectIdentifierType $identifierType
+     * @var ThirdSubjectIdentifierType $identifierType
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('identifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\ThirdSubjectIdentifierType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?ThirdSubjectIdentifierType $identifierType = null;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\ThirdSubjectIdentifierType')]
+    public ThirdSubjectIdentifierType $identifierType;
 
     /**
-     * Rola podmiotu trzeciego
+     * Rola podmiotu trzeciego.
      *
-     * @var ?int $role
+     * @var int $role
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('role')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?int $role = null;
+    public int $role;
 
     /**
      * Wartość identyfikatora podmiotu trzeciego.
@@ -58,13 +56,13 @@ class InvoiceMetadataThirdSubject
     public ?string $name = null;
 
     /**
-     * @param  ?ThirdSubjectIdentifierType  $identifierType
-     * @param  ?int  $role
+     * @param  ThirdSubjectIdentifierType  $identifierType
+     * @param  int  $role
      * @param  ?string  $identifier
      * @param  ?string  $name
      * @phpstan-pure
      */
-    public function __construct(?ThirdSubjectIdentifierType $identifierType = null, ?int $role = null, ?string $identifier = null, ?string $name = null)
+    public function __construct(ThirdSubjectIdentifierType $identifierType, int $role, ?string $identifier = null, ?string $name = null)
     {
         $this->identifierType = $identifierType;
         $this->role = $role;

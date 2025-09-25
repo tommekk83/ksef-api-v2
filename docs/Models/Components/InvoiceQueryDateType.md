@@ -2,9 +2,9 @@
 
 | Wartość | Opis |
 | --- | --- |
-| Issue | Data wystawienia faktury |
-| Invoicing | [Mock] Data przyjęcia faktury w systemie KSeF (do dalszego przetwarzania) |
-| PermanentStorage | [Mock] Data trwałego zapisu faktury w repozytorium systemu KSeF |
+| Issue | Data wystawienia faktury. |
+| Invoicing | Data przyjęcia faktury w systemie KSeF (do dalszego przetwarzania). |
+| PermanentStorage | Data trwałego zapisu faktury w repozytorium systemu KSeF. |
 
 
 

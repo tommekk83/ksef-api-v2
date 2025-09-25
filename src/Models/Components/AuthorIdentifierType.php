@@ -9,7 +9,15 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Components;
 
 
-/** Typ identyfikatora osoby nadającej uprawnienie. */
+/**
+ * | Wartość | Opis |
+ *
+ * | --- | --- |
+ * | Nip | NIP. |
+ * | Pesel | PESEL. |
+ * | Fingerprint | Odcisk palca certyfikatu. |
+ *
+ */
 enum AuthorIdentifierType: string
 {
     case Nip = 'Nip';

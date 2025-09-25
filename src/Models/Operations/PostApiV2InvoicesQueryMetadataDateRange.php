@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
-/** PostApiV2InvoicesQueryMetadataDateRange - Typ i zakres dat, według którego mają być filtrowane faktury. */
+/** PostApiV2InvoicesQueryMetadataDateRange - Typ i zakres dat, według którego mają być filtrowane faktury. Dozwolony maksymalny okres wynosi 2 lata. */
 class PostApiV2InvoicesQueryMetadataDateRange
 {
     /**
@@ -17,9 +17,9 @@ class PostApiV2InvoicesQueryMetadataDateRange
      *
      * | Wartość | Opis |
      * | --- | --- |
-     * | Issue | Data wystawienia faktury |
-     * | Invoicing | [Mock] Data przyjęcia faktury w systemie KSeF (do dalszego przetwarzania) |
-     * | PermanentStorage | [Mock] Data trwałego zapisu faktury w repozytorium systemu KSeF |
+     * | Issue | Data wystawienia faktury. |
+     * | Invoicing | Data przyjęcia faktury w systemie KSeF (do dalszego przetwarzania). |
+     * | PermanentStorage | Data trwałego zapisu faktury w repozytorium systemu KSeF. |
      *
      *
      * @var Components\InvoiceQueryDateType $dateType
@@ -37,7 +37,7 @@ class PostApiV2InvoicesQueryMetadataDateRange
     public \DateTime $from;
 
     /**
-     * Data końcowa zakresu.
+     * Data końcowa zakresu. Jeśli nie zostanie podana, przyjmowana jest bieżąca data i czas w UTC.
      *
      * @var ?\DateTime $to
      */

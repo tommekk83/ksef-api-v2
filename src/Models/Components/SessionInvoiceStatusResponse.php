@@ -36,6 +36,7 @@ class SessionInvoiceStatusResponse
      * | 100 | Faktura przyjęta do dalszego przetwarzania | - |
      * | 150 | Trwa przetwarzanie | - |
      * | 200 | Sukces | - |
+     * | 405 | Przetwarzanie anulowane | - |
      * | 410 | Nieprawidłowy zakres uprawnień | - |
      * | 415 | Brak możliwości wysyłania faktury z załącznikiem | - |
      * | 430 | Błąd weryfikacji pliku faktury | - |
@@ -105,6 +106,24 @@ class SessionInvoiceStatusResponse
     public ?\DateTime $acquisitionDate = null;
 
     /**
+     * Data trwałego zapisu faktury w repozytorium systemu KSeF. Od tego momentu faktura jest dostępna do pobrania.
+     *
+     * @var ?\DateTime $permanentStorageDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('permanentStorageDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?\DateTime $permanentStorageDate = null;
+
+    /**
+     * Adres do pobrania UPO.
+     *
+     * @var ?string $upoDownloadUrl
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('upoDownloadUrl')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?string $upoDownloadUrl = null;
+
+    /**
      * @param  int  $ordinalNumber
      * @param  \DateTime  $invoicingDate
      * @param  StatusInfo  $status
@@ -114,9 +133,11 @@ class SessionInvoiceStatusResponse
      * @param  ?string  $invoiceHash
      * @param  ?string  $invoiceFileName
      * @param  ?\DateTime  $acquisitionDate
+     * @param  ?\DateTime  $permanentStorageDate
+     * @param  ?string  $upoDownloadUrl
      * @phpstan-pure
      */
-    public function __construct(int $ordinalNumber, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $referenceNumber = null, ?string $invoiceHash = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null)
+    public function __construct(int $ordinalNumber, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $referenceNumber = null, ?string $invoiceHash = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null)
     {
         $this->ordinalNumber = $ordinalNumber;
         $this->invoicingDate = $invoicingDate;
@@ -127,5 +148,7 @@ class SessionInvoiceStatusResponse
         $this->invoiceHash = $invoiceHash;
         $this->invoiceFileName = $invoiceFileName;
         $this->acquisitionDate = $acquisitionDate;
+        $this->permanentStorageDate = $permanentStorageDate;
+        $this->upoDownloadUrl = $upoDownloadUrl;
     }
 }

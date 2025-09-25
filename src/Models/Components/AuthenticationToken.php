@@ -88,6 +88,25 @@ class AuthenticationToken
     public ?array $requestedPermissions = null;
 
     /**
+     * Data ostatniego użycia tokena.
+     *
+     * @var ?\DateTime $lastUseDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('lastUseDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?\DateTime $lastUseDate = null;
+
+    /**
+     * Dodatkowe informacje na temat statusu, zwracane w przypadku błędów.
+     *
+     * @var ?array<string> $statusDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('statusDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('array<string>|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?array $statusDetails = null;
+
+    /**
      * @param  ?\DateTime  $dateCreated
      * @param  ?AuthenticationTokenStatus  $status
      * @param  ?string  $referenceNumber
@@ -95,9 +114,11 @@ class AuthenticationToken
      * @param  ?AuthenticationTokenContextIdentifier  $contextIdentifier
      * @param  ?string  $description
      * @param  ?array<TokenPermissionType>  $requestedPermissions
+     * @param  ?\DateTime  $lastUseDate
+     * @param  ?array<string>  $statusDetails
      * @phpstan-pure
      */
-    public function __construct(?\DateTime $dateCreated = null, ?AuthenticationTokenStatus $status = null, ?string $referenceNumber = null, ?AuthorIdentifier $authorIdentifier = null, ?AuthenticationTokenContextIdentifier $contextIdentifier = null, ?string $description = null, ?array $requestedPermissions = null)
+    public function __construct(?\DateTime $dateCreated = null, ?AuthenticationTokenStatus $status = null, ?string $referenceNumber = null, ?AuthorIdentifier $authorIdentifier = null, ?AuthenticationTokenContextIdentifier $contextIdentifier = null, ?string $description = null, ?array $requestedPermissions = null, ?\DateTime $lastUseDate = null, ?array $statusDetails = null)
     {
         $this->dateCreated = $dateCreated;
         $this->status = $status;
@@ -106,5 +127,7 @@ class AuthenticationToken
         $this->contextIdentifier = $contextIdentifier;
         $this->description = $description;
         $this->requestedPermissions = $requestedPermissions;
+        $this->lastUseDate = $lastUseDate;
+        $this->statusDetails = $statusDetails;
     }
 }

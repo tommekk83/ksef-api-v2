@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 
 /**
- * Struktura dokumentu.
+ * Typ dokumentu.
  *
  * | Wartość | Opis |
  * | --- | --- |

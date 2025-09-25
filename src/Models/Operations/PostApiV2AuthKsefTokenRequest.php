@@ -37,27 +37,27 @@ class PostApiV2AuthKsefTokenRequest
     public string $encryptedToken;
 
     /**
-     * Reguła walidacji adresu IP klienta przy każdym użyciu tokena dostępu.
+     * Polityka autoryzacji żądań przy każdym użyciu tokena dostępu.
      *
-     * @var ?IpAddressPolicy $ipAddressPolicy
+     * @var ?AuthorizationPolicy $authorizationPolicy
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('ipAddressPolicy')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\IpAddressPolicy|null')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('authorizationPolicy')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\AuthorizationPolicy|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?IpAddressPolicy $ipAddressPolicy = null;
+    public ?AuthorizationPolicy $authorizationPolicy = null;
 
     /**
      * @param  string  $challenge
      * @param  PostApiV2AuthKsefTokenContextIdentifier  $contextIdentifier
      * @param  string  $encryptedToken
-     * @param  ?IpAddressPolicy  $ipAddressPolicy
+     * @param  ?AuthorizationPolicy  $authorizationPolicy
      * @phpstan-pure
      */
-    public function __construct(string $challenge, PostApiV2AuthKsefTokenContextIdentifier $contextIdentifier, string $encryptedToken, ?IpAddressPolicy $ipAddressPolicy = null)
+    public function __construct(string $challenge, PostApiV2AuthKsefTokenContextIdentifier $contextIdentifier, string $encryptedToken, ?AuthorizationPolicy $authorizationPolicy = null)
     {
         $this->challenge = $challenge;
         $this->contextIdentifier = $contextIdentifier;
         $this->encryptedToken = $encryptedToken;
-        $this->ipAddressPolicy = $ipAddressPolicy;
+        $this->authorizationPolicy = $authorizationPolicy;
     }
 }

@@ -12,4 +12,5 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 enum EntityAuthorizationsAuthorizedEntityIdentifierType: string
 {
     case Nip = 'Nip';
+    case PeppolId = 'PeppolId';
 }

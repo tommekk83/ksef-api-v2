@@ -46,15 +46,25 @@ class PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest
     public string $description;
 
     /**
+     * Nazwa podmiotu.
+     *
+     * @var string $subjectName
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectName')]
+    public string $subjectName;
+
+    /**
      * @param  PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier  $subjectIdentifier
      * @param  PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier  $contextIdentifier
      * @param  string  $description
+     * @param  string  $subjectName
      * @phpstan-pure
      */
-    public function __construct(PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier $subjectIdentifier, PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier $contextIdentifier, string $description)
+    public function __construct(PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier $subjectIdentifier, PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier $contextIdentifier, string $description, string $subjectName)
     {
         $this->subjectIdentifier = $subjectIdentifier;
         $this->contextIdentifier = $contextIdentifier;
         $this->description = $description;
+        $this->subjectName = $subjectName;
     }
 }

@@ -234,6 +234,7 @@ $sdk = Apiv2\Client::builder()
 $response = $sdk->auth->withXades(
     requestBody: '<?xml version="1.0" encoding="utf-8"?>\n' .
     '<AuthTokenRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://ksef.mf.gov.pl/auth/token/2.0">\n' .
+    '\n' .
     '    <Challenge>20250625-CR-20F5EE4000-DA48AE4124-46</Challenge>\n' .
     '    <ContextIdentifier>\n' .
     '        <Nip>5265877635</Nip>\n' .

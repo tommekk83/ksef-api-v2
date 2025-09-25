@@ -13,7 +13,7 @@ use Intermedia\Ksef\Apiv2\Models\Components;
 class Filters
 {
     /**
-     * Typ podmiotu, którego dotyczą kryteria filtrowania faktur.
+     * Typ podmiotu, którego dotyczą kryteria filtrowania metadanych faktur.
      *
      * Określa kontekst, w jakim przeszukiwane są dane.
      * | Wartość | Opis |
@@ -31,7 +31,7 @@ class Filters
     public Components\InvoiceQuerySubjectType $subjectType;
 
     /**
-     * Typ i zakres dat, według którego mają być filtrowane faktury.
+     * Typ i zakres dat, według którego mają być filtrowane faktury. Dozwolony maksymalny okres wynosi 2 lata.
      *
      * @var PostApiV2InvoicesExportsDateRange $dateRange
      */
@@ -117,7 +117,7 @@ class Filters
     public ?bool $isSelfInvoicing = null;
 
     /**
-     * Struktura dokumentu.
+     * Typ dokumentu.
      *
      * | Wartość | Opis |
      * | --- | --- |
@@ -145,17 +145,17 @@ class Filters
      * | Upr | (FA) Uproszczona |
      * | KorZal | (FA) Korygująca fakturę zaliczkową |
      * | KorRoz | (FA) Korygująca fakturę rozliczeniową |
-     * | VatPef | [Mock] (PEF) Podstawowowa |
-     * | VatPefSp | [Mock] (PEF) Specjalizowana |
-     * | KorPef | [Mock] (PEF) Korygująca |
-     * | VatRr | [Mock] (RR) Podstawowa |
-     * | KorVatRr | [Mock] (RR) Korygująca |
+     * | VatPef | (PEF) Podstawowowa |
+     * | VatPefSp | (PEF) Specjalizowana |
+     * | KorPef | (PEF) Korygująca |
+     * | VatRr | (RR) Podstawowa |
+     * | KorVatRr | (RR) Korygująca |
      *
      *
-     * @var ?array<Components\InvoiceMetadataInvoiceType> $invoiceTypes
+     * @var ?array<Components\InvoiceType> $invoiceTypes
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceTypes')]
-    #[\Speakeasy\Serializer\Annotation\Type('array<\Intermedia\Ksef\Apiv2\Models\Components\InvoiceMetadataInvoiceType>|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('array<\Intermedia\Ksef\Apiv2\Models\Components\InvoiceType>|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
     public ?array $invoiceTypes = null;
 
@@ -180,7 +180,7 @@ class Filters
      * @param  ?PostApiV2InvoicesExportsInvoicingMode  $invoicingMode
      * @param  ?bool  $isSelfInvoicing
      * @param  ?PostApiV2InvoicesExportsFormType  $formType
-     * @param  ?array<Components\InvoiceMetadataInvoiceType>  $invoiceTypes
+     * @param  ?array<Components\InvoiceType>  $invoiceTypes
      * @param  ?bool  $hasAttachment
      * @phpstan-pure
      */

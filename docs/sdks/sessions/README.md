@@ -17,7 +17,9 @@
 
 Zwraca listę sesji spełniających podane kryteria wyszukiwania.
 
-Wymagane uprawnienia: `Introspection`.
+Wymagane uprawnienia:
+- `Introspection` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
+- `InvoiceWrite` – pozwala pobrać wyłącznie sesje utworzone przez podmiot uwierzytelniający, czyli podmiot inicjujący uwierzytelnienie.
 
 ### Example Usage
 
@@ -71,7 +73,7 @@ if ($response->sessionsQueryResponse !== null) {
 
 Sprawdza bieżący status sesji o podanym numerze referencyjnym.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -121,7 +123,7 @@ if ($response->sessionStatusResponse !== null) {
 
 Zwraca XML zawierający zbiorcze UPO dla sesji.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -176,9 +178,9 @@ Otwiera sesję do wysyłki pojedynczych faktur. Należy przekazać schemat wysy�
 
 > Więcej informacji:
 > - [Otwarcie sesji interaktywnej](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#1-otwarcie-sesji)
-> - [Klucz publiczny Ministersta Finansów](/public-keys/publicKey.pem)
+> - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -199,7 +201,7 @@ $sdk = Apiv2\Client::builder()
 
 $request = new Operations\OnlineSessionOpenRequest(
     formCode: new Operations\OnlineSessionOpenFormCode(
-        systemCode: 'FA (2)',
+        systemCode: 'FA (3)',
         schemaVersion: '1-0E',
         value: 'FA',
     ),
@@ -239,7 +241,7 @@ if ($response->openOnlineSessionResponse !== null) {
 
 Zamyka sesję interaktywną i rozpoczyna generowanie zbiorczego UPO dla sesji.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -291,7 +293,7 @@ Otwiera sesję do wysyłki wsadowej faktur. Należy przekazać schemat wysyłany
 
 > Więcej informacji:
 > - [Przygotwanie paczki faktur](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-wsadowa.md)
-> - [Klucz publiczny Ministersta Finansów](/public-keys/publicKey.pem)
+> - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
 
 Wymagane uprawnienia: `InvoiceWrite`.
 

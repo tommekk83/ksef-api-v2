@@ -14,7 +14,6 @@ class SessionStatusResponse
     /**
      * Informacje o aktualnym statusie.
      *
-     *             
      * Sesja wsadowa:
      * | Code | Description | Details |
      * | --- | --- | --- |
@@ -66,7 +65,7 @@ class SessionStatusResponse
     public ?Upo $upo = null;
 
     /**
-     * Ilość przyjętych faktur w ramach sesji.
+     * Liczba przyjętych faktur w ramach sesji.
      *
      * @var ?int $invoiceCount
      */
@@ -75,7 +74,7 @@ class SessionStatusResponse
     public ?int $invoiceCount = null;
 
     /**
-     * Ilość faktur przeprocesowanych w ramach sesji z sukcesem .
+     * Liczba faktur przeprocesowanych w ramach sesji z sukcesem .
      *
      * @var ?int $successfulInvoiceCount
      */
@@ -84,7 +83,7 @@ class SessionStatusResponse
     public ?int $successfulInvoiceCount = null;
 
     /**
-     * Ilość faktur przeprocesowanych w ramach sesji z błędem.
+     * Liczba faktur przeprocesowanych w ramach sesji z błędem.
      *
      * @var ?int $failedInvoiceCount
      */

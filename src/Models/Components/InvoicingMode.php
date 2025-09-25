@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Components;
 
 
-/** Tryb fakturowania (online/offline). */
 enum InvoicingMode: string
 {
     case Online = 'Online';

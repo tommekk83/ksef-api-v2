@@ -16,4 +16,5 @@ enum ContextIdentifierType: string
     case Nip = 'Nip';
     case InternalId = 'InternalId';
     case NipVatUe = 'NipVatUe';
+    case PeppolId = 'PeppolId';
 }

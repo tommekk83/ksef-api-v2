@@ -15,43 +15,43 @@ class AllowedIps
     /**
      * Lista adresów IPv4 w notacji dziesiętnej kropkowanej, np. `192.168.0.10`.
      *
-     * @var ?array<string> $ipAddress
+     * @var ?array<string> $ip4Addresses
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('ipAddress')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('ip4Addresses')]
     #[\Speakeasy\Serializer\Annotation\Type('array<string>|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?array $ipAddress = null;
+    public ?array $ip4Addresses = null;
 
     /**
      * Lista adresów IPv4 podana w formie zakresu początek–koniec, oddzielonego pojedynczym myślnikiem, np. `10.0.0.1–10.0.0.254`.
      *
-     * @var ?array<string> $ipRange
+     * @var ?array<string> $ip4Ranges
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('ipRange')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('ip4Ranges')]
     #[\Speakeasy\Serializer\Annotation\Type('array<string>|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?array $ipRange = null;
+    public ?array $ip4Ranges = null;
 
     /**
-     * Lista adresów IPv4 w notacji CIDR z maską 8 / 16 / 24 / 32, np. `172.16.0.0/16`.
+     * Lista adresów IPv4 w notacji CIDR, np. `172.16.0.0/16`.
      *
-     * @var ?array<string> $ipMask
+     * @var ?array<string> $ip4Masks
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('ipMask')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('ip4Masks')]
     #[\Speakeasy\Serializer\Annotation\Type('array<string>|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?array $ipMask = null;
+    public ?array $ip4Masks = null;
 
     /**
-     * @param  ?array<string>  $ipAddress
-     * @param  ?array<string>  $ipRange
-     * @param  ?array<string>  $ipMask
+     * @param  ?array<string>  $ip4Addresses
+     * @param  ?array<string>  $ip4Ranges
+     * @param  ?array<string>  $ip4Masks
      * @phpstan-pure
      */
-    public function __construct(?array $ipAddress = null, ?array $ipRange = null, ?array $ipMask = null)
+    public function __construct(?array $ip4Addresses = null, ?array $ip4Ranges = null, ?array $ip4Masks = null)
     {
-        $this->ipAddress = $ipAddress;
-        $this->ipRange = $ipRange;
-        $this->ipMask = $ipMask;
+        $this->ip4Addresses = $ip4Addresses;
+        $this->ip4Ranges = $ip4Ranges;
+        $this->ip4Masks = $ip4Masks;
     }
 }

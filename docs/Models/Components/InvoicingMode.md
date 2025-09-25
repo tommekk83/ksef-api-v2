@@ -1,7 +1,5 @@
 # InvoicingMode
 
-Tryb fakturowania (online/offline).
-
 
 ## Values
 

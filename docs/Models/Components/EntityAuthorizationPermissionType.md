@@ -8,3 +8,4 @@
 | `SelfInvoicing`     | SelfInvoicing       |
 | `RRInvoicing`       | RRInvoicing         |
 | `TaxRepresentative` | TaxRepresentative   |
+| `PefInvoicing`      | PefInvoicing        |

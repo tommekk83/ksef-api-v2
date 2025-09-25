@@ -8,7 +8,7 @@
 * [getList](#getlist) - Pobranie faktur sesji
 * [getInvoiceStatus](#getinvoicestatus) - Pobranie statusu faktury z sesji
 * [getFailed](#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
-* [getUpoByKsefNumber](#getupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
+* [getInvoiceUpoByKsefNumber](#getinvoiceupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
 * [getUpo](#getupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
 * [sendOnline](#sendonline) - Wysłanie faktury
 
@@ -16,7 +16,7 @@
 
 Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -70,7 +70,7 @@ if ($response->sessionInvoicesResponse !== null) {
 
 Zwraca fakturę przesłaną w sesji wraz ze statusem.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -123,7 +123,7 @@ if ($response->sessionInvoiceStatusResponse !== null) {
 
 Zwraca listę niepoprawnie przetworzonych faktur przesłanych w sesji wraz z ich statusami.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -173,11 +173,11 @@ if ($response->sessionInvoicesResponse !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## getUpoByKsefNumber
+## getInvoiceUpoByKsefNumber
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -197,7 +197,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->invoices->getUpoByKsefNumber(
+$response = $sdk->invoices->getInvoiceUpoByKsefNumber(
     referenceNumber: '<value>',
     ksefNumber: '<value>'
 
@@ -230,7 +230,7 @@ if ($response->res !== null) {
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -286,7 +286,7 @@ Przyjmuje zaszyfrowaną fakturę oraz jej metadane i rozpoczyna jej przetwarzani
 > Więcej informacji:
 > - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
 
-Wymagane uprawnienia: `InvoiceWrite`.
+Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
 

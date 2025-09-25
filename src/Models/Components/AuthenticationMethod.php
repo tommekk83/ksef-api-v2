@@ -20,6 +20,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
  * | QualifiedSignature | Podpis kwalifikowany. |
  * | QualifiedSeal | Pieczęć kwalifikowana. |
  * | PersonalSignature | Podpis osobisty. |
+ * | PeppolSignature | Podpis dostawcy uslug Peppol. |
  *
  */
 enum AuthenticationMethod: string
@@ -30,4 +31,5 @@ enum AuthenticationMethod: string
     case QualifiedSignature = 'QualifiedSignature';
     case QualifiedSeal = 'QualifiedSeal';
     case PersonalSignature = 'PersonalSignature';
+    case PeppolSignature = 'PeppolSignature';
 }

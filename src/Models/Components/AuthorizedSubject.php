@@ -9,29 +9,36 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Components;
 
 
-/** AuthorizedSubject - [Mock] Podmiot upoważniony. */
+/** AuthorizedSubject - Podmiot upoważniony. */
 class AuthorizedSubject
 {
     /**
-     * Rola podmiotu upoważnionego
+     * Nip podmiotu upoważnionego
      *
-     * @var ?int $role
+     * @var string $nip
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('nip')]
+    public string $nip;
+
+    /**
+     * Rola podmiotu upoważnionego.
+     *
+     * @var int $role
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('role')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?int $role = null;
+    public int $role;
 
     /**
-     * Identyfikator podmiotu upoważnionego
      *
-     * @var ?string $identifier
+     * @var ?string $identifiter
+     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('identifier')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('identifiter')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $identifier = null;
+    public ?string $identifiter = null;
 
     /**
-     * Nazwa podmiotu upoważnionego
+     * Nazwa podmiotu upoważnionego.
      *
      * @var ?string $name
      */
@@ -40,15 +47,17 @@ class AuthorizedSubject
     public ?string $name = null;
 
     /**
-     * @param  ?int  $role
-     * @param  ?string  $identifier
+     * @param  string  $nip
+     * @param  int  $role
+     * @param  ?string  $identifiter
      * @param  ?string  $name
      * @phpstan-pure
      */
-    public function __construct(?int $role = null, ?string $identifier = null, ?string $name = null)
+    public function __construct(string $nip, int $role, ?string $identifiter = null, ?string $name = null)
     {
+        $this->nip = $nip;
         $this->role = $role;
-        $this->identifier = $identifier;
+        $this->identifiter = $identifiter;
         $this->name = $name;
     }
 }

@@ -35,22 +35,22 @@ class GetApiV2InvoicesExportsOperationReferenceNumberResponse
     /**
      * OK
      *
-     * @var ?Components\InvoicesExportStatusResponse $invoicesExportStatusResponse
+     * @var ?Components\InvoiceExportStatusResponse $invoiceExportStatusResponse
      */
-    public ?Components\InvoicesExportStatusResponse $invoicesExportStatusResponse = null;
+    public ?Components\InvoiceExportStatusResponse $invoiceExportStatusResponse = null;
 
     /**
      * @param  string  $contentType
      * @param  int  $statusCode
      * @param  \Psr\Http\Message\ResponseInterface  $rawResponse
-     * @param  ?Components\InvoicesExportStatusResponse  $invoicesExportStatusResponse
+     * @param  ?Components\InvoiceExportStatusResponse  $invoiceExportStatusResponse
      * @phpstan-pure
      */
-    public function __construct(string $contentType, int $statusCode, \Psr\Http\Message\ResponseInterface $rawResponse, ?Components\InvoicesExportStatusResponse $invoicesExportStatusResponse = null)
+    public function __construct(string $contentType, int $statusCode, \Psr\Http\Message\ResponseInterface $rawResponse, ?Components\InvoiceExportStatusResponse $invoiceExportStatusResponse = null)
     {
         $this->contentType = $contentType;
         $this->statusCode = $statusCode;
         $this->rawResponse = $rawResponse;
-        $this->invoicesExportStatusResponse = $invoicesExportStatusResponse;
+        $this->invoiceExportStatusResponse = $invoiceExportStatusResponse;
     }
 }

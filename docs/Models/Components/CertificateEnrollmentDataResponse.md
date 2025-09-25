@@ -7,7 +7,7 @@
 | -------------------------- | -------------------------- | -------------------------- | -------------------------- |
 | `commonName`               | *string*                   | :heavy_check_mark:         | Nazwa powszechna.          |
 | `countryName`              | *string*                   | :heavy_check_mark:         | Kraj, kod ISO 3166.        |
-| `givenNames`               | array<*string*>            | :heavy_minus_sign:         | Imiona.                    |
+| `givenName`                | *?string*                  | :heavy_minus_sign:         | Imię.                      |
 | `surname`                  | *?string*                  | :heavy_minus_sign:         | Nazwisko.                  |
 | `serialNumber`             | *?string*                  | :heavy_minus_sign:         | Numer seryjny podmiotu.    |
 | `uniqueIdentifier`         | *?string*                  | :heavy_minus_sign:         | Unikalny identyfikator.    |

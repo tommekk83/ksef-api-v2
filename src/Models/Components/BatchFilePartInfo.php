@@ -28,7 +28,7 @@ class BatchFilePartInfo
     public string $fileName;
 
     /**
-     * Rozmiar części pliku paczki w bajtach. Maksymalna dozwolona wartość to 100MB (104_857_600 bajtów).
+     * Rozmiar części pliku paczki w bajtach. Maksymalna dozwolona wartość to 100MiB (104 857 600 bajtów).
      *
      * @var int $fileSize
      */

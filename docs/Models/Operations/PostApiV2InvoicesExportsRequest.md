@@ -1,5 +1,7 @@
 # PostApiV2InvoicesExportsRequest
 
+Dane wejściowe określające kryteria i format eksportu paczki faktur.
+
 
 ## Fields
 

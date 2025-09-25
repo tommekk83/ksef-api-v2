@@ -90,12 +90,12 @@ class EntityAuthorizationGrant
     /**
      * Typ identyfikatora osoby nadającej uprawnienie.
      *
-     * @var ?AuthorIdentifierType $authorIdentifierType
+     * @var ?EntityAuthorizationGrantAuthorIdentifierType $authorIdentifierType
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authorIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthorIdentifierType|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EntityAuthorizationGrantAuthorIdentifierType|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?AuthorIdentifierType $authorIdentifierType = null;
+    public ?EntityAuthorizationGrantAuthorIdentifierType $authorIdentifierType = null;
 
     /**
      * @param  string  $id
@@ -107,10 +107,10 @@ class EntityAuthorizationGrant
      * @param  string  $description
      * @param  \DateTime  $startDate
      * @param  ?string  $authorIdentifier
-     * @param  ?AuthorIdentifierType  $authorIdentifierType
+     * @param  ?EntityAuthorizationGrantAuthorIdentifierType  $authorIdentifierType
      * @phpstan-pure
      */
-    public function __construct(string $id, string $authorizedEntityIdentifier, EntityAuthorizationsAuthorizedEntityIdentifierType $authorizedEntityIdentifierType, string $authorizingEntityIdentifier, EntityAuthorizationsAuthorizingEntityIdentifierType $authorizingEntityIdentifierType, InvoicePermissionType $authorizationScope, string $description, \DateTime $startDate, ?string $authorIdentifier = null, ?AuthorIdentifierType $authorIdentifierType = null)
+    public function __construct(string $id, string $authorizedEntityIdentifier, EntityAuthorizationsAuthorizedEntityIdentifierType $authorizedEntityIdentifierType, string $authorizingEntityIdentifier, EntityAuthorizationsAuthorizingEntityIdentifierType $authorizingEntityIdentifierType, InvoicePermissionType $authorizationScope, string $description, \DateTime $startDate, ?string $authorIdentifier = null, ?EntityAuthorizationGrantAuthorIdentifierType $authorIdentifierType = null)
     {
         $this->id = $id;
         $this->authorizedEntityIdentifier = $authorizedEntityIdentifier;

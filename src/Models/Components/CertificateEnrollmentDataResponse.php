@@ -28,14 +28,13 @@ class CertificateEnrollmentDataResponse
     public string $countryName;
 
     /**
-     * Imiona.
+     * Imię.
      *
-     * @var ?array<string> $givenNames
+     * @var ?string $givenName
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('givenNames')]
-    #[\Speakeasy\Serializer\Annotation\Type('array<string>|null')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('givenName')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?array $givenNames = null;
+    public ?string $givenName = null;
 
     /**
      * Nazwisko.
@@ -85,7 +84,7 @@ class CertificateEnrollmentDataResponse
     /**
      * @param  string  $commonName
      * @param  string  $countryName
-     * @param  ?array<string>  $givenNames
+     * @param  ?string  $givenName
      * @param  ?string  $surname
      * @param  ?string  $serialNumber
      * @param  ?string  $uniqueIdentifier
@@ -93,11 +92,11 @@ class CertificateEnrollmentDataResponse
      * @param  ?string  $organizationIdentifier
      * @phpstan-pure
      */
-    public function __construct(string $commonName, string $countryName, ?array $givenNames = null, ?string $surname = null, ?string $serialNumber = null, ?string $uniqueIdentifier = null, ?string $organizationName = null, ?string $organizationIdentifier = null)
+    public function __construct(string $commonName, string $countryName, ?string $givenName = null, ?string $surname = null, ?string $serialNumber = null, ?string $uniqueIdentifier = null, ?string $organizationName = null, ?string $organizationIdentifier = null)
     {
         $this->commonName = $commonName;
         $this->countryName = $countryName;
-        $this->givenNames = $givenNames;
+        $this->givenName = $givenName;
         $this->surname = $surname;
         $this->serialNumber = $serialNumber;
         $this->uniqueIdentifier = $uniqueIdentifier;

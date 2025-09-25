@@ -35,22 +35,22 @@ class PostApiV2InvoicesQueryMetadataResponse
     /**
      * OK
      *
-     * @var ?Components\QueryInvoicesMetadataReponse $queryInvoicesMetadataReponse
+     * @var ?Components\QueryInvoicesMetadataResponse $queryInvoicesMetadataResponse
      */
-    public ?Components\QueryInvoicesMetadataReponse $queryInvoicesMetadataReponse = null;
+    public ?Components\QueryInvoicesMetadataResponse $queryInvoicesMetadataResponse = null;
 
     /**
      * @param  string  $contentType
      * @param  int  $statusCode
      * @param  \Psr\Http\Message\ResponseInterface  $rawResponse
-     * @param  ?Components\QueryInvoicesMetadataReponse  $queryInvoicesMetadataReponse
+     * @param  ?Components\QueryInvoicesMetadataResponse  $queryInvoicesMetadataResponse
      * @phpstan-pure
      */
-    public function __construct(string $contentType, int $statusCode, \Psr\Http\Message\ResponseInterface $rawResponse, ?Components\QueryInvoicesMetadataReponse $queryInvoicesMetadataReponse = null)
+    public function __construct(string $contentType, int $statusCode, \Psr\Http\Message\ResponseInterface $rawResponse, ?Components\QueryInvoicesMetadataResponse $queryInvoicesMetadataResponse = null)
     {
         $this->contentType = $contentType;
         $this->statusCode = $statusCode;
         $this->rawResponse = $rawResponse;
-        $this->queryInvoicesMetadataReponse = $queryInvoicesMetadataReponse;
+        $this->queryInvoicesMetadataResponse = $queryInvoicesMetadataResponse;
     }
 }

@@ -17,7 +17,7 @@ use Intermedia\Ksef\Apiv2\Models\Components;
  * | Nip | 10 cyfrowy numer NIP |
  * | Pesel | 11 cyfrowy numer PESEL |
  * | Fingerprint | Odcisk palca certyfikatu |
- * | System | Identyfikator systemowy |
+ * | System | Identyfikator systemowy KSeF |
  */
 class AuthorIdentifier
 {
@@ -31,19 +31,20 @@ class AuthorIdentifier
     public Components\PersonPermissionsAuthorIdentifierType $type;
 
     /**
-     * Wartość identyfikatora.
+     * Wartość identyfikatora. W przypadku typu System należy pozostawić puste. W pozostałych przypadkach pole jest wymagane.
      *
-     * @var string $value
+     * @var ?string $value
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('value')]
-    public string $value;
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?string $value = null;
 
     /**
      * @param  Components\PersonPermissionsAuthorIdentifierType  $type
-     * @param  string  $value
+     * @param  ?string  $value
      * @phpstan-pure
      */
-    public function __construct(Components\PersonPermissionsAuthorIdentifierType $type, string $value)
+    public function __construct(Components\PersonPermissionsAuthorIdentifierType $type, ?string $value = null)
     {
         $this->type = $type;
         $this->value = $value;

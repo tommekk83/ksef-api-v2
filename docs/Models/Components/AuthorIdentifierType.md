@@ -1,6 +1,11 @@
 # AuthorIdentifierType
 
-Typ identyfikatora osoby nadającej uprawnienie.
+| Wartość | Opis |
+| --- | --- |
+| Nip | NIP. |
+| Pesel | PESEL. |
+| Fingerprint | Odcisk palca certyfikatu. |
+
 
 
 ## Values

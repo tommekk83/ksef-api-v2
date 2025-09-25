@@ -6,9 +6,9 @@
 ### Available Operations
 
 * [getByKsefNumber](#getbyksefnumber) - Pobranie faktury po numerze KSeF
-* [getList](#getlist) - Pobranie listy metadanych faktur
-* [export](#export) - [mock] Eksport paczki faktur
-* [getExportStatus](#getexportstatus) - [mock] Pobranie statusu eksportu paczki faktur
+* [get](#get) - Pobranie listy metadanych faktur
+* [export](#export) - Eksport paczki faktur
+* [getExportStatus](#getexportstatus) - Pobranie statusu eksportu paczki faktur
 
 ## getByKsefNumber
 
@@ -60,9 +60,9 @@ if ($response->res !== null) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## getList
+## get
 
-Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania.
+Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania. Wyniki sortowane są rosnąco według typu daty przekazanej w `DateRange`. Do realizacji pobierania przyrostowego należy stosować typ `PermanentStorage`. Maksymalnie można pobrać faktury w zakresie do 10 000 rekordów
 
 Wymagane uprawnienia: `InvoiceRead`.
 
@@ -84,14 +84,14 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->getInvoices->getList(
+$response = $sdk->getInvoices->get(
     pageOffset: 0,
     pageSize: 10,
     requestBody: $requestBody
 
 );
 
-if ($response->queryInvoicesMetadataReponse !== null) {
+if ($response->queryInvoicesMetadataResponse !== null) {
     // handle response
 }
 ```
@@ -100,8 +100,8 @@ if ($response->queryInvoicesMetadataReponse !== null) {
 
 | Parameter                                                                                                                     | Type                                                                                                                          | Required                                                                                                                      | Description                                                                                                                   |
 | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `pageOffset`                                                                                                                  | *?int*                                                                                                                        | :heavy_minus_sign:                                                                                                            | Indeks pierwszej strony wyników.                                                                                              |
-| `pageSize`                                                                                                                    | *?int*                                                                                                                        | :heavy_minus_sign:                                                                                                            | Rozmiar strony wyników.                                                                                                       |
+| `pageOffset`                                                                                                                  | *?int*                                                                                                                        | :heavy_minus_sign:                                                                                                            | Indeks pierwszej strony wyników (0 = pierwsza strona).                                                                        |
+| `pageSize`                                                                                                                    | *?int*                                                                                                                        | :heavy_minus_sign:                                                                                                            | Rozmiar strony wyników. Wartość musi zawierać się w przedziale od 10 do 250.                                                  |
 | `requestBody`                                                                                                                 | [?Operations\PostApiV2InvoicesQueryMetadataRequestBody](../../Models/Operations/PostApiV2InvoicesQueryMetadataRequestBody.md) | :heavy_minus_sign:                                                                                                            | Zestaw filtrów dla wyszukiwania metadanych.                                                                                   |
 
 ### Response
@@ -193,7 +193,7 @@ $response = $sdk->getInvoices->getExportStatus(
     operationReferenceNumber: '<value>'
 );
 
-if ($response->invoicesExportStatusResponse !== null) {
+if ($response->invoiceExportStatusResponse !== null) {
     // handle response
 }
 ```

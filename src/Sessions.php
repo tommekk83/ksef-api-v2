@@ -51,7 +51,7 @@ class Sessions
      *
      * > Więcej informacji:
      * > - [Przygotwanie paczki faktur](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-wsadowa.md)
-     * > - [Klucz publiczny Ministersta Finansów](/public-keys/publicKey.pem)
+     * > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
      *
      * Wymagane uprawnienia: `InvoiceWrite`.
      *
@@ -132,7 +132,9 @@ class Sessions
      *
      * Zwraca listę sesji spełniających podane kryteria wyszukiwania.
      *
-     * Wymagane uprawnienia: `Introspection`.
+     * Wymagane uprawnienia:
+     * - `Introspection` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
+     * - `InvoiceWrite` – pozwala pobrać wyłącznie sesje utworzone przez podmiot uwierzytelniający, czyli podmiot inicjujący uwierzytelnienie.
      *
      * @param  Operations\GetApiV2SessionsRequest  $request
      * @return Operations\GetApiV2SessionsResponse
@@ -214,7 +216,7 @@ class Sessions
      *
      * Sprawdza bieżący status sesji o podanym numerze referencyjnym.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @return Operations\GetApiV2SessionsReferenceNumberResponse
@@ -292,7 +294,7 @@ class Sessions
      *
      * Zwraca XML zawierający zbiorcze UPO dla sesji.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  string  $upoReferenceNumber
@@ -371,9 +373,9 @@ class Sessions
      *
      * > Więcej informacji:
      * > - [Otwarcie sesji interaktywnej](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#1-otwarcie-sesji)
-     * > - [Klucz publiczny Ministersta Finansów](/public-keys/publicKey.pem)
+     * > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
      *
      * @param  ?Operations\OnlineSessionOpenRequest  $request
      * @return Operations\OnlineSessionOpenResponse
@@ -521,7 +523,7 @@ class Sessions
      *
      * Zamyka sesję interaktywną i rozpoczyna generowanie zbiorczego UPO dla sesji.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @return Operations\PostApiV2SessionsOnlineReferenceNumberCloseResponse

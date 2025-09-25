@@ -174,6 +174,7 @@
 | `Xbc` | XBC   |
 | `Xbd` | XBD   |
 | `Xcd` | XCD   |
+| `Xcg` | XCG   |
 | `Xdr` | XDR   |
 | `Xof` | XOF   |
 | `Xpd` | XPD   |

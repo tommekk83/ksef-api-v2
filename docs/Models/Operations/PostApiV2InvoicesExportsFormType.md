@@ -1,6 +1,6 @@
 # PostApiV2InvoicesExportsFormType
 
-Struktura dokumentu.
+Typ dokumentu.
 | Wartość | Opis |
 | --- | --- |
 | FA | Faktura VAT |

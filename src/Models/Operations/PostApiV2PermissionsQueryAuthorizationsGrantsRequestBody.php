@@ -45,6 +45,7 @@ class PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody
      * | Type | Value |
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
+     * | PeppolId | Identyfikator dostawcy usług Peppol |
      *
      * @var ?PostApiV2PermissionsQueryAuthorizationsGrantsAuthorizedIdentifier $authorizedIdentifier
      */

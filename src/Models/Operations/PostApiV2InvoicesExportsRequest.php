@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 
+/** PostApiV2InvoicesExportsRequest - Dane wejściowe określające kryteria i format eksportu paczki faktur. */
 class PostApiV2InvoicesExportsRequest
 {
     /**

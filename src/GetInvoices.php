@@ -45,7 +45,7 @@ class GetInvoices
     }
 
     /**
-     * [mock] Pobranie statusu eksportu paczki faktur
+     * Pobranie statusu eksportu paczki faktur
      *
      *
      * Wymagane uprawnienia: `InvoiceRead`.
@@ -89,12 +89,12 @@ class GetInvoices
 
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\InvoicesExportStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\InvoiceExportStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
                 $response = new Operations\GetApiV2InvoicesExportsOperationReferenceNumberResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
-                    invoicesExportStatusResponse: $obj);
+                    invoiceExportStatusResponse: $obj);
 
                 return $response;
             } else {
@@ -197,7 +197,7 @@ class GetInvoices
     }
 
     /**
-     * [mock] Eksport paczki faktur
+     * Eksport paczki faktur
      *
      * Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
      * Wymagane jest przekazanie informacji o szyfrowaniu w polu `Encryption`, które służą do zabezpieczenia przygotowanej paczki z fakturami.
@@ -279,7 +279,7 @@ class GetInvoices
     /**
      * Pobranie listy metadanych faktur
      *
-     * Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania.
+     * Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania. Wyniki sortowane są rosnąco według typu daty przekazanej w `DateRange`. Do realizacji pobierania przyrostowego należy stosować typ `PermanentStorage`. Maksymalnie można pobrać faktury w zakresie do 10 000 rekordów
      *
      * Wymagane uprawnienia: `InvoiceRead`.
      *
@@ -289,7 +289,7 @@ class GetInvoices
      * @return Operations\PostApiV2InvoicesQueryMetadataResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getList(?Operations\PostApiV2InvoicesQueryMetadataRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2InvoicesQueryMetadataResponse
+    public function get(?Operations\PostApiV2InvoicesQueryMetadataRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2InvoicesQueryMetadataResponse
     {
         $request = new Operations\PostApiV2InvoicesQueryMetadataRequest(
             pageOffset: $pageOffset,
@@ -333,12 +333,12 @@ class GetInvoices
 
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryInvoicesMetadataReponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryInvoicesMetadataResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
                 $response = new Operations\PostApiV2InvoicesQueryMetadataResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
-                    queryInvoicesMetadataReponse: $obj);
+                    queryInvoicesMetadataResponse: $obj);
 
                 return $response;
             } else {
