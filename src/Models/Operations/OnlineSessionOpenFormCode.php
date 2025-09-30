@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 
 /**
- * PostApiV2SessionsOnlineFormCode - Schemat faktur wysyłanych w ramach sesji.
+ * OnlineSessionOpenFormCode - Schemat faktur wysyłanych w ramach sesji.
  *
  *
  * Obsługiwane schematy:
@@ -22,7 +22,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
  * | FA_KOR_PEF (3) | 2-1 | FA_PEF |
  *
  */
-class PostApiV2SessionsOnlineFormCode
+class OnlineSessionOpenFormCode
 {
     /**
      * Kod systemowy

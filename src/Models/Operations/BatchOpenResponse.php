@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
-class PostApiV2SessionsBatchResponse
+class BatchOpenResponse
 {
     /**
      * HTTP response content type for this operation

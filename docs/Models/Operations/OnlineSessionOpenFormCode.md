@@ -1,4 +1,4 @@
-# PostApiV2SessionsOnlineFormCode
+# OnlineSessionOpenFormCode
 
 Schemat faktur wysyłanych w ramach sesji.
 

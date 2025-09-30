@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 
 /**
- * PostApiV2SessionsBatchFormCode - Schemat faktur wysyłanych w ramach sesji.
+ * BatchOpenFormCode - Schemat faktur wysyłanych w ramach sesji.
  *
  *
  * Obsługiwane schematy:
@@ -20,7 +20,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
  * | FA (3) | 1-0E | FA |
  *
  */
-class PostApiV2SessionsBatchFormCode
+class BatchOpenFormCode
 {
     /**
      * Kod systemowy

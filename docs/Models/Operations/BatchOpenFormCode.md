@@ -1,4 +1,4 @@
-# PostApiV2SessionsBatchFormCode
+# BatchOpenFormCode
 
 Schemat faktur wysyłanych w ramach sesji.
 

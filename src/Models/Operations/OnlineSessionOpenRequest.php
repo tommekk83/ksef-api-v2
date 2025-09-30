@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 
-class PostApiV2SessionsOnlineRequest
+class OnlineSessionOpenRequest
 {
     /**
      * Schemat faktur wysyłanych w ramach sesji.
@@ -24,27 +24,27 @@ class PostApiV2SessionsOnlineRequest
      * | FA_KOR_PEF (3) | 2-1 | FA_PEF |
      *
      *
-     * @var PostApiV2SessionsOnlineFormCode $formCode
+     * @var OnlineSessionOpenFormCode $formCode
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('formCode')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2SessionsOnlineFormCode')]
-    public PostApiV2SessionsOnlineFormCode $formCode;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\OnlineSessionOpenFormCode')]
+    public OnlineSessionOpenFormCode $formCode;
 
     /**
      * Symetryczny klucz szyfrujący pliki XML, zaszyfrowany kluczem publicznym Ministerstwa Finansów.
      *
-     * @var PostApiV2SessionsOnlineEncryption $encryption
+     * @var OnlineSessionOpenEncryption $encryption
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('encryption')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2SessionsOnlineEncryption')]
-    public PostApiV2SessionsOnlineEncryption $encryption;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\OnlineSessionOpenEncryption')]
+    public OnlineSessionOpenEncryption $encryption;
 
     /**
-     * @param  PostApiV2SessionsOnlineFormCode  $formCode
-     * @param  PostApiV2SessionsOnlineEncryption  $encryption
+     * @param  OnlineSessionOpenFormCode  $formCode
+     * @param  OnlineSessionOpenEncryption  $encryption
      * @phpstan-pure
      */
-    public function __construct(PostApiV2SessionsOnlineFormCode $formCode, PostApiV2SessionsOnlineEncryption $encryption)
+    public function __construct(OnlineSessionOpenFormCode $formCode, OnlineSessionOpenEncryption $encryption)
     {
         $this->formCode = $formCode;
         $this->encryption = $encryption;

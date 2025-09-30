@@ -1,4 +1,4 @@
-# PostApiV2SessionsOnlineResponse
+# OnlineSessionOpenResponse
 
 
 ## Fields

@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 
-class PostApiV2SessionsBatchRequest
+class BatchOpenRequest
 {
     /**
      * Schemat faktur wysyłanych w ramach sesji.
@@ -22,11 +22,11 @@ class PostApiV2SessionsBatchRequest
      * | FA (3) | 1-0E | FA |
      *
      *
-     * @var PostApiV2SessionsBatchFormCode $formCode
+     * @var BatchOpenFormCode $formCode
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('formCode')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2SessionsBatchFormCode')]
-    public PostApiV2SessionsBatchFormCode $formCode;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\BatchOpenFormCode')]
+    public BatchOpenFormCode $formCode;
 
     /**
      * Informacje o przesyłanej paczce faktur.
@@ -40,11 +40,11 @@ class PostApiV2SessionsBatchRequest
     /**
      * Symetryczny klucz szyfrujący plik paczki, zaszyfrowany kluczem publicznym Ministerstwa Finansów.
      *
-     * @var PostApiV2SessionsBatchEncryption $encryption
+     * @var BatchOpenEncryption $encryption
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('encryption')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2SessionsBatchEncryption')]
-    public PostApiV2SessionsBatchEncryption $encryption;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\BatchOpenEncryption')]
+    public BatchOpenEncryption $encryption;
 
     /**
      * Określa, czy podatnik deklaruje tryb fakurowania "offline" dla dokumentów przesyłanych w sesji wsadowej.
@@ -56,13 +56,13 @@ class PostApiV2SessionsBatchRequest
     public ?bool $offlineMode = null;
 
     /**
-     * @param  PostApiV2SessionsBatchFormCode  $formCode
+     * @param  BatchOpenFormCode  $formCode
      * @param  BatchFile  $batchFile
-     * @param  PostApiV2SessionsBatchEncryption  $encryption
+     * @param  BatchOpenEncryption  $encryption
      * @param  ?bool  $offlineMode
      * @phpstan-pure
      */
-    public function __construct(PostApiV2SessionsBatchFormCode $formCode, BatchFile $batchFile, PostApiV2SessionsBatchEncryption $encryption, ?bool $offlineMode = false)
+    public function __construct(BatchOpenFormCode $formCode, BatchFile $batchFile, BatchOpenEncryption $encryption, ?bool $offlineMode = false)
     {
         $this->formCode = $formCode;
         $this->batchFile = $batchFile;

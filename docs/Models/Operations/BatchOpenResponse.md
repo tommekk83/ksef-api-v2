@@ -1,4 +1,4 @@
-# PostApiV2SessionsBatchResponse
+# BatchOpenResponse
 
 
 ## Fields

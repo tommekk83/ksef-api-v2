@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 
-/** PostApiV2SessionsBatchEncryption - Symetryczny klucz szyfrujący plik paczki, zaszyfrowany kluczem publicznym Ministerstwa Finansów. */
-class PostApiV2SessionsBatchEncryption
+/** BatchOpenEncryption - Symetryczny klucz szyfrujący plik paczki, zaszyfrowany kluczem publicznym Ministerstwa Finansów. */
+class BatchOpenEncryption
 {
     /**
      * Klucz symetryczny zaszyfrowany algorytmem RSA (Padding: OAEP z SHA-256), zakodowany w formacie Base64.

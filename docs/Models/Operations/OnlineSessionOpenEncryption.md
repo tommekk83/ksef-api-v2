@@ -1,6 +1,6 @@
-# PostApiV2SessionsBatchEncryption
+# OnlineSessionOpenEncryption
 
-Symetryczny klucz szyfrujący plik paczki, zaszyfrowany kluczem publicznym Ministerstwa Finansów.
+Symetryczny klucz szyfrujący pliki XML, zaszyfrowany kluczem publicznym Ministerstwa Finansów.
 
 
 ## Fields

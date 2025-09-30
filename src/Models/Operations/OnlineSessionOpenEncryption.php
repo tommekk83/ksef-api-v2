@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 
-/** PostApiV2SessionsOnlineEncryption - Symetryczny klucz szyfrujący pliki XML, zaszyfrowany kluczem publicznym Ministerstwa Finansów. */
-class PostApiV2SessionsOnlineEncryption
+/** OnlineSessionOpenEncryption - Symetryczny klucz szyfrujący pliki XML, zaszyfrowany kluczem publicznym Ministerstwa Finansów. */
+class OnlineSessionOpenEncryption
 {
     /**
      * Klucz symetryczny zaszyfrowany algorytmem RSA (Padding: OAEP z SHA-256), zakodowany w formacie Base64.
