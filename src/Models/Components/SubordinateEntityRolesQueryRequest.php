@@ -18,18 +18,18 @@ class SubordinateEntityRolesQueryRequest
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
      *
-     * @var ?SubordinateEntityIdentifier $subordinateEntityIdentifier
+     * @var ?SubordinateEntityRolesQueryRequestSubordinateEntityIdentifier $subordinateEntityIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('subordinateEntityIdentifier')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubordinateEntityIdentifier|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubordinateEntityRolesQueryRequestSubordinateEntityIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?SubordinateEntityIdentifier $subordinateEntityIdentifier = null;
+    public ?SubordinateEntityRolesQueryRequestSubordinateEntityIdentifier $subordinateEntityIdentifier = null;
 
     /**
-     * @param  ?SubordinateEntityIdentifier  $subordinateEntityIdentifier
+     * @param  ?SubordinateEntityRolesQueryRequestSubordinateEntityIdentifier  $subordinateEntityIdentifier
      * @phpstan-pure
      */
-    public function __construct(?SubordinateEntityIdentifier $subordinateEntityIdentifier = null)
+    public function __construct(?SubordinateEntityRolesQueryRequestSubordinateEntityIdentifier $subordinateEntityIdentifier = null)
     {
         $this->subordinateEntityIdentifier = $subordinateEntityIdentifier;
     }

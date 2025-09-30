@@ -22,6 +22,7 @@ class SessionStatusResponse
      * | 200 | Sesja wsadowa przetworzona pomyślnie | - |
      * | 405 | Błąd weryfikacji poprawności dostarczonych elementów paczki | - |
      * | 415 | Błąd odszyfrowania dostarczonego klucza | - |
+     * | 420 | Przekroczony limit faktur w sesji | - |
      * | 430 | Błąd dekompresji pierwotnego archiwum | - |
      * | 435 | Błąd odszyfrowania zaszyfrowanych części archiwum | - |
      * | 440 | Sesja anulowana, przekroczono czas wysyłki | - |

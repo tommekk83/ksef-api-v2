@@ -8,18 +8,17 @@ declare(strict_types=1);
 
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
-
+use Intermedia\Ksef\Apiv2\Models\Components;
 /** PostApiV2InvoicesQueryMetadataAmount - Filtr kwotowy – brutto, netto lub VAT (z wartością). */
 class PostApiV2InvoicesQueryMetadataAmount
 {
     /**
      *
-     * @var ?PostApiV2InvoicesQueryMetadataType $type
+     * @var Components\AmountType $type
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('type')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesQueryMetadataType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesQueryMetadataType $type = null;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AmountType')]
+    public Components\AmountType $type;
 
     /**
      *
@@ -38,12 +37,12 @@ class PostApiV2InvoicesQueryMetadataAmount
     public ?float $to = null;
 
     /**
-     * @param  ?PostApiV2InvoicesQueryMetadataType  $type
+     * @param  Components\AmountType  $type
      * @param  ?float  $from
      * @param  ?float  $to
      * @phpstan-pure
      */
-    public function __construct(?PostApiV2InvoicesQueryMetadataType $type = null, ?float $from = null, ?float $to = null)
+    public function __construct(Components\AmountType $type, ?float $from = null, ?float $to = null)
     {
         $this->type = $type;
         $this->from = $from;

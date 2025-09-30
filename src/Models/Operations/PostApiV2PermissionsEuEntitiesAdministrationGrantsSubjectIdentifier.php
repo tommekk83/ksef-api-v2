@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
 /**
- * PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier - Identyfikator podmiotu.
+ * PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier - Identyfikator podmiotu uprawnionego.
  *
  * | Type | Value |
  * | --- | --- |

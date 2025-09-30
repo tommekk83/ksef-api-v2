@@ -1,0 +1,11 @@
+# QueryTokensResponseItemAuthorIdentifier
+
+Identyfikator osoby która wygenerowała token.
+
+
+## Fields
+
+| Field                                                                                                                               | Type                                                                                                                                | Required                                                                                                                            | Description                                                                                                                         |
+| ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `type`                                                                                                                              | [Components\TokenAuthorIdentifierType](../../Models/Components/TokenAuthorIdentifierType.md)                                        | :heavy_check_mark:                                                                                                                  | Typ identyfikatora.<br/>\| Wartość \| Opis \|<br/>\| --- \| --- \|<br/>\| Nip \| NIP. \|<br/>\| Pesel \| PESEL. \|<br/>\| Fingerprint \| Odcisk palca certyfikatu. \|<br/> |
+| `value`                                                                                                                             | *string*                                                                                                                            | :heavy_check_mark:                                                                                                                  | Wartość identyfikatora.                                                                                                             |

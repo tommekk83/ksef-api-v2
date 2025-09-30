@@ -9,125 +9,33 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Components;
 
 
+/** AuthenticationToken - Token operacji uwierzytelnienia. */
 class AuthenticationToken
 {
     /**
-     * Data i czas utworzenia tokena.
+     * Token w formacie JWT.
      *
-     * @var ?\DateTime $dateCreated
+     * @var string $token
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('dateCreated')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?\DateTime $dateCreated = null;
+    #[\Speakeasy\Serializer\Annotation\SerializedName('token')]
+    public string $token;
 
     /**
-     * Status tokena.
+     * Data ważności tokena.
      *
-     * | Wartość | Opis |
-     * | --- | --- |
-     * | Pending | Token został utworzony ale jest jeszcze w trakcie aktywacji i nadawania uprawnień. Nie może być jeszcze wykorzystywany do uwierzytelniania. |
-     * | Active | Token jest aktywny i może być wykorzystywany do uwierzytelniania. |
-     * | Revoking | Token jest w trakcie unieważniania. Nie może już być wykorzystywany do uwierzytelniania. |
-     * | Revoked | Token został unieważniony i nie może być wykorzystywany do uwierzytelniania. |
-     * | Failed | Nie udało się aktywować tokena. Należy wygenerować nowy token, obecny nie może być wykorzystywany do uwierzytelniania. |
-     *
-     *
-     * @var ?AuthenticationTokenStatus $status
+     * @var \DateTime $validUntil
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('status')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationTokenStatus|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?AuthenticationTokenStatus $status = null;
+    #[\Speakeasy\Serializer\Annotation\SerializedName('validUntil')]
+    public \DateTime $validUntil;
 
     /**
-     * Numer referencyjny tokena.
-     *
-     * @var ?string $referenceNumber
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('referenceNumber')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $referenceNumber = null;
-
-    /**
-     * Identyfikator osoby która wygenerowała token.
-     *
-     * @var ?AuthorIdentifier $authorIdentifier
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('authorIdentifier')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthorIdentifier|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?AuthorIdentifier $authorIdentifier = null;
-
-    /**
-     * Identyfikator kontekstu, w którym został wygenerowany token i do którego daje dostęp.
-     *
-     * @var ?AuthenticationTokenContextIdentifier $contextIdentifier
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('contextIdentifier')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationTokenContextIdentifier|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?AuthenticationTokenContextIdentifier $contextIdentifier = null;
-
-    /**
-     * Opis tokena.
-     *
-     * @var ?string $description
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('description')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $description = null;
-
-    /**
-     * Uprawnienia przypisane tokenowi.
-     *
-     * @var ?array<TokenPermissionType> $requestedPermissions
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('requestedPermissions')]
-    #[\Speakeasy\Serializer\Annotation\Type('array<\Intermedia\Ksef\Apiv2\Models\Components\TokenPermissionType>|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?array $requestedPermissions = null;
-
-    /**
-     * Data ostatniego użycia tokena.
-     *
-     * @var ?\DateTime $lastUseDate
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('lastUseDate')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?\DateTime $lastUseDate = null;
-
-    /**
-     * Dodatkowe informacje na temat statusu, zwracane w przypadku błędów.
-     *
-     * @var ?array<string> $statusDetails
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('statusDetails')]
-    #[\Speakeasy\Serializer\Annotation\Type('array<string>|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?array $statusDetails = null;
-
-    /**
-     * @param  ?\DateTime  $dateCreated
-     * @param  ?AuthenticationTokenStatus  $status
-     * @param  ?string  $referenceNumber
-     * @param  ?AuthorIdentifier  $authorIdentifier
-     * @param  ?AuthenticationTokenContextIdentifier  $contextIdentifier
-     * @param  ?string  $description
-     * @param  ?array<TokenPermissionType>  $requestedPermissions
-     * @param  ?\DateTime  $lastUseDate
-     * @param  ?array<string>  $statusDetails
+     * @param  string  $token
+     * @param  \DateTime  $validUntil
      * @phpstan-pure
      */
-    public function __construct(?\DateTime $dateCreated = null, ?AuthenticationTokenStatus $status = null, ?string $referenceNumber = null, ?AuthorIdentifier $authorIdentifier = null, ?AuthenticationTokenContextIdentifier $contextIdentifier = null, ?string $description = null, ?array $requestedPermissions = null, ?\DateTime $lastUseDate = null, ?array $statusDetails = null)
+    public function __construct(string $token, \DateTime $validUntil)
     {
-        $this->dateCreated = $dateCreated;
-        $this->status = $status;
-        $this->referenceNumber = $referenceNumber;
-        $this->authorIdentifier = $authorIdentifier;
-        $this->contextIdentifier = $contextIdentifier;
-        $this->description = $description;
-        $this->requestedPermissions = $requestedPermissions;
-        $this->lastUseDate = $lastUseDate;
-        $this->statusDetails = $statusDetails;
+        $this->token = $token;
+        $this->validUntil = $validUntil;
     }
 }

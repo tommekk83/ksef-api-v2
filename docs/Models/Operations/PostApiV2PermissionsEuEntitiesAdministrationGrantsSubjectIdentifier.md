@@ -1,6 +1,6 @@
 # PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier
 
-Identyfikator podmiotu.
+Identyfikator podmiotu uprawnionego.
 | Type | Value |
 | --- | --- |
 | Fingerprint | Odcisk palca certyfikatu |

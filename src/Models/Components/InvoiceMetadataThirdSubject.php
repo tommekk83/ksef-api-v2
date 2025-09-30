@@ -12,22 +12,13 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class InvoiceMetadataThirdSubject
 {
     /**
-     * Typ identyfikatora podmiotu trzeciego.
+     * Identyfikator podmiotu trzeciego.
      *
-     * | Wartość | Opis |
-     * | --- | --- |
-     * | Nip | Nip |
-     * | InternalId | Identyfikator wewnętrzny |
-     * | VatUe | VAT UE |
-     * | Other | Inny identyfikator |
-     * | None | Brak identyfikatora podmiotu trzeciego |
-     *
-     *
-     * @var ThirdSubjectIdentifierType $identifierType
+     * @var InvoiceMetadataThirdSubjectIdentifier $identifier
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('identifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\ThirdSubjectIdentifierType')]
-    public ThirdSubjectIdentifierType $identifierType;
+    #[\Speakeasy\Serializer\Annotation\SerializedName('identifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\InvoiceMetadataThirdSubjectIdentifier')]
+    public InvoiceMetadataThirdSubjectIdentifier $identifier;
 
     /**
      * Rola podmiotu trzeciego.
@@ -36,15 +27,6 @@ class InvoiceMetadataThirdSubject
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('role')]
     public int $role;
-
-    /**
-     * Wartość identyfikatora podmiotu trzeciego.
-     *
-     * @var ?string $identifier
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('identifier')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $identifier = null;
 
     /**
      * Nazwa podmiotu trzeciego.
@@ -56,17 +38,15 @@ class InvoiceMetadataThirdSubject
     public ?string $name = null;
 
     /**
-     * @param  ThirdSubjectIdentifierType  $identifierType
+     * @param  InvoiceMetadataThirdSubjectIdentifier  $identifier
      * @param  int  $role
-     * @param  ?string  $identifier
      * @param  ?string  $name
      * @phpstan-pure
      */
-    public function __construct(ThirdSubjectIdentifierType $identifierType, int $role, ?string $identifier = null, ?string $name = null)
+    public function __construct(InvoiceMetadataThirdSubjectIdentifier $identifier, int $role, ?string $name = null)
     {
-        $this->identifierType = $identifierType;
-        $this->role = $role;
         $this->identifier = $identifier;
+        $this->role = $role;
         $this->name = $name;
     }
 }

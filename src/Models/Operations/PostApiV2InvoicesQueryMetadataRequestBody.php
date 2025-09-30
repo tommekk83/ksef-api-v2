@@ -68,24 +68,23 @@ class PostApiV2InvoicesQueryMetadataRequestBody
     public ?PostApiV2InvoicesQueryMetadataAmount $amount = null;
 
     /**
-     * Dane sprzedawcy.
+     * Nip sprzedawcy.
      *
-     * @var ?PostApiV2InvoicesQueryMetadataSeller $seller
+     * @var ?string $sellerNip
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('seller')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesQueryMetadataSeller|null')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('sellerNip')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesQueryMetadataSeller $seller = null;
+    public ?string $sellerNip = null;
 
     /**
-     * Dane nabywcy.
+     * Identyfikator nabywcy.
      *
-     * @var ?PostApiV2InvoicesQueryMetadataBuyer $buyer
+     * @var ?PostApiV2InvoicesQueryMetadataBuyerIdentifier $buyerIdentifier
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('buyer')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesQueryMetadataBuyer|null')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('buyerIdentifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesQueryMetadataBuyerIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesQueryMetadataBuyer $buyer = null;
+    public ?PostApiV2InvoicesQueryMetadataBuyerIdentifier $buyerIdentifier = null;
 
     /**
      * Kody walut.
@@ -174,8 +173,8 @@ class PostApiV2InvoicesQueryMetadataRequestBody
      * @param  ?string  $ksefNumber
      * @param  ?string  $invoiceNumber
      * @param  ?PostApiV2InvoicesQueryMetadataAmount  $amount
-     * @param  ?PostApiV2InvoicesQueryMetadataSeller  $seller
-     * @param  ?PostApiV2InvoicesQueryMetadataBuyer  $buyer
+     * @param  ?string  $sellerNip
+     * @param  ?PostApiV2InvoicesQueryMetadataBuyerIdentifier  $buyerIdentifier
      * @param  ?array<Components\CurrencyCode>  $currencyCodes
      * @param  ?PostApiV2InvoicesQueryMetadataInvoicingMode  $invoicingMode
      * @param  ?bool  $isSelfInvoicing
@@ -184,15 +183,15 @@ class PostApiV2InvoicesQueryMetadataRequestBody
      * @param  ?bool  $hasAttachment
      * @phpstan-pure
      */
-    public function __construct(Components\InvoiceQuerySubjectType $subjectType, PostApiV2InvoicesQueryMetadataDateRange $dateRange, ?string $ksefNumber = null, ?string $invoiceNumber = null, ?PostApiV2InvoicesQueryMetadataAmount $amount = null, ?PostApiV2InvoicesQueryMetadataSeller $seller = null, ?PostApiV2InvoicesQueryMetadataBuyer $buyer = null, ?array $currencyCodes = null, ?PostApiV2InvoicesQueryMetadataInvoicingMode $invoicingMode = null, ?bool $isSelfInvoicing = null, ?PostApiV2InvoicesQueryMetadataFormType $formType = null, ?array $invoiceTypes = null, ?bool $hasAttachment = null)
+    public function __construct(Components\InvoiceQuerySubjectType $subjectType, PostApiV2InvoicesQueryMetadataDateRange $dateRange, ?string $ksefNumber = null, ?string $invoiceNumber = null, ?PostApiV2InvoicesQueryMetadataAmount $amount = null, ?string $sellerNip = null, ?PostApiV2InvoicesQueryMetadataBuyerIdentifier $buyerIdentifier = null, ?array $currencyCodes = null, ?PostApiV2InvoicesQueryMetadataInvoicingMode $invoicingMode = null, ?bool $isSelfInvoicing = null, ?PostApiV2InvoicesQueryMetadataFormType $formType = null, ?array $invoiceTypes = null, ?bool $hasAttachment = null)
     {
         $this->subjectType = $subjectType;
         $this->dateRange = $dateRange;
         $this->ksefNumber = $ksefNumber;
         $this->invoiceNumber = $invoiceNumber;
         $this->amount = $amount;
-        $this->seller = $seller;
-        $this->buyer = $buyer;
+        $this->sellerNip = $sellerNip;
+        $this->buyerIdentifier = $buyerIdentifier;
         $this->currencyCodes = $currencyCodes;
         $this->invoicingMode = $invoicingMode;
         $this->isSelfInvoicing = $isSelfInvoicing;

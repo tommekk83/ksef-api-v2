@@ -14,10 +14,10 @@ class QueryTokensResponse
     /**
      * Lista tokenów uwierzytelniających.
      *
-     * @var array<AuthenticationToken> $tokens
+     * @var array<QueryTokensResponseItem> $tokens
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('tokens')]
-    #[\Speakeasy\Serializer\Annotation\Type('array<\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationToken>')]
+    #[\Speakeasy\Serializer\Annotation\Type('array<\Intermedia\Ksef\Apiv2\Models\Components\QueryTokensResponseItem>')]
     public array $tokens;
 
     /**
@@ -30,7 +30,7 @@ class QueryTokensResponse
     public ?string $continuationToken = null;
 
     /**
-     * @param  array<AuthenticationToken>  $tokens
+     * @param  array<QueryTokensResponseItem>  $tokens
      * @param  ?string  $continuationToken
      * @phpstan-pure
      */

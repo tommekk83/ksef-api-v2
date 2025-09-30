@@ -15,11 +15,11 @@ class PostApiV2AuthKsefTokenContextIdentifier
     /**
      * Typ identyfikatora
      *
-     * @var Components\ContextIdentifierType $type
+     * @var Components\AuthenticationContextIdentifierType $type
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('type')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\ContextIdentifierType')]
-    public Components\ContextIdentifierType $type;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationContextIdentifierType')]
+    public Components\AuthenticationContextIdentifierType $type;
 
     /**
      * Wartość identyfikatora
@@ -30,11 +30,11 @@ class PostApiV2AuthKsefTokenContextIdentifier
     public string $value;
 
     /**
-     * @param  Components\ContextIdentifierType  $type
+     * @param  Components\AuthenticationContextIdentifierType  $type
      * @param  string  $value
      * @phpstan-pure
      */
-    public function __construct(Components\ContextIdentifierType $type, string $value)
+    public function __construct(Components\AuthenticationContextIdentifierType $type, string $value)
     {
         $this->type = $type;
         $this->value = $value;

@@ -62,61 +62,47 @@ class PersonalPermission
     public bool $canDelegate;
 
     /**
-     * Identyfikator kontekstu uprawnienia, jeśli inny niż kontekst uwierzytelnienia.
+     * Identyfikator kontekstu uprawnienia (dla uprawnień nadanych podmiotom do obsługi faktur).
      *
-     * @var ?string $contextIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     *
+     * @var ?PersonalPermissionContextIdentifier $contextIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('contextIdentifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonalPermissionContextIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $contextIdentifier = null;
-
-    /**
-     * Typ identyfikatora kontekstu uprawnienia.
-     *
-     * @var ?PersonalPermissionContextIdentifierType $contextIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('contextIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonalPermissionContextIdentifierType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PersonalPermissionContextIdentifierType $contextIdentifierType = null;
+    public ?PersonalPermissionContextIdentifier $contextIdentifier = null;
 
     /**
      * Identyfikator podmiotu uprawnionego, jeśli inny niż podmiot uwierzytelnienia.
      *
-     * @var ?string $authorizedIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     *
+     * @var ?PersonalPermissionAuthorizedIdentifier $authorizedIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authorizedIdentifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonalPermissionAuthorizedIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $authorizedIdentifier = null;
+    public ?PersonalPermissionAuthorizedIdentifier $authorizedIdentifier = null;
 
     /**
-     * Typ identyfikatora podmiotu uprawnionego.
+     * Identyfikator podmiotu docelowego (dla uprawnień pośrednich).
      *
-     * @var ?AuthorizedIdentifierType $authorizedIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('authorizedIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthorizedIdentifierType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?AuthorizedIdentifierType $authorizedIdentifierType = null;
-
-    /**
-     * Identyfikator podmiotu docelowego.
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
      *
-     * @var ?string $targetIdentifier
+     * @var ?PersonalPermissionTargetIdentifier $targetIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('targetIdentifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonalPermissionTargetIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $targetIdentifier = null;
-
-    /**
-     * Typ identyfikatora podmiotu docelowego.
-     *
-     * @var ?PersonalPermissionTargetIdentifierType $targetIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('targetIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonalPermissionTargetIdentifierType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PersonalPermissionTargetIdentifierType $targetIdentifierType = null;
+    public ?PersonalPermissionTargetIdentifier $targetIdentifier = null;
 
     /**
      * @param  string  $id
@@ -125,15 +111,12 @@ class PersonalPermission
      * @param  PermissionState  $permissionState
      * @param  \DateTime  $startDate
      * @param  bool  $canDelegate
-     * @param  ?string  $contextIdentifier
-     * @param  ?PersonalPermissionContextIdentifierType  $contextIdentifierType
-     * @param  ?string  $authorizedIdentifier
-     * @param  ?AuthorizedIdentifierType  $authorizedIdentifierType
-     * @param  ?string  $targetIdentifier
-     * @param  ?PersonalPermissionTargetIdentifierType  $targetIdentifierType
+     * @param  ?PersonalPermissionContextIdentifier  $contextIdentifier
+     * @param  ?PersonalPermissionAuthorizedIdentifier  $authorizedIdentifier
+     * @param  ?PersonalPermissionTargetIdentifier  $targetIdentifier
      * @phpstan-pure
      */
-    public function __construct(string $id, PersonalPermissionScope $permissionScope, string $description, PermissionState $permissionState, \DateTime $startDate, bool $canDelegate, ?string $contextIdentifier = null, ?PersonalPermissionContextIdentifierType $contextIdentifierType = null, ?string $authorizedIdentifier = null, ?AuthorizedIdentifierType $authorizedIdentifierType = null, ?string $targetIdentifier = null, ?PersonalPermissionTargetIdentifierType $targetIdentifierType = null)
+    public function __construct(string $id, PersonalPermissionScope $permissionScope, string $description, PermissionState $permissionState, \DateTime $startDate, bool $canDelegate, ?PersonalPermissionContextIdentifier $contextIdentifier = null, ?PersonalPermissionAuthorizedIdentifier $authorizedIdentifier = null, ?PersonalPermissionTargetIdentifier $targetIdentifier = null)
     {
         $this->id = $id;
         $this->permissionScope = $permissionScope;
@@ -142,10 +125,7 @@ class PersonalPermission
         $this->startDate = $startDate;
         $this->canDelegate = $canDelegate;
         $this->contextIdentifier = $contextIdentifier;
-        $this->contextIdentifierType = $contextIdentifierType;
         $this->authorizedIdentifier = $authorizedIdentifier;
-        $this->authorizedIdentifierType = $authorizedIdentifierType;
         $this->targetIdentifier = $targetIdentifier;
-        $this->targetIdentifierType = $targetIdentifierType;
     }
 }

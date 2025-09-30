@@ -39,36 +39,29 @@ class EntityRole
     /**
      * Identyfikator podmiotu nadrzędnego.
      *
-     * @var ?string $parentEntityIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     *
+     * @var ?ParentEntityIdentifier $parentEntityIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('parentEntityIdentifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\ParentEntityIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $parentEntityIdentifier = null;
-
-    /**
-     * Typ identyfikatora podmiotu nadrzędnego.
-     *
-     * @var ?ParentEntityIdentifierType $parentEntityIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('parentEntityIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\ParentEntityIdentifierType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?ParentEntityIdentifierType $parentEntityIdentifierType = null;
+    public ?ParentEntityIdentifier $parentEntityIdentifier = null;
 
     /**
      * @param  EntityRoleType  $role
      * @param  string  $description
      * @param  \DateTime  $startDate
-     * @param  ?string  $parentEntityIdentifier
-     * @param  ?ParentEntityIdentifierType  $parentEntityIdentifierType
+     * @param  ?ParentEntityIdentifier  $parentEntityIdentifier
      * @phpstan-pure
      */
-    public function __construct(EntityRoleType $role, string $description, \DateTime $startDate, ?string $parentEntityIdentifier = null, ?ParentEntityIdentifierType $parentEntityIdentifierType = null)
+    public function __construct(EntityRoleType $role, string $description, \DateTime $startDate, ?ParentEntityIdentifier $parentEntityIdentifier = null)
     {
         $this->role = $role;
         $this->description = $description;
         $this->startDate = $startDate;
         $this->parentEntityIdentifier = $parentEntityIdentifier;
-        $this->parentEntityIdentifierType = $parentEntityIdentifierType;
     }
 }

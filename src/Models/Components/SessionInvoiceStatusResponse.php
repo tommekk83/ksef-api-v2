@@ -106,7 +106,7 @@ class SessionInvoiceStatusResponse
     public ?\DateTime $acquisitionDate = null;
 
     /**
-     * Data trwałego zapisu faktury w repozytorium systemu KSeF. Od tego momentu faktura jest dostępna do pobrania.
+     * Data trwałego zapisu faktury w repozytorium systemu KSeF.
      *
      * @var ?\DateTime $permanentStorageDate
      */

@@ -19,18 +19,18 @@ class SubunitPermissionsQueryRequest
      * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
      * | Nip | 10 cyfrowy numer NIP |
      *
-     * @var ?SubunitIdentifier $subunitIdentifier
+     * @var ?SubunitPermissionsQueryRequestSubunitIdentifier $subunitIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('subunitIdentifier')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitIdentifier|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionsQueryRequestSubunitIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?SubunitIdentifier $subunitIdentifier = null;
+    public ?SubunitPermissionsQueryRequestSubunitIdentifier $subunitIdentifier = null;
 
     /**
-     * @param  ?SubunitIdentifier  $subunitIdentifier
+     * @param  ?SubunitPermissionsQueryRequestSubunitIdentifier  $subunitIdentifier
      * @phpstan-pure
      */
-    public function __construct(?SubunitIdentifier $subunitIdentifier = null)
+    public function __construct(?SubunitPermissionsQueryRequestSubunitIdentifier $subunitIdentifier = null)
     {
         $this->subunitIdentifier = $subunitIdentifier;
     }

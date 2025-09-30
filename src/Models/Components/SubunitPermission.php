@@ -22,53 +22,46 @@ class SubunitPermission
     /**
      * Identyfikator uprawnionego.
      *
-     * @var string $authorizedIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | Pesel | 11 cyfrowy numer PESEL |
+     * | Fingerprint | Odcisk palca certyfikatu |
+     *
+     * @var SubunitPermissionAuthorizedIdentifier $authorizedIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authorizedIdentifier')]
-    public string $authorizedIdentifier;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionAuthorizedIdentifier')]
+    public SubunitPermissionAuthorizedIdentifier $authorizedIdentifier;
 
     /**
-     * Typ identyfikatora uprawnionego.
+     * Identyfikator jednostki lub podmiotu podrzędnego.
      *
-     * @var SubunitPermissionsSubjectIdentifierType $authorizedIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('authorizedIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionsSubjectIdentifierType')]
-    public SubunitPermissionsSubjectIdentifierType $authorizedIdentifierType;
-
-    /**
-     * Identyfikator podmiotu podrzędnego.
+     * | Type | Value |
+     * | --- | --- |
+     * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
+     * | Nip | 10 cyfrowy numer NIP |
      *
-     * @var string $subunitIdentifier
+     * @var SubunitPermissionSubunitIdentifier $subunitIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('subunitIdentifier')]
-    public string $subunitIdentifier;
-
-    /**
-     * Typ identyfikatora podmiotu podrzędnego.
-     *
-     * @var SubunitPermissionsSubunitIdentifierType $subunitIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('subunitIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionsSubunitIdentifierType')]
-    public SubunitPermissionsSubunitIdentifierType $subunitIdentifierType;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionSubunitIdentifier')]
+    public SubunitPermissionSubunitIdentifier $subunitIdentifier;
 
     /**
      * Identyfikator uprawniającego.
      *
-     * @var string $authorIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | Pesel | 11 cyfrowy numer PESEL |
+     * | Fingerprint | Odcisk palca certyfikatu |
+     *
+     * @var SubunitPermissionAuthorIdentifier $authorIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authorIdentifier')]
-    public string $authorIdentifier;
-
-    /**
-     * Typ identyfikatora uprawniającego.
-     *
-     * @var SubunitPermissionsAuthorIdentifierType $authorIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('authorIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionsAuthorIdentifierType')]
-    public SubunitPermissionsAuthorIdentifierType $authorIdentifierType;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionAuthorIdentifier')]
+    public SubunitPermissionAuthorIdentifier $authorIdentifier;
 
     /**
      * Uprawnienie.
@@ -97,26 +90,20 @@ class SubunitPermission
 
     /**
      * @param  string  $id
-     * @param  string  $authorizedIdentifier
-     * @param  SubunitPermissionsSubjectIdentifierType  $authorizedIdentifierType
-     * @param  string  $subunitIdentifier
-     * @param  SubunitPermissionsSubunitIdentifierType  $subunitIdentifierType
-     * @param  string  $authorIdentifier
-     * @param  SubunitPermissionsAuthorIdentifierType  $authorIdentifierType
+     * @param  SubunitPermissionAuthorizedIdentifier  $authorizedIdentifier
+     * @param  SubunitPermissionSubunitIdentifier  $subunitIdentifier
+     * @param  SubunitPermissionAuthorIdentifier  $authorIdentifier
      * @param  SubunitPermissionScope  $permissionScope
      * @param  string  $description
      * @param  \DateTime  $startDate
      * @phpstan-pure
      */
-    public function __construct(string $id, string $authorizedIdentifier, SubunitPermissionsSubjectIdentifierType $authorizedIdentifierType, string $subunitIdentifier, SubunitPermissionsSubunitIdentifierType $subunitIdentifierType, string $authorIdentifier, SubunitPermissionsAuthorIdentifierType $authorIdentifierType, SubunitPermissionScope $permissionScope, string $description, \DateTime $startDate)
+    public function __construct(string $id, SubunitPermissionAuthorizedIdentifier $authorizedIdentifier, SubunitPermissionSubunitIdentifier $subunitIdentifier, SubunitPermissionAuthorIdentifier $authorIdentifier, SubunitPermissionScope $permissionScope, string $description, \DateTime $startDate)
     {
         $this->id = $id;
         $this->authorizedIdentifier = $authorizedIdentifier;
-        $this->authorizedIdentifierType = $authorizedIdentifierType;
         $this->subunitIdentifier = $subunitIdentifier;
-        $this->subunitIdentifierType = $subunitIdentifierType;
         $this->authorIdentifier = $authorIdentifier;
-        $this->authorIdentifierType = $authorIdentifierType;
         $this->permissionScope = $permissionScope;
         $this->description = $description;
         $this->startDate = $startDate;

@@ -22,19 +22,17 @@ class EuEntityPermission
     /**
      * Identyfikator uprawniającego.
      *
-     * @var string $authorIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | Pesel | 11 cyfrowy numer PESEL |
+     * | Fingerprint | Odcisk palca certyfikatu |
+     *
+     * @var EuEntityPermissionAuthorIdentifier $authorIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authorIdentifier')]
-    public string $authorIdentifier;
-
-    /**
-     * Typ identyfikatora uprawniającego.
-     *
-     * @var EuEntityPermissionsAuthorIdentifierType $authorIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('authorIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EuEntityPermissionsAuthorIdentifierType')]
-    public EuEntityPermissionsAuthorIdentifierType $authorIdentifierType;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EuEntityPermissionAuthorIdentifier')]
+    public EuEntityPermissionAuthorIdentifier $authorIdentifier;
 
     /**
      * Identyfikator podmiotu unijnego.
@@ -87,8 +85,7 @@ class EuEntityPermission
 
     /**
      * @param  string  $id
-     * @param  string  $authorIdentifier
-     * @param  EuEntityPermissionsAuthorIdentifierType  $authorIdentifierType
+     * @param  EuEntityPermissionAuthorIdentifier  $authorIdentifier
      * @param  string  $vatUeIdentifier
      * @param  string  $euEntityName
      * @param  string  $authorizedFingerprintIdentifier
@@ -97,11 +94,10 @@ class EuEntityPermission
      * @param  \DateTime  $startDate
      * @phpstan-pure
      */
-    public function __construct(string $id, string $authorIdentifier, EuEntityPermissionsAuthorIdentifierType $authorIdentifierType, string $vatUeIdentifier, string $euEntityName, string $authorizedFingerprintIdentifier, EuEntityPermissionsQueryPermissionType $permissionScope, string $description, \DateTime $startDate)
+    public function __construct(string $id, EuEntityPermissionAuthorIdentifier $authorIdentifier, string $vatUeIdentifier, string $euEntityName, string $authorizedFingerprintIdentifier, EuEntityPermissionsQueryPermissionType $permissionScope, string $description, \DateTime $startDate)
     {
         $this->id = $id;
         $this->authorIdentifier = $authorIdentifier;
-        $this->authorIdentifierType = $authorIdentifierType;
         $this->vatUeIdentifier = $vatUeIdentifier;
         $this->euEntityName = $euEntityName;
         $this->authorizedFingerprintIdentifier = $authorizedFingerprintIdentifier;

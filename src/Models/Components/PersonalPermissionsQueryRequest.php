@@ -33,12 +33,12 @@ class PersonalPermissionsQueryRequest
      * | Nip | 10 cyfrowy numer NIP |
      * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
      *
-     * @var ?TargetIdentifier $targetIdentifier
+     * @var ?PersonalPermissionsQueryRequestTargetIdentifier $targetIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('targetIdentifier')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\TargetIdentifier|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonalPermissionsQueryRequestTargetIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?TargetIdentifier $targetIdentifier = null;
+    public ?PersonalPermissionsQueryRequestTargetIdentifier $targetIdentifier = null;
 
     /**
      * Możliwe uprawnienia do filtrowania.
@@ -67,12 +67,12 @@ class PersonalPermissionsQueryRequest
 
     /**
      * @param  ?PersonalPermissionsQueryRequestContextIdentifier  $contextIdentifier
-     * @param  ?TargetIdentifier  $targetIdentifier
+     * @param  ?PersonalPermissionsQueryRequestTargetIdentifier  $targetIdentifier
      * @param  ?array<PersonalPermissionType>  $permissionTypes
      * @param  ?PersonalPermissionsQueryRequestPermissionState  $permissionState
      * @phpstan-pure
      */
-    public function __construct(?PersonalPermissionsQueryRequestContextIdentifier $contextIdentifier = null, ?TargetIdentifier $targetIdentifier = null, ?array $permissionTypes = null, ?PersonalPermissionsQueryRequestPermissionState $permissionState = null)
+    public function __construct(?PersonalPermissionsQueryRequestContextIdentifier $contextIdentifier = null, ?PersonalPermissionsQueryRequestTargetIdentifier $targetIdentifier = null, ?array $permissionTypes = null, ?PersonalPermissionsQueryRequestPermissionState $permissionState = null)
     {
         $this->contextIdentifier = $contextIdentifier;
         $this->targetIdentifier = $targetIdentifier;

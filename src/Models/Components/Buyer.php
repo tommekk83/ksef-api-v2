@@ -13,30 +13,13 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class Buyer
 {
     /**
-     * Typ identyfikatora nabywcy.
+     * Identyfikator nabywcy.
      *
-     * | Wartość | Opis |
-     * | --- | --- |
-     * | None | Brak identyfikatora nabywcy |
-     * | Other | Inny |
-     * | Nip | NIP |
-     * | VatUe | VAT UE |
-     *
-     *
-     * @var BuyerIdentifierType $identifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('identifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\BuyerIdentifierType')]
-    public BuyerIdentifierType $identifierType;
-
-    /**
-     * Wartośc identyfikatora nabywcy.
-     *
-     * @var ?string $identifier
+     * @var Identifier $identifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('identifier')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $identifier = null;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\Identifier')]
+    public Identifier $identifier;
 
     /**
      * Nazwa nabywcy.
@@ -48,14 +31,12 @@ class Buyer
     public ?string $name = null;
 
     /**
-     * @param  BuyerIdentifierType  $identifierType
-     * @param  ?string  $identifier
+     * @param  Identifier  $identifier
      * @param  ?string  $name
      * @phpstan-pure
      */
-    public function __construct(BuyerIdentifierType $identifierType, ?string $identifier = null, ?string $name = null)
+    public function __construct(Identifier $identifier, ?string $name = null)
     {
-        $this->identifierType = $identifierType;
         $this->identifier = $identifier;
         $this->name = $name;
     }

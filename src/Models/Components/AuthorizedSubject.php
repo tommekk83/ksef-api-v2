@@ -29,15 +29,6 @@ class AuthorizedSubject
     public int $role;
 
     /**
-     *
-     * @var ?string $identifiter
-     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('identifiter')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $identifiter = null;
-
-    /**
      * Nazwa podmiotu upoważnionego.
      *
      * @var ?string $name
@@ -49,15 +40,13 @@ class AuthorizedSubject
     /**
      * @param  string  $nip
      * @param  int  $role
-     * @param  ?string  $identifiter
      * @param  ?string  $name
      * @phpstan-pure
      */
-    public function __construct(string $nip, int $role, ?string $identifiter = null, ?string $name = null)
+    public function __construct(string $nip, int $role, ?string $name = null)
     {
         $this->nip = $nip;
         $this->role = $role;
-        $this->identifiter = $identifiter;
         $this->name = $name;
     }
 }

@@ -298,7 +298,7 @@ $sdk = Apiv2\Client::builder()
 $request = new Operations\PostApiV2AuthKsefTokenRequest(
     challenge: '20250625-CR-2FDC223000-C2BFC98A9C-4E',
     contextIdentifier: new Operations\PostApiV2AuthKsefTokenContextIdentifier(
-        type: Components\ContextIdentifierType::Nip,
+        type: Components\AuthenticationContextIdentifierType::Nip,
         value: '5265877635',
     ),
     encryptedToken: '<value>',

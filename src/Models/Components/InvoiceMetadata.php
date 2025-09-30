@@ -171,7 +171,7 @@ class InvoiceMetadata
     public bool $isSelfInvoicing;
 
     /**
-     * Czy faktura posiada załącznik.
+     * Określa, czy faktura posiada załącznik.
      *
      * @var bool $hasAttachment
      */

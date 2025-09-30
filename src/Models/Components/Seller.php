@@ -21,16 +21,6 @@ class Seller
     public string $nip;
 
     /**
-     * Identyfikator sprzedawcy.
-     *
-     * @var ?string $identifier
-     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('identifier')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $identifier = null;
-
-    /**
      * Nazwa sprzedawcy.
      *
      * @var ?string $name
@@ -41,14 +31,12 @@ class Seller
 
     /**
      * @param  string  $nip
-     * @param  ?string  $identifier
      * @param  ?string  $name
      * @phpstan-pure
      */
-    public function __construct(string $nip, ?string $identifier = null, ?string $name = null)
+    public function __construct(string $nip, ?string $name = null)
     {
         $this->nip = $nip;
-        $this->identifier = $identifier;
         $this->name = $name;
     }
 }

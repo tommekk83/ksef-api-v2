@@ -14,19 +14,15 @@ class SubordinateEntityRole
     /**
      * Identyfikator podmiotu podrzędnego.
      *
-     * @var string $subordinateEntityIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     *
+     * @var SubordinateEntityRoleSubordinateEntityIdentifier $subordinateEntityIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('subordinateEntityIdentifier')]
-    public string $subordinateEntityIdentifier;
-
-    /**
-     * Typ identyfikatora podmiotu podrzędnego.
-     *
-     * @var SubordinateRoleSubordinateEntityIdentifierType $subordinateEntityIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('subordinateEntityIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubordinateRoleSubordinateEntityIdentifierType')]
-    public SubordinateRoleSubordinateEntityIdentifierType $subordinateEntityIdentifierType;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubordinateEntityRoleSubordinateEntityIdentifier')]
+    public SubordinateEntityRoleSubordinateEntityIdentifier $subordinateEntityIdentifier;
 
     /**
      * Powiązanie.
@@ -54,17 +50,15 @@ class SubordinateEntityRole
     public \DateTime $startDate;
 
     /**
-     * @param  string  $subordinateEntityIdentifier
-     * @param  SubordinateRoleSubordinateEntityIdentifierType  $subordinateEntityIdentifierType
+     * @param  SubordinateEntityRoleSubordinateEntityIdentifier  $subordinateEntityIdentifier
      * @param  SubordinateEntityRoleType  $role
      * @param  string  $description
      * @param  \DateTime  $startDate
      * @phpstan-pure
      */
-    public function __construct(string $subordinateEntityIdentifier, SubordinateRoleSubordinateEntityIdentifierType $subordinateEntityIdentifierType, SubordinateEntityRoleType $role, string $description, \DateTime $startDate)
+    public function __construct(SubordinateEntityRoleSubordinateEntityIdentifier $subordinateEntityIdentifier, SubordinateEntityRoleType $role, string $description, \DateTime $startDate)
     {
         $this->subordinateEntityIdentifier = $subordinateEntityIdentifier;
-        $this->subordinateEntityIdentifierType = $subordinateEntityIdentifierType;
         $this->role = $role;
         $this->description = $description;
         $this->startDate = $startDate;

@@ -22,18 +22,18 @@ class AuthenticationInitResponse
     /**
      * Token operacji uwierzytelnienia.
      *
-     * @var AuthenticationInitResponseAuthenticationToken $authenticationToken
+     * @var AuthenticationToken $authenticationToken
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authenticationToken')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationInitResponseAuthenticationToken')]
-    public AuthenticationInitResponseAuthenticationToken $authenticationToken;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationToken')]
+    public AuthenticationToken $authenticationToken;
 
     /**
      * @param  string  $referenceNumber
-     * @param  AuthenticationInitResponseAuthenticationToken  $authenticationToken
+     * @param  AuthenticationToken  $authenticationToken
      * @phpstan-pure
      */
-    public function __construct(string $referenceNumber, AuthenticationInitResponseAuthenticationToken $authenticationToken)
+    public function __construct(string $referenceNumber, AuthenticationToken $authenticationToken)
     {
         $this->referenceNumber = $referenceNumber;
         $this->authenticationToken = $authenticationToken;

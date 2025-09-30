@@ -12,12 +12,20 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class QueryInvoicesMetadataResponse
 {
     /**
-     * Flaga informująca o dostępności kolejnej strony wyników.
+     * Określa, czy dostępna jest kolejna strona wyników.
      *
      * @var bool $hasMore
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('hasMore')]
     public bool $hasMore;
+
+    /**
+     * Określa, czy wynik został obcięty z powodu przekroczenia limitu liczby faktur (10 000).
+     *
+     * @var bool $isTruncated
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('isTruncated')]
+    public bool $isTruncated;
 
     /**
      * Lista faktur spełniających kryteria.
@@ -30,12 +38,14 @@ class QueryInvoicesMetadataResponse
 
     /**
      * @param  bool  $hasMore
+     * @param  bool  $isTruncated
      * @param  array<InvoiceMetadata>  $invoices
      * @phpstan-pure
      */
-    public function __construct(bool $hasMore, array $invoices)
+    public function __construct(bool $hasMore, bool $isTruncated, array $invoices)
     {
         $this->hasMore = $hasMore;
+        $this->isTruncated = $isTruncated;
         $this->invoices = $invoices;
     }
 }

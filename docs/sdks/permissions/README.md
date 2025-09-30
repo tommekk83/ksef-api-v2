@@ -389,7 +389,7 @@ $request = new Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequ
         value: '7762811692-DE123456789012',
     ),
     description: 'Administrator podmiotu unijnego DE123456789012',
-    subjectName: '<value>',
+    euEntityName: 'Nazwa podmiotu unijnego',
 );
 
 $response = $sdk->permissions->grantRights(
@@ -839,7 +839,7 @@ $sdk = Apiv2\Client::builder()
     ->build();
 
 $subunitPermissionsQueryRequest = new Components\SubunitPermissionsQueryRequest(
-    subunitIdentifier: new Components\SubunitIdentifier(
+    subunitIdentifier: new Components\SubunitPermissionsQueryRequestSubunitIdentifier(
         type: Components\SubunitPermissionsSubunitIdentifierType::InternalId,
         value: '7762811692-12345',
     ),
@@ -954,7 +954,7 @@ $sdk = Apiv2\Client::builder()
     ->build();
 
 $subordinateEntityRolesQueryRequest = new Components\SubordinateEntityRolesQueryRequest(
-    subordinateEntityIdentifier: new Components\SubordinateEntityIdentifier(
+    subordinateEntityIdentifier: new Components\SubordinateEntityRolesQueryRequestSubordinateEntityIdentifier(
         type: Components\EntityPermissionsSubordinateEntityIdentifierType::Nip,
         value: '7762811692',
     ),

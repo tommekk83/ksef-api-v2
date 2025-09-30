@@ -29,7 +29,7 @@ class SessionsQueryResponseItem
     public StatusInfo $status;
 
     /**
-     * Data utowrzenia sesji.
+     * Data utworzenia sesji.
      *
      * @var \DateTime $dateCreated
      */

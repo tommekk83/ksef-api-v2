@@ -70,18 +70,11 @@ class CertificateListItem
     /**
      * Identyfikator podmiotu, dla którego wystawiono certyfikat.
      *
-     * @var string $subjectIdentifier
+     * @var SubjectIdentifier $subjectIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('subjectIdentifier')]
-    public string $subjectIdentifier;
-
-    /**
-     * Typ identyfikatora podmiotu, dla którego wystawiono certyfikat.
-     *
-     * @var string $subjectIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectIdentifierType')]
-    public string $subjectIdentifierType;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubjectIdentifier')]
+    public SubjectIdentifier $subjectIdentifier;
 
     /**
      * Data rozpoczęcia ważności certyfikatu.
@@ -114,14 +107,13 @@ class CertificateListItem
      * @param  KsefCertificateType  $type
      * @param  string  $commonName
      * @param  CertificateListItemStatus  $status
-     * @param  string  $subjectIdentifier
-     * @param  string  $subjectIdentifierType
+     * @param  SubjectIdentifier  $subjectIdentifier
      * @param  \DateTime  $validFrom
      * @param  \DateTime  $validTo
      * @param  ?\DateTime  $lastUseDate
      * @phpstan-pure
      */
-    public function __construct(string $certificateSerialNumber, string $name, KsefCertificateType $type, string $commonName, CertificateListItemStatus $status, string $subjectIdentifier, string $subjectIdentifierType, \DateTime $validFrom, \DateTime $validTo, ?\DateTime $lastUseDate = null)
+    public function __construct(string $certificateSerialNumber, string $name, KsefCertificateType $type, string $commonName, CertificateListItemStatus $status, SubjectIdentifier $subjectIdentifier, \DateTime $validFrom, \DateTime $validTo, ?\DateTime $lastUseDate = null)
     {
         $this->certificateSerialNumber = $certificateSerialNumber;
         $this->name = $name;
@@ -129,7 +121,6 @@ class CertificateListItem
         $this->commonName = $commonName;
         $this->status = $status;
         $this->subjectIdentifier = $subjectIdentifier;
-        $this->subjectIdentifierType = $subjectIdentifierType;
         $this->validFrom = $validFrom;
         $this->validTo = $validTo;
         $this->lastUseDate = $lastUseDate;

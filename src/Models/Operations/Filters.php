@@ -68,24 +68,23 @@ class Filters
     public ?PostApiV2InvoicesExportsAmount $amount = null;
 
     /**
-     * Dane sprzedawcy.
+     * Nip sprzedawcy.
      *
-     * @var ?PostApiV2InvoicesExportsSeller $seller
+     * @var ?string $sellerNip
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('seller')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesExportsSeller|null')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('sellerNip')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesExportsSeller $seller = null;
+    public ?string $sellerNip = null;
 
     /**
-     * Dane nabywcy.
+     * Identyfikator nabywcy.
      *
-     * @var ?PostApiV2InvoicesExportsBuyer $buyer
+     * @var ?PostApiV2InvoicesExportsBuyerIdentifier $buyerIdentifier
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('buyer')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesExportsBuyer|null')]
+    #[\Speakeasy\Serializer\Annotation\SerializedName('buyerIdentifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesExportsBuyerIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesExportsBuyer $buyer = null;
+    public ?PostApiV2InvoicesExportsBuyerIdentifier $buyerIdentifier = null;
 
     /**
      * Kody walut.
@@ -174,8 +173,8 @@ class Filters
      * @param  ?string  $ksefNumber
      * @param  ?string  $invoiceNumber
      * @param  ?PostApiV2InvoicesExportsAmount  $amount
-     * @param  ?PostApiV2InvoicesExportsSeller  $seller
-     * @param  ?PostApiV2InvoicesExportsBuyer  $buyer
+     * @param  ?string  $sellerNip
+     * @param  ?PostApiV2InvoicesExportsBuyerIdentifier  $buyerIdentifier
      * @param  ?array<Components\CurrencyCode>  $currencyCodes
      * @param  ?PostApiV2InvoicesExportsInvoicingMode  $invoicingMode
      * @param  ?bool  $isSelfInvoicing
@@ -184,15 +183,15 @@ class Filters
      * @param  ?bool  $hasAttachment
      * @phpstan-pure
      */
-    public function __construct(Components\InvoiceQuerySubjectType $subjectType, PostApiV2InvoicesExportsDateRange $dateRange, ?string $ksefNumber = null, ?string $invoiceNumber = null, ?PostApiV2InvoicesExportsAmount $amount = null, ?PostApiV2InvoicesExportsSeller $seller = null, ?PostApiV2InvoicesExportsBuyer $buyer = null, ?array $currencyCodes = null, ?PostApiV2InvoicesExportsInvoicingMode $invoicingMode = null, ?bool $isSelfInvoicing = null, ?PostApiV2InvoicesExportsFormType $formType = null, ?array $invoiceTypes = null, ?bool $hasAttachment = null)
+    public function __construct(Components\InvoiceQuerySubjectType $subjectType, PostApiV2InvoicesExportsDateRange $dateRange, ?string $ksefNumber = null, ?string $invoiceNumber = null, ?PostApiV2InvoicesExportsAmount $amount = null, ?string $sellerNip = null, ?PostApiV2InvoicesExportsBuyerIdentifier $buyerIdentifier = null, ?array $currencyCodes = null, ?PostApiV2InvoicesExportsInvoicingMode $invoicingMode = null, ?bool $isSelfInvoicing = null, ?PostApiV2InvoicesExportsFormType $formType = null, ?array $invoiceTypes = null, ?bool $hasAttachment = null)
     {
         $this->subjectType = $subjectType;
         $this->dateRange = $dateRange;
         $this->ksefNumber = $ksefNumber;
         $this->invoiceNumber = $invoiceNumber;
         $this->amount = $amount;
-        $this->seller = $seller;
-        $this->buyer = $buyer;
+        $this->sellerNip = $sellerNip;
+        $this->buyerIdentifier = $buyerIdentifier;
         $this->currencyCodes = $currencyCodes;
         $this->invoicingMode = $invoicingMode;
         $this->isSelfInvoicing = $isSelfInvoicing;

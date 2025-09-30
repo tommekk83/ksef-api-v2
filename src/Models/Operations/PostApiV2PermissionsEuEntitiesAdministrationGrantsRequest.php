@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 class PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest
 {
     /**
-     * Identyfikator podmiotu.
+     * Identyfikator podmiotu uprawnionego.
      *
      * | Type | Value |
      * | --- | --- |
@@ -46,25 +46,25 @@ class PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest
     public string $description;
 
     /**
-     * Nazwa podmiotu.
+     * Nazwa podmiotu unijnego.
      *
-     * @var string $subjectName
+     * @var string $euEntityName
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectName')]
-    public string $subjectName;
+    #[\Speakeasy\Serializer\Annotation\SerializedName('euEntityName')]
+    public string $euEntityName;
 
     /**
      * @param  PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier  $subjectIdentifier
      * @param  PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier  $contextIdentifier
      * @param  string  $description
-     * @param  string  $subjectName
+     * @param  string  $euEntityName
      * @phpstan-pure
      */
-    public function __construct(PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier $subjectIdentifier, PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier $contextIdentifier, string $description, string $subjectName)
+    public function __construct(PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier $subjectIdentifier, PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier $contextIdentifier, string $description, string $euEntityName)
     {
         $this->subjectIdentifier = $subjectIdentifier;
         $this->contextIdentifier = $contextIdentifier;
         $this->description = $description;
-        $this->subjectName = $subjectName;
+        $this->euEntityName = $euEntityName;
     }
 }

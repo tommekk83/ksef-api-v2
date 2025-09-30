@@ -5,4 +5,4 @@
 
 | Field                        | Type                         | Required                     | Description                  |
 | ---------------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
-| `operationReferenceNumber`   | *?string*                    | :heavy_minus_sign:           | Numer referencyjny operacji. |
+| `operationReferenceNumber`   | *string*                     | :heavy_check_mark:           | Numer referencyjny operacji. |

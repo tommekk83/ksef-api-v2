@@ -22,36 +22,29 @@ class EntityAuthorizationGrant
     /**
      * Identyfikator podmiotu uprawnionego.
      *
-     * @var string $authorizedEntityIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | PeppolId | Identyfikator dostawcy usług Peppol |
+     *
+     * @var AuthorizedEntityIdentifier $authorizedEntityIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authorizedEntityIdentifier')]
-    public string $authorizedEntityIdentifier;
-
-    /**
-     * Typ identyfikatora podmiotu uprawnionego.
-     *
-     * @var EntityAuthorizationsAuthorizedEntityIdentifierType $authorizedEntityIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('authorizedEntityIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EntityAuthorizationsAuthorizedEntityIdentifierType')]
-    public EntityAuthorizationsAuthorizedEntityIdentifierType $authorizedEntityIdentifierType;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthorizedEntityIdentifier')]
+    public AuthorizedEntityIdentifier $authorizedEntityIdentifier;
 
     /**
      * Identyfikator podmiotu uprawniającego.
      *
-     * @var string $authorizingEntityIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     *
+     * @var AuthorizingEntityIdentifier $authorizingEntityIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authorizingEntityIdentifier')]
-    public string $authorizingEntityIdentifier;
-
-    /**
-     * Typ identyfikatora podmiotu uprawniającego.
-     *
-     * @var EntityAuthorizationsAuthorizingEntityIdentifierType $authorizingEntityIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('authorizingEntityIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EntityAuthorizationsAuthorizingEntityIdentifierType')]
-    public EntityAuthorizationsAuthorizingEntityIdentifierType $authorizingEntityIdentifierType;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\AuthorizingEntityIdentifier')]
+    public AuthorizingEntityIdentifier $authorizingEntityIdentifier;
 
     /**
      * Uprawnienie.
@@ -81,46 +74,37 @@ class EntityAuthorizationGrant
     /**
      * Identyfikator osoby nadającej uprawnienie.
      *
-     * @var ?string $authorIdentifier
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | Pesel | 11 cyfrowy numer PESEL |
+     * | Fingerprint | Odcisk palca certyfikatu |
+     *
+     * @var ?EntityAuthorizationGrantAuthorIdentifier $authorIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('authorIdentifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EntityAuthorizationGrantAuthorIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $authorIdentifier = null;
-
-    /**
-     * Typ identyfikatora osoby nadającej uprawnienie.
-     *
-     * @var ?EntityAuthorizationGrantAuthorIdentifierType $authorIdentifierType
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('authorIdentifierType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EntityAuthorizationGrantAuthorIdentifierType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?EntityAuthorizationGrantAuthorIdentifierType $authorIdentifierType = null;
+    public ?EntityAuthorizationGrantAuthorIdentifier $authorIdentifier = null;
 
     /**
      * @param  string  $id
-     * @param  string  $authorizedEntityIdentifier
-     * @param  EntityAuthorizationsAuthorizedEntityIdentifierType  $authorizedEntityIdentifierType
-     * @param  string  $authorizingEntityIdentifier
-     * @param  EntityAuthorizationsAuthorizingEntityIdentifierType  $authorizingEntityIdentifierType
+     * @param  AuthorizedEntityIdentifier  $authorizedEntityIdentifier
+     * @param  AuthorizingEntityIdentifier  $authorizingEntityIdentifier
      * @param  InvoicePermissionType  $authorizationScope
      * @param  string  $description
      * @param  \DateTime  $startDate
-     * @param  ?string  $authorIdentifier
-     * @param  ?EntityAuthorizationGrantAuthorIdentifierType  $authorIdentifierType
+     * @param  ?EntityAuthorizationGrantAuthorIdentifier  $authorIdentifier
      * @phpstan-pure
      */
-    public function __construct(string $id, string $authorizedEntityIdentifier, EntityAuthorizationsAuthorizedEntityIdentifierType $authorizedEntityIdentifierType, string $authorizingEntityIdentifier, EntityAuthorizationsAuthorizingEntityIdentifierType $authorizingEntityIdentifierType, InvoicePermissionType $authorizationScope, string $description, \DateTime $startDate, ?string $authorIdentifier = null, ?EntityAuthorizationGrantAuthorIdentifierType $authorIdentifierType = null)
+    public function __construct(string $id, AuthorizedEntityIdentifier $authorizedEntityIdentifier, AuthorizingEntityIdentifier $authorizingEntityIdentifier, InvoicePermissionType $authorizationScope, string $description, \DateTime $startDate, ?EntityAuthorizationGrantAuthorIdentifier $authorIdentifier = null)
     {
         $this->id = $id;
         $this->authorizedEntityIdentifier = $authorizedEntityIdentifier;
-        $this->authorizedEntityIdentifierType = $authorizedEntityIdentifierType;
         $this->authorizingEntityIdentifier = $authorizingEntityIdentifier;
-        $this->authorizingEntityIdentifierType = $authorizingEntityIdentifierType;
         $this->authorizationScope = $authorizationScope;
         $this->description = $description;
         $this->startDate = $startDate;
         $this->authorIdentifier = $authorIdentifier;
-        $this->authorIdentifierType = $authorIdentifierType;
     }
 }

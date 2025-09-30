@@ -59,6 +59,21 @@ class PostApiV2PermissionsQueryPersonsGrantsRequestBody
     public ?PostApiV2PermissionsQueryPersonsGrantsAuthorizedIdentifier $authorizedIdentifier = null;
 
     /**
+     * Identyfikator kontekstu uprawnienia (dla uprawnień nadanych administratorom jednostek podrzędnych).
+     *
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
+     *
+     * @var ?PostApiV2PermissionsQueryPersonsGrantsContextIdentifier $contextIdentifier
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('contextIdentifier')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2PermissionsQueryPersonsGrantsContextIdentifier|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?PostApiV2PermissionsQueryPersonsGrantsContextIdentifier $contextIdentifier = null;
+
+    /**
      * Identyfikator podmiotu docelowego (dla uprawnień pośrednich).
      *
      * | Type | Value |
@@ -102,16 +117,18 @@ class PostApiV2PermissionsQueryPersonsGrantsRequestBody
      * @param  Components\PersonPermissionsQueryType  $queryType
      * @param  ?AuthorIdentifier  $authorIdentifier
      * @param  ?PostApiV2PermissionsQueryPersonsGrantsAuthorizedIdentifier  $authorizedIdentifier
+     * @param  ?PostApiV2PermissionsQueryPersonsGrantsContextIdentifier  $contextIdentifier
      * @param  ?PostApiV2PermissionsQueryPersonsGrantsTargetIdentifier  $targetIdentifier
      * @param  ?array<Components\PersonPermissionType>  $permissionTypes
      * @param  ?PermissionState  $permissionState
      * @phpstan-pure
      */
-    public function __construct(Components\PersonPermissionsQueryType $queryType, ?AuthorIdentifier $authorIdentifier = null, ?PostApiV2PermissionsQueryPersonsGrantsAuthorizedIdentifier $authorizedIdentifier = null, ?PostApiV2PermissionsQueryPersonsGrantsTargetIdentifier $targetIdentifier = null, ?array $permissionTypes = null, ?PermissionState $permissionState = null)
+    public function __construct(Components\PersonPermissionsQueryType $queryType, ?AuthorIdentifier $authorIdentifier = null, ?PostApiV2PermissionsQueryPersonsGrantsAuthorizedIdentifier $authorizedIdentifier = null, ?PostApiV2PermissionsQueryPersonsGrantsContextIdentifier $contextIdentifier = null, ?PostApiV2PermissionsQueryPersonsGrantsTargetIdentifier $targetIdentifier = null, ?array $permissionTypes = null, ?PermissionState $permissionState = null)
     {
         $this->queryType = $queryType;
         $this->authorIdentifier = $authorIdentifier;
         $this->authorizedIdentifier = $authorizedIdentifier;
+        $this->contextIdentifier = $contextIdentifier;
         $this->targetIdentifier = $targetIdentifier;
         $this->permissionTypes = $permissionTypes;
         $this->permissionState = $permissionState;
