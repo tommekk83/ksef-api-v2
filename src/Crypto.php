@@ -87,8 +87,7 @@ final class Crypto
             throw new RuntimeException('Błąd podczas szyfrowania XML AES-256-CBC.');
         }
 
-        // KSeF: IV jako prefiks do szyfrogramu
-        return $iv . $ciphertextRaw;
+        return $ciphertextRaw;
     }
 
     /**
