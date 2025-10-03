@@ -15,10 +15,10 @@
     "brick/date-time": ">=0.7.0",
     "phpdocumentor/type-resolver": ">=1.8",
     "brick/math": ">=0.12.1",
-    "robrichards/xmlseclibs": "^3.1",
     "ext-dom": "*",
     "ext-openssl": "*",
-    "ext-bcmath": "*"
+    "phpseclib/phpseclib": "^3.0",
+    "robrichards/xmlseclibs": "^3.1"
   },
   "require-dev": {
     "laravel/pint": ">=1.21.2",
