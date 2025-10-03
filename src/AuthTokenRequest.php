@@ -102,7 +102,7 @@ final class AuthTokenRequest
      */
     public function signWithXades(string $privateKeyFile, ?string $certificateFile = null, ?string $pkcs12Password = null): DOMDocument
     {
-        $doc = $this->toXml();
+        $doc = $this->toXml()->saveXML();
         $signer = new XadesSigner();
         return $signer->sign($doc, $privateKeyFile, $certificateFile, $pkcs12Password);
     }

@@ -18,7 +18,7 @@
     "robrichards/xmlseclibs": "^3.1",
     "ext-dom": "*",
     "ext-openssl": "*",
-    "phpseclib/phpseclib": "^3.0"
+    "ext-bcmath": "*"
   },
   "require-dev": {
     "laravel/pint": ">=1.21.2",
