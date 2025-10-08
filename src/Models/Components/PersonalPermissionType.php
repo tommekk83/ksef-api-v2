@@ -18,4 +18,5 @@ enum PersonalPermissionType: string
     case Introspection = 'Introspection';
     case SubunitManage = 'SubunitManage';
     case EnforcementOperations = 'EnforcementOperations';
+    case VatUeManage = 'VatUeManage';
 }

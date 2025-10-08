@@ -89,6 +89,15 @@ class SubunitPermission
     public \DateTime $startDate;
 
     /**
+     * Nazwa jednostki podrzędnej.
+     *
+     * @var ?string $subunitName
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subunitName')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?string $subunitName = null;
+
+    /**
      * @param  string  $id
      * @param  SubunitPermissionAuthorizedIdentifier  $authorizedIdentifier
      * @param  SubunitPermissionSubunitIdentifier  $subunitIdentifier
@@ -96,9 +105,10 @@ class SubunitPermission
      * @param  SubunitPermissionScope  $permissionScope
      * @param  string  $description
      * @param  \DateTime  $startDate
+     * @param  ?string  $subunitName
      * @phpstan-pure
      */
-    public function __construct(string $id, SubunitPermissionAuthorizedIdentifier $authorizedIdentifier, SubunitPermissionSubunitIdentifier $subunitIdentifier, SubunitPermissionAuthorIdentifier $authorIdentifier, SubunitPermissionScope $permissionScope, string $description, \DateTime $startDate)
+    public function __construct(string $id, SubunitPermissionAuthorizedIdentifier $authorizedIdentifier, SubunitPermissionSubunitIdentifier $subunitIdentifier, SubunitPermissionAuthorIdentifier $authorIdentifier, SubunitPermissionScope $permissionScope, string $description, \DateTime $startDate, ?string $subunitName = null)
     {
         $this->id = $id;
         $this->authorizedIdentifier = $authorizedIdentifier;
@@ -107,5 +117,6 @@ class SubunitPermission
         $this->permissionScope = $permissionScope;
         $this->description = $description;
         $this->startDate = $startDate;
+        $this->subunitName = $subunitName;
     }
 }

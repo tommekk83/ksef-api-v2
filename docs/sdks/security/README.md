@@ -13,7 +13,7 @@ Zwraca informacje o kluczach publicznych używanych do szyfrowania danych przesy
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/security/public-key-certificates" method="get" path="/api/v2/security/public-key-certificates" -->
+<!-- UsageSnippet language="php" operationID="getPublicKeyCertificates" method="get" path="/api/v2/security/public-key-certificates" -->
 ```php
 declare(strict_types=1);
 
@@ -40,7 +40,7 @@ if ($response->publicKeyCertificates !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2SecurityPublicKeyCertificatesResponse](../../Models/Operations/GetApiV2SecurityPublicKeyCertificatesResponse.md)**
+**[?Operations\GetPublicKeyCertificatesResponse](../../Models/Operations/GetPublicKeyCertificatesResponse.md)**
 
 ### Errors
 

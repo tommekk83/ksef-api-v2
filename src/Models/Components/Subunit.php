@@ -13,26 +13,24 @@ class Subunit
 {
     /**
      *
-     * @var ?string $subjectNip
+     * @var string $subjectNip
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('subjectNip')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $subjectNip = null;
+    public string $subjectNip;
 
     /**
      *
-     * @var ?string $description
+     * @var string $description
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('description')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $description = null;
+    public string $description;
 
     /**
-     * @param  ?string  $subjectNip
-     * @param  ?string  $description
+     * @param  string  $subjectNip
+     * @param  string  $description
      * @phpstan-pure
      */
-    public function __construct(?string $subjectNip = null, ?string $description = null)
+    public function __construct(string $subjectNip, string $description)
     {
         $this->subjectNip = $subjectNip;
         $this->description = $description;

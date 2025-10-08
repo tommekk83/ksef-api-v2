@@ -14,48 +14,44 @@ class PartUploadRequest
     /**
      * Numer sekwencyjny części pliku paczki.
      *
-     * @var ?int $ordinalNumber
+     * @var int $ordinalNumber
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('ordinalNumber')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?int $ordinalNumber = null;
+    public int $ordinalNumber;
 
     /**
      * Metoda HTTP, której należy użyć przy wysyłce części pliku paczki.
      *
-     * @var ?string $method
+     * @var string $method
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('method')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $method = null;
+    public string $method;
 
     /**
      * Adres pod który należy wysłać część pliku paczki.
      *
-     * @var ?string $url
+     * @var string $url
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('url')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $url = null;
+    public string $url;
 
     /**
      * Nagłówki, których należy użyć przy wysyłce części pliku paczki.
      *
-     * @var ?array<string, ?string> $headers
+     * @var array<string, ?string> $headers
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('headers')]
-    #[\Speakeasy\Serializer\Annotation\Type('array<string, string|null>|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?array $headers = null;
+    #[\Speakeasy\Serializer\Annotation\Type('array<string, string|null>')]
+    public array $headers;
 
     /**
-     * @param  ?int  $ordinalNumber
-     * @param  ?string  $method
-     * @param  ?string  $url
-     * @param  ?array<string, ?string>  $headers
+     * @param  int  $ordinalNumber
+     * @param  string  $method
+     * @param  string  $url
+     * @param  array<string, ?string>  $headers
      * @phpstan-pure
      */
-    public function __construct(?int $ordinalNumber = null, ?string $method = null, ?string $url = null, ?array $headers = null)
+    public function __construct(int $ordinalNumber, string $method, string $url, ?array $headers = [])
     {
         $this->ordinalNumber = $ordinalNumber;
         $this->method = $method;

@@ -45,379 +45,6 @@ class Auth
     }
 
     /**
-     * Unieważnienie aktualnej sesji uwierzytelnienia
-     *
-     * Unieważnia sesję powiązaną z tokenem użytym do wywołania tej operacji.
-     *
-     * Unieważnienie sesji sprawia, że powiązany z nią refresh token przestaje działać i nie można już za jego pomocą uzyskać kolejnych access tokenów.
-     * **Aktywne access tokeny działają do czasu minięcia ich termin ważności.**
-     *
-     * Sposób uwierzytelnienia: `RefreshToken` lub `AccessToken`.
-     *
-     * @return Operations\DeleteApiV2AuthSessionsCurrentResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function revokeCurrentSession(?Options $options = null): Operations\DeleteApiV2AuthSessionsCurrentResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions/current');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'delete_/api/v2/auth/sessions/current', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
-            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-            return new Operations\DeleteApiV2AuthSessionsCurrentResponse(
-                statusCode: $statusCode,
-                contentType: $contentType,
-                rawResponse: $httpResponse
-            );
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Unieważnienie sesji uwierzytelnienia
-     *
-     * Unieważnia sesję o podanym numerze referencyjnym.
-     *
-     * Unieważnienie sesji sprawia, że powiązany z nią refresh token przestaje działać i nie można już za jego pomocą uzyskać kolejnych access tokenów.
-     * **Aktywne access tokeny działają do czasu minięcia ich termin ważności.**
-     *
-     * @param  string  $referenceNumber
-     * @return Operations\DeleteApiV2AuthSessionsReferenceNumberResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function revokeSession(string $referenceNumber, ?Options $options = null): Operations\DeleteApiV2AuthSessionsReferenceNumberResponse
-    {
-        $request = new Operations\DeleteApiV2AuthSessionsReferenceNumberRequest(
-            referenceNumber: $referenceNumber,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions/{referenceNumber}', Operations\DeleteApiV2AuthSessionsReferenceNumberRequest::class, $request);
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'delete_/api/v2/auth/sessions/{referenceNumber}', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
-            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-            return new Operations\DeleteApiV2AuthSessionsReferenceNumberResponse(
-                statusCode: $statusCode,
-                contentType: $contentType,
-                rawResponse: $httpResponse
-            );
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy aktywnych sesji
-     *
-     * Zwraca listę aktywnych sesji uwierzytelnienia.
-     *
-     * @param  ?string  $xContinuationToken
-     * @param  ?int  $pageSize
-     * @return Operations\GetApiV2AuthSessionsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getCurrentSessions(?string $xContinuationToken = null, ?int $pageSize = null, ?Options $options = null): Operations\GetApiV2AuthSessionsResponse
-    {
-        $request = new Operations\GetApiV2AuthSessionsRequest(
-            xContinuationToken: $xContinuationToken,
-            pageSize: $pageSize,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-
-        $qp = Utils\Utils::getQueryParams(Operations\GetApiV2AuthSessionsRequest::class, $request, $urlOverride);
-        $httpOptions = array_merge_recursive($httpOptions, Utils\Utils::getHeaders($request));
-        if (! array_key_exists('headers', $httpOptions)) {
-            $httpOptions['headers'] = [];
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/auth/sessions', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationListResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2AuthSessionsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    authenticationListResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie statusu uwierzytelniania
-     *
-     * Sprawdza bieżący status operacji uwierzytelniania dla podanego tokena.
-     *
-     * Sposób uwierzytelnienia: `AuthenticationToken` otrzymany przy rozpoczęciu operacji uwierzytelniania.
-     *
-     * @param  string  $referenceNumber
-     * @return Operations\GetApiV2AuthReferenceNumberResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getStatus(string $referenceNumber, ?Options $options = null): Operations\GetApiV2AuthReferenceNumberResponse
-    {
-        $request = new Operations\GetApiV2AuthReferenceNumberRequest(
-            referenceNumber: $referenceNumber,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/{referenceNumber}', Operations\GetApiV2AuthReferenceNumberRequest::class, $request);
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/auth/{referenceNumber}', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationOperationStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2AuthReferenceNumberResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    authenticationOperationStatusResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Inicjalizacja uwierzytelnienia
-     *
-     * Generuje unikalny challenge wymagany w kolejnym kroku operacji uwierzytelnienia.
-     *
-     * @return Operations\PostApiV2AuthChallengeResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function challenge(?Options $options = null): Operations\PostApiV2AuthChallengeResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/challenge');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/auth/challenge', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationChallengeResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2AuthChallengeResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    authenticationChallengeResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
      * Uwierzytelnienie z wykorzystaniem tokena KSeF
      *
      * Rozpoczyna operację uwierzytelniania z wykorzystaniem wcześniej wygenerowanego tokena KSeF.
@@ -426,11 +53,11 @@ class Auth
      * - Timestamp powinien zostać przekazany jako **liczba milisekund od 1 stycznia 1970 roku (Unix timestamp)**.
      * - Algorytm szyfrowania: **RSA-OAEP (z użyciem SHA-256 jako funkcji skrótu)**.
      *
-     * @param  ?Operations\PostApiV2AuthKsefTokenRequest  $request
-     * @return Operations\PostApiV2AuthKsefTokenResponse
+     * @param  ?Operations\AuthWithKsefTokenRequest  $request
+     * @return Operations\AuthWithKsefTokenResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function withKsefToken(?Operations\PostApiV2AuthKsefTokenRequest $request = null, ?Options $options = null): Operations\PostApiV2AuthKsefTokenResponse
+    public function withKsefToken(?Operations\AuthWithKsefTokenRequest $request = null, ?Options $options = null): Operations\AuthWithKsefTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/ksef-token');
@@ -443,7 +70,7 @@ class Auth
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/auth/ksef-token', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'authWithKsefToken', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -467,7 +94,7 @@ class Auth
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationInitResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2AuthKsefTokenResponse(
+                $response = new Operations\AuthWithKsefTokenResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -499,6 +126,332 @@ class Auth
     }
 
     /**
+     * Uwierzytelnienie z wykorzystaniem podpisu XAdES
+     *
+     * Rozpoczyna operację uwierzytelniania za pomocą dokumentu XML podpisanego podpisem elektronicznym XAdES.
+     *
+     * > Więcej informacji:
+     * > - [Przygotowanie dokumentu XML](https://github.com/CIRFMF/ksef-docs/blob/main/uwierzytelnianie.md#1-przygotowanie-dokumentu-xml-authtokenrequest)
+     * > - [Podpis dokumentu XML](https://github.com/CIRFMF/ksef-docs/blob/main/uwierzytelnianie.md#2-podpisanie-dokumentu-xades)
+     * > - [Schemat XSD](/docs/v2/schemas/authv2.xsd)
+     *
+     * @param  string  $requestBody
+     * @param  ?bool  $verifyCertificateChain
+     * @return Operations\AuthWithXadesResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function withXades(string $requestBody, ?bool $verifyCertificateChain = null, ?Options $options = null): Operations\AuthWithXadesResponse
+    {
+        $request = new Operations\AuthWithXadesRequest(
+            requestBody: $requestBody,
+            verifyCertificateChain: $verifyCertificateChain,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/xades-signature');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'string');
+        if ($body === null) {
+            throw new \Exception('Request body is required');
+        }
+        $httpOptions = array_merge_recursive($httpOptions, $body);
+
+        $qp = Utils\Utils::getQueryParams(Operations\AuthWithXadesRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'authWithXades', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationInitResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\AuthWithXadesResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    authenticationInitResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Inicjalizacja uwierzytelnienia
+     *
+     * Generuje unikalny challenge wymagany w kolejnym kroku operacji uwierzytelnienia.
+     *
+     * @return Operations\ChallengeResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function challenge(?Options $options = null): Operations\ChallengeResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/challenge');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'challenge', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationChallengeResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\ChallengeResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    authenticationChallengeResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie statusu uwierzytelniania
+     *
+     * Sprawdza bieżący status operacji uwierzytelniania dla podanego tokena.
+     *
+     * Sposób uwierzytelnienia: `AuthenticationToken` otrzymany przy rozpoczęciu operacji uwierzytelniania.
+     *
+     * @param  string  $referenceNumber
+     * @return Operations\GetAuthStatusResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getStatus(string $referenceNumber, ?Options $options = null): Operations\GetAuthStatusResponse
+    {
+        $request = new Operations\GetAuthStatusRequest(
+            referenceNumber: $referenceNumber,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/{referenceNumber}', Operations\GetAuthStatusRequest::class, $request);
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getAuthStatus', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationOperationStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetAuthStatusResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    authenticationOperationStatusResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie listy aktywnych sesji
+     *
+     * Zwraca listę aktywnych sesji uwierzytelnienia.
+     *
+     * @param  ?string  $xContinuationToken
+     * @param  ?int  $pageSize
+     * @return Operations\GetCurrentSessionsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getCurrentSessions(?string $xContinuationToken = null, ?int $pageSize = null, ?Options $options = null): Operations\GetCurrentSessionsResponse
+    {
+        $request = new Operations\GetCurrentSessionsRequest(
+            xContinuationToken: $xContinuationToken,
+            pageSize: $pageSize,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetCurrentSessionsRequest::class, $request, $urlOverride);
+        $httpOptions = array_merge_recursive($httpOptions, Utils\Utils::getHeaders($request));
+        if (! array_key_exists('headers', $httpOptions)) {
+            $httpOptions['headers'] = [];
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getCurrentSessions', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationListResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetCurrentSessionsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    authenticationListResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
      * Pobranie tokenów dostępowych
      *
      * Pobiera parę tokenów (access token i refresh token) wygenerowanych w ramach pozytywnie zakończonego procesu uwierzytelniania.
@@ -506,10 +459,10 @@ class Auth
      *
      * Sposób uwierzytelnienia: `AuthenticationToken` otrzymany przy rozpoczęciu operacji uwierzytelniania.
      *
-     * @return Operations\PostApiV2AuthTokenRedeemResponse
+     * @return Operations\RedeemAuthTokenResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function redeemToken(?Options $options = null): Operations\PostApiV2AuthTokenRedeemResponse
+    public function redeemToken(?Options $options = null): Operations\RedeemAuthTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/token/redeem');
@@ -518,7 +471,7 @@ class Auth
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/auth/token/redeem', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'redeemAuthToken', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -542,7 +495,7 @@ class Auth
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationTokensResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2AuthTokenRedeemResponse(
+                $response = new Operations\RedeemAuthTokenResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -580,10 +533,10 @@ class Auth
      *
      * Sposób uwierzytelnienia: `RefreshToken`.
      *
-     * @return Operations\PostApiV2AuthTokenRefreshResponse
+     * @return Operations\RefreshAuthTokenResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function refreshToken(?Options $options = null): Operations\PostApiV2AuthTokenRefreshResponse
+    public function refreshToken(?Options $options = null): Operations\RefreshAuthTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/token/refresh');
@@ -592,7 +545,7 @@ class Auth
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/auth/token/refresh', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'refreshAuthToken', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -616,7 +569,7 @@ class Auth
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationTokenRefreshResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2AuthTokenRefreshResponse(
+                $response = new Operations\RefreshAuthTokenResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -648,43 +601,29 @@ class Auth
     }
 
     /**
-     * Uwierzytelnienie z wykorzystaniem podpisu XAdES
+     * Unieważnienie aktualnej sesji uwierzytelnienia
      *
-     * Rozpoczyna operację uwierzytelniania za pomocą dokumentu XML podpisanego podpisem elektronicznym XAdES.
+     * Unieważnia sesję powiązaną z tokenem użytym do wywołania tej operacji.
      *
-     * > Więcej informacji:
-     * > - [Przygotowanie dokumentu XML](https://github.com/CIRFMF/ksef-docs/blob/main/uwierzytelnianie.md#1-przygotowanie-dokumentu-xml-authtokenrequest)
-     * > - [Podpis dokumentu XML](https://github.com/CIRFMF/ksef-docs/blob/main/uwierzytelnianie.md#2-podpisanie-dokumentu-xades)
-     * > - [Schemat XSD](/docs/v2/schemas/authv2.xsd)
+     * Unieważnienie sesji sprawia, że powiązany z nią refresh token przestaje działać i nie można już za jego pomocą uzyskać kolejnych access tokenów.
+     * **Aktywne access tokeny działają do czasu minięcia ich termin ważności.**
      *
-     * @param  string  $requestBody
-     * @param  ?bool  $verifyCertificateChain
-     * @return Operations\PostApiV2AuthXadesSignatureResponse
+     * Sposób uwierzytelnienia: `RefreshToken` lub `AccessToken`.
+     *
+     * @return Operations\RevokeCurrentSessionResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function withXades(string $requestBody, ?bool $verifyCertificateChain = null, ?Options $options = null): Operations\PostApiV2AuthXadesSignatureResponse
+    public function revokeCurrentSession(?Options $options = null): Operations\RevokeCurrentSessionResponse
     {
-        $request = new Operations\PostApiV2AuthXadesSignatureRequest(
-            requestBody: $requestBody,
-            verifyCertificateChain: $verifyCertificateChain,
-        );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/xades-signature');
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions/current');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'string');
-        if ($body === null) {
-            throw new \Exception('Request body is required');
-        }
-        $httpOptions = array_merge_recursive($httpOptions, $body);
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2AuthXadesSignatureRequest::class, $request, $urlOverride);
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/auth/xades-signature', [], $this->sdkConfiguration->securitySource);
+        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'revokeCurrentSession', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
         try {
@@ -696,27 +635,18 @@ class Auth
         $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
 
         $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '4XX', '5XX'])) {
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
+            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
 
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\AuthenticationInitResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2AuthXadesSignatureResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    authenticationInitResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
+            return new Operations\RevokeCurrentSessionResponse(
+                statusCode: $statusCode,
+                contentType: $contentType,
+                rawResponse: $httpResponse
+            );
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
             if (Utils\Utils::matchContentType($contentType, 'application/json')) {
                 $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
@@ -729,7 +659,77 @@ class Auth
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['4XX'])) {
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Unieważnienie sesji uwierzytelnienia
+     *
+     * Unieważnia sesję o podanym numerze referencyjnym.
+     *
+     * Unieważnienie sesji sprawia, że powiązany z nią refresh token przestaje działać i nie można już za jego pomocą uzyskać kolejnych access tokenów.
+     * **Aktywne access tokeny działają do czasu minięcia ich termin ważności.**
+     *
+     * @param  string  $referenceNumber
+     * @return Operations\RevokeSessionResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function revokeSession(string $referenceNumber, ?Options $options = null): Operations\RevokeSessionResponse
+    {
+        $request = new Operations\RevokeSessionRequest(
+            referenceNumber: $referenceNumber,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions/{referenceNumber}', Operations\RevokeSessionRequest::class, $request);
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'revokeSession', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
+            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+            return new Operations\RevokeSessionResponse(
+                statusCode: $statusCode,
+                contentType: $contentType,
+                rawResponse: $httpResponse
+            );
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);

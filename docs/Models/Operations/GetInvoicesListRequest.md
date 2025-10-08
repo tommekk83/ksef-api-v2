@@ -1,0 +1,10 @@
+# GetInvoicesListRequest
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `pageOffset`                                                                                    | *?int*                                                                                          | :heavy_minus_sign:                                                                              | Indeks pierwszej strony wyników (0 = pierwsza strona).                                          |
+| `pageSize`                                                                                      | *?int*                                                                                          | :heavy_minus_sign:                                                                              | Rozmiar strony wyników.                                                                         |
+| `requestBody`                                                                                   | [?Operations\GetInvoicesListRequestBody](../../Models/Operations/GetInvoicesListRequestBody.md) | :heavy_minus_sign:                                                                              | Zestaw filtrów dla wyszukiwania metadanych.                                                     |

@@ -12,7 +12,7 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
 <!-- Start Summary [summary] -->
 ## Summary
 
-KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc5.1-te-20250930.2+da669dab01e821a0d0c0be37cd6e8386840a6498)<br>
+KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc5.2-te-20251007.1+e79581180c86686f01304d52388f584305f14cc2)<br>
 **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
 **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
 **Rozszerzona dokumentacja API:** [ksef-docs](https://github.com/CIRFMF/ksef-docs/tree/main)
@@ -159,24 +159,23 @@ if ($response->authenticationListResponse !== null) {
 * [getEnrollmentStatus](docs/sdks/certificates/README.md#getenrollmentstatus) - Pobranie statusu przetwarzania wniosku certyfikacyjnego
 * [retrieve](docs/sdks/certificates/README.md#retrieve) - Pobranie certyfikatu lub listy certyfikatów
 * [revoke](docs/sdks/certificates/README.md#revoke) - Unieważnienie certyfikatu
-* [get](docs/sdks/certificates/README.md#get) - Pobranie listy metadanych certyfikatów
-
-
-### [getInvoices](docs/sdks/getinvoices/README.md)
-
-* [getByKsefNumber](docs/sdks/getinvoices/README.md#getbyksefnumber) - Pobranie faktury po numerze KSeF
-* [get](docs/sdks/getinvoices/README.md#get) - Pobranie listy metadanych faktur
-* [export](docs/sdks/getinvoices/README.md#export) - Eksport paczki faktur
-* [getExportStatus](docs/sdks/getinvoices/README.md#getexportstatus) - Pobranie statusu eksportu paczki faktur
+* [getList](docs/sdks/certificates/README.md#getlist) - Pobranie listy metadanych certyfikatów
 
 ### [invoices](docs/sdks/invoices/README.md)
 
-* [getList](docs/sdks/invoices/README.md#getlist) - Pobranie faktur sesji
-* [getInvoiceStatus](docs/sdks/invoices/README.md#getinvoicestatus) - Pobranie statusu faktury z sesji
-* [getFailed](docs/sdks/invoices/README.md#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
-* [getInvoiceUpoByKsefNumber](docs/sdks/invoices/README.md#getinvoiceupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
-* [getUpo](docs/sdks/invoices/README.md#getupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
-* [sendOnline](docs/sdks/invoices/README.md#sendonline) - Wysłanie faktury
+* [getByKsefNumber](docs/sdks/invoices/README.md#getbyksefnumber) - Pobranie faktury po numerze KSeF
+* [getList](docs/sdks/invoices/README.md#getlist) - Pobranie listy metadanych faktur
+* [export](docs/sdks/invoices/README.md#export) - Eksport paczki faktur
+* [getExportStatus](docs/sdks/invoices/README.md#getexportstatus) - Pobranie statusu eksportu paczki faktur
+
+### [limits](docs/sdks/limits/README.md)
+
+* [getContext](docs/sdks/limits/README.md#getcontext) - Pobranie limitów dla bieżącego kontekstu
+* [getSubject](docs/sdks/limits/README.md#getsubject) - Pobranie limitów dla bieżącego podmiotu
+* [updateContextSession](docs/sdks/limits/README.md#updatecontextsession) - Zmiana limitów sesji dla bieżącego kontekstu
+* [resetContextSession](docs/sdks/limits/README.md#resetcontextsession) - Przywrócenie domyślnych wartości limitów sesji dla bieżącego kontekstu
+* [updateSubjectCertificate](docs/sdks/limits/README.md#updatesubjectcertificate) - Zmiana limitów certyfikatów dla bieżącego podmiotu
+* [resetSubjectCertificate](docs/sdks/limits/README.md#resetsubjectcertificate) - Przywrócenie domyślnych wartości limitów certyfikatów dla bieżącego podmiotu
 
 ### [peppol](docs/sdks/peppol/README.md)
 
@@ -216,6 +215,15 @@ if ($response->authenticationListResponse !== null) {
 * [closeOnline](docs/sdks/sessions/README.md#closeonline) - Zamknięcie sesji interaktywnej
 * [openBatch](docs/sdks/sessions/README.md#openbatch) - Otwarcie sesji wsadowej
 * [closeBatch](docs/sdks/sessions/README.md#closebatch) - Zamknięcie sesji wsadowej
+
+#### [sessions->invoices](docs/sdks/sessionsinvoices/README.md)
+
+* [getList](docs/sdks/sessionsinvoices/README.md#getlist) - Pobranie faktur sesji
+* [getStatus](docs/sdks/sessionsinvoices/README.md#getstatus) - Pobranie statusu faktury z sesji
+* [getFailed](docs/sdks/sessionsinvoices/README.md#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
+* [getUpoByKsefNumber](docs/sdks/sessionsinvoices/README.md#getupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
+* [getUpo](docs/sdks/sessionsinvoices/README.md#getupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
+* [sendOnline](docs/sdks/sessionsinvoices/README.md#sendonline) - Wysłanie faktury
 
 ### [testData](docs/sdks/testdata/README.md)
 

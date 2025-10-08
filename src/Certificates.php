@@ -46,6 +46,94 @@ class Certificates
     }
 
     /**
+     * Pobranie listy metadanych certyfikatów
+     *
+     * Zwraca listę certyfikatów spełniających podane kryteria wyszukiwania.
+     * W przypadku braku podania kryteriów wyszukiwania zwrócona zostanie nieprzefiltrowana lista.
+     *
+     * @param  ?Components\QueryCertificatesRequest  $queryCertificatesRequest
+     * @param  ?int  $pageSize
+     * @param  ?int  $pageOffset
+     * @return Operations\GetCertificatesListResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getList(?Components\QueryCertificatesRequest $queryCertificatesRequest = null, ?int $pageSize = null, ?int $pageOffset = null, ?Options $options = null): Operations\GetCertificatesListResponse
+    {
+        $request = new Operations\GetCertificatesListRequest(
+            pageSize: $pageSize,
+            pageOffset: $pageOffset,
+            queryCertificatesRequest: $queryCertificatesRequest,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/query');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'queryCertificatesRequest', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetCertificatesListRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getCertificatesList', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryCertificatesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetCertificatesListResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    queryCertificatesResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
      * Pobranie danych do wniosku certyfikacyjnego
      *
      * Zwraca dane wymagane do przygotowania wniosku certyfikacyjnego PKCS#10.
@@ -54,13 +142,13 @@ class Certificates
      *
      *
      * > Więcej informacji:
-     * > - [Pobranie danych do wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-client-docs/blob/main/certyfikaty-wewn%C4%99trzne-KSeF.md#2-pobranie-danych-do-wniosku-certyfikacyjnego)
-     * > - [Przygotowanie wniosku](https://github.com/CIRFMF/ksef-client-docs/blob/main/certyfikaty-wewn%C4%99trzne-KSeF.md#3-przygotowanie-csr-certificate-signing-request)
+     * > - [Pobranie danych do wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-docs/blob/main/certyfikaty-KSeF.md#2-pobranie-danych-do-wniosku-certyfikacyjnego)
+     * > - [Przygotowanie wniosku](https://github.com/CIRFMF/ksef-docs/blob/main/certyfikaty-KSeF.md#3-przygotowanie-csr-certificate-signing-request)
      *
-     * @return Operations\GetApiV2CertificatesEnrollmentsDataResponse
+     * @return Operations\GetEnrollmentDataResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getEnrollmentData(?Options $options = null): Operations\GetApiV2CertificatesEnrollmentsDataResponse
+    public function getEnrollmentData(?Options $options = null): Operations\GetEnrollmentDataResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/enrollments/data');
@@ -69,7 +157,7 @@ class Certificates
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/certificates/enrollments/data', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getEnrollmentData', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -93,7 +181,7 @@ class Certificates
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\CertificateEnrollmentDataResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2CertificatesEnrollmentsDataResponse(
+                $response = new Operations\GetEnrollmentDataResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -130,22 +218,22 @@ class Certificates
      * Zwraca informacje o statusie wniosku certyfikacyjnego.
      *
      * @param  string  $referenceNumber
-     * @return Operations\GetApiV2CertificatesEnrollmentsReferenceNumberResponse
+     * @return Operations\GetEnrollmentStatusResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getEnrollmentStatus(string $referenceNumber, ?Options $options = null): Operations\GetApiV2CertificatesEnrollmentsReferenceNumberResponse
+    public function getEnrollmentStatus(string $referenceNumber, ?Options $options = null): Operations\GetEnrollmentStatusResponse
     {
-        $request = new Operations\GetApiV2CertificatesEnrollmentsReferenceNumberRequest(
+        $request = new Operations\GetEnrollmentStatusRequest(
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/enrollments/{referenceNumber}', Operations\GetApiV2CertificatesEnrollmentsReferenceNumberRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/enrollments/{referenceNumber}', Operations\GetEnrollmentStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/certificates/enrollments/{referenceNumber}', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getEnrollmentStatus', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -169,7 +257,7 @@ class Certificates
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\CertificateEnrollmentStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2CertificatesEnrollmentsReferenceNumberResponse(
+                $response = new Operations\GetEnrollmentStatusResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -205,10 +293,10 @@ class Certificates
      *
      * Zwraca informacje o limitach certyfikatów oraz informacje czy użytkownik może zawnioskować o certyfikat KSeF.
      *
-     * @return Operations\GetApiV2CertificatesLimitsResponse
+     * @return Operations\GetLimitsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getLimits(?Options $options = null): Operations\GetApiV2CertificatesLimitsResponse
+    public function getLimits(?Options $options = null): Operations\GetLimitsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/limits');
@@ -217,7 +305,7 @@ class Certificates
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/certificates/limits', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getLimits', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -241,7 +329,7 @@ class Certificates
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\CertificateLimitsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2CertificatesLimitsResponse(
+                $response = new Operations\GetLimitsResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -295,13 +383,13 @@ class Certificates
      * - SHA512
      *
      * > Więcej informacji:
-     * > - [Wysłanie wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-client-docs/blob/main/certyfikaty-wewn%C4%99trzne-KSeF.md#4-wys%C5%82anie-wniosku-certyfikacyjnego)
+     * > - [Wysłanie wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-docs/blob/main/certyfikaty-KSeF.md#4-wys%C5%82anie-wniosku-certyfikacyjnego)
      *
-     * @param  ?Operations\PostApiV2CertificatesEnrollmentsRequest  $request
-     * @return Operations\PostApiV2CertificatesEnrollmentsResponse
+     * @param  ?Operations\ProcessEnrollmentRequest  $request
+     * @return Operations\ProcessEnrollmentResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function processEnrollment(?Operations\PostApiV2CertificatesEnrollmentsRequest $request = null, ?Options $options = null): Operations\PostApiV2CertificatesEnrollmentsResponse
+    public function processEnrollment(?Operations\ProcessEnrollmentRequest $request = null, ?Options $options = null): Operations\ProcessEnrollmentResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/enrollments');
@@ -314,7 +402,7 @@ class Certificates
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/certificates/enrollments', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'processEnrollment', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -338,7 +426,7 @@ class Certificates
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\EnrollCertificateResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2CertificatesEnrollmentsResponse(
+                $response = new Operations\ProcessEnrollmentResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -370,103 +458,15 @@ class Certificates
     }
 
     /**
-     * Pobranie listy metadanych certyfikatów
-     *
-     * Zwraca listę certyfikatów spełniających podane kryteria wyszukiwania.
-     * W przypadku braku podania kryteriów wyszukiwania zwrócona zostanie nieprzefiltrowana lista.
-     *
-     * @param  ?Components\QueryCertificatesRequest  $queryCertificatesRequest
-     * @param  ?int  $pageSize
-     * @param  ?int  $pageOffset
-     * @return Operations\PostApiV2CertificatesQueryResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function get(?Components\QueryCertificatesRequest $queryCertificatesRequest = null, ?int $pageSize = null, ?int $pageOffset = null, ?Options $options = null): Operations\PostApiV2CertificatesQueryResponse
-    {
-        $request = new Operations\PostApiV2CertificatesQueryRequest(
-            pageSize: $pageSize,
-            pageOffset: $pageOffset,
-            queryCertificatesRequest: $queryCertificatesRequest,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/query');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'queryCertificatesRequest', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2CertificatesQueryRequest::class, $request, $urlOverride);
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/certificates/query', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryCertificatesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2CertificatesQueryResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    queryCertificatesResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
      * Pobranie certyfikatu lub listy certyfikatów
      *
      * Zwraca certyfikaty o podanych numerach seryjnych w formacie DER zakodowanym w Base64.
      *
-     * @param  ?Operations\PostApiV2CertificatesRetrieveRequest  $request
-     * @return Operations\PostApiV2CertificatesRetrieveResponse
+     * @param  ?Operations\RetrieveCertificatesRequest  $request
+     * @return Operations\RetrieveCertificatesResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function retrieve(?Operations\PostApiV2CertificatesRetrieveRequest $request = null, ?Options $options = null): Operations\PostApiV2CertificatesRetrieveResponse
+    public function retrieve(?Operations\RetrieveCertificatesRequest $request = null, ?Options $options = null): Operations\RetrieveCertificatesResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/retrieve');
@@ -479,7 +479,7 @@ class Certificates
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/certificates/retrieve', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'retrieveCertificates', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -503,7 +503,7 @@ class Certificates
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\RetrieveCertificatesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2CertificatesRetrieveResponse(
+                $response = new Operations\RetrieveCertificatesResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -541,17 +541,17 @@ class Certificates
      *
      * @param  string  $certificateSerialNumber
      * @param  ?Components\RevokeCertificateRequest  $revokeCertificateRequest
-     * @return Operations\PostApiV2CertificatesCertificateSerialNumberRevokeResponse
+     * @return Operations\RevokeCertificatesResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function revoke(string $certificateSerialNumber, ?Components\RevokeCertificateRequest $revokeCertificateRequest = null, ?Options $options = null): Operations\PostApiV2CertificatesCertificateSerialNumberRevokeResponse
+    public function revoke(string $certificateSerialNumber, ?Components\RevokeCertificateRequest $revokeCertificateRequest = null, ?Options $options = null): Operations\RevokeCertificatesResponse
     {
-        $request = new Operations\PostApiV2CertificatesCertificateSerialNumberRevokeRequest(
+        $request = new Operations\RevokeCertificatesRequest(
             certificateSerialNumber: $certificateSerialNumber,
             revokeCertificateRequest: $revokeCertificateRequest,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/{certificateSerialNumber}/revoke', Operations\PostApiV2CertificatesCertificateSerialNumberRevokeRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/{certificateSerialNumber}/revoke', Operations\RevokeCertificatesRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'revokeCertificateRequest', 'json');
@@ -561,7 +561,7 @@ class Certificates
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/certificates/{certificateSerialNumber}/revoke', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'revokeCertificates', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -581,7 +581,7 @@ class Certificates
         if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
             $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
 
-            return new Operations\PostApiV2CertificatesCertificateSerialNumberRevokeResponse(
+            return new Operations\RevokeCertificatesResponse(
                 statusCode: $statusCode,
                 contentType: $contentType,
                 rawResponse: $httpResponse

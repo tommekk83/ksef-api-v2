@@ -49,10 +49,10 @@ class Security
      *
      * Zwraca informacje o kluczach publicznych używanych do szyfrowania danych przesyłanych do systemu KSeF.
      *
-     * @return Operations\GetApiV2SecurityPublicKeyCertificatesResponse
+     * @return Operations\GetPublicKeyCertificatesResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getPublicKeyCertificates(?Options $options = null): Operations\GetApiV2SecurityPublicKeyCertificatesResponse
+    public function getPublicKeyCertificates(?Options $options = null): Operations\GetPublicKeyCertificatesResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/security/public-key-certificates');
@@ -61,7 +61,7 @@ class Security
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/security/public-key-certificates', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getPublicKeyCertificates', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -85,7 +85,7 @@ class Security
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, 'array<\Intermedia\Ksef\Apiv2\Models\Components\PublicKeyCertificate>', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2SecurityPublicKeyCertificatesResponse(
+                $response = new Operations\GetPublicKeyCertificatesResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,

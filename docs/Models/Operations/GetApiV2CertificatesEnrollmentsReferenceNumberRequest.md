@@ -1,8 +1,0 @@
-# GetApiV2CertificatesEnrollmentsReferenceNumberRequest
-
-
-## Fields
-
-| Field                                       | Type                                        | Required                                    | Description                                 |
-| ------------------------------------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
-| `referenceNumber`                           | *string*                                    | :heavy_check_mark:                          | Numer referencyjny wniosku certyfikacyjnego |

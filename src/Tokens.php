@@ -46,27 +46,30 @@ class Tokens
     }
 
     /**
-     * Unieważnienie tokena
+     * Wygenerowanie nowego tokena
      *
-     * Unieważniony token nie pozwoli już na uwierzytelnienie się za jego pomocą. Unieważnienie nie może zostać cofnięte.
+     * Zwraca token, który może być użyty do uwierzytelniania się w KSeF.
      *
-     * @param  string  $referenceNumber
-     * @return Operations\DeleteApiV2TokensReferenceNumberResponse
+     * Token może być generowany tylko w kontekście NIP lub identyfikatora wewnętrznego. Jest zwracany tylko raz. Zaczyna być aktywny w momencie gdy jego status zmieni się na `Active`.
+     *
+     * @param  ?Components\GenerateTokenRequest  $request
+     * @return Operations\GenerateTokenResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function revoke(string $referenceNumber, ?Options $options = null): Operations\DeleteApiV2TokensReferenceNumberResponse
+    public function generate(?Components\GenerateTokenRequest $request = null, ?Options $options = null): Operations\GenerateTokenResponse
     {
-        $request = new Operations\DeleteApiV2TokensReferenceNumberRequest(
-            referenceNumber: $referenceNumber,
-        );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens/{referenceNumber}', Operations\DeleteApiV2TokensReferenceNumberRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'delete_/api/v2/tokens/{referenceNumber}', [], $this->sdkConfiguration->securitySource);
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'generateToken', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -83,14 +86,23 @@ class Tokens
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
-            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
 
-            return new Operations\DeleteApiV2TokensReferenceNumberResponse(
-                statusCode: $statusCode,
-                contentType: $contentType,
-                rawResponse: $httpResponse
-            );
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\GenerateTokenResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GenerateTokenResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    generateTokenResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
             if (Utils\Utils::matchContentType($contentType, 'application/json')) {
                 $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
@@ -115,18 +127,18 @@ class Tokens
     /**
      * Pobranie listy wygenerowanych tokenów
      *
-     * @param  ?Operations\GetApiV2TokensRequest  $request
-     * @return Operations\GetApiV2TokensResponse
+     * @param  ?Operations\GetTokenListRequest  $request
+     * @return Operations\GetTokenListResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getList(?Operations\GetApiV2TokensRequest $request = null, ?Options $options = null): Operations\GetApiV2TokensResponse
+    public function getList(?Operations\GetTokenListRequest $request = null, ?Options $options = null): Operations\GetTokenListResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
-        $qp = Utils\Utils::getQueryParams(Operations\GetApiV2TokensRequest::class, $request, $urlOverride);
+        $qp = Utils\Utils::getQueryParams(Operations\GetTokenListRequest::class, $request, $urlOverride);
         $httpOptions = array_merge_recursive($httpOptions, Utils\Utils::getHeaders($request));
         if (! array_key_exists('headers', $httpOptions)) {
             $httpOptions['headers'] = [];
@@ -134,7 +146,7 @@ class Tokens
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/tokens', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getTokenList', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
@@ -159,7 +171,7 @@ class Tokens
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryTokensResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2TokensResponse(
+                $response = new Operations\GetTokenListResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -194,22 +206,22 @@ class Tokens
      * Pobranie statusu tokena
      *
      * @param  string  $referenceNumber
-     * @return Operations\GetApiV2TokensReferenceNumberResponse
+     * @return Operations\GetTokenStatusResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getStatus(string $referenceNumber, ?Options $options = null): Operations\GetApiV2TokensReferenceNumberResponse
+    public function getStatus(string $referenceNumber, ?Options $options = null): Operations\GetTokenStatusResponse
     {
-        $request = new Operations\GetApiV2TokensReferenceNumberRequest(
+        $request = new Operations\GetTokenStatusRequest(
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens/{referenceNumber}', Operations\GetApiV2TokensReferenceNumberRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens/{referenceNumber}', Operations\GetTokenStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/tokens/{referenceNumber}', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getTokenStatus', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -233,7 +245,7 @@ class Tokens
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\TokenStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2TokensReferenceNumberResponse(
+                $response = new Operations\GetTokenStatusResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -265,30 +277,27 @@ class Tokens
     }
 
     /**
-     * Wygenerowanie nowego tokena
+     * Unieważnienie tokena
      *
-     * Zwraca token, który może być użyty do uwierzytelniania się w KSeF.
+     * Unieważniony token nie pozwoli już na uwierzytelnienie się za jego pomocą. Unieważnienie nie może zostać cofnięte.
      *
-     * Token może być generowany tylko w kontekście NIP lub identyfikatora wewnętrznego. Jest zwracany tylko raz. Zaczyna być aktywny w momencie gdy jego status zmieni się na `Active`.
-     *
-     * @param  ?Components\GenerateTokenRequest  $request
-     * @return Operations\PostApiV2TokensResponse
+     * @param  string  $referenceNumber
+     * @return Operations\RevokeTokenResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function generate(?Components\GenerateTokenRequest $request = null, ?Options $options = null): Operations\PostApiV2TokensResponse
+    public function revoke(string $referenceNumber, ?Options $options = null): Operations\RevokeTokenResponse
     {
+        $request = new Operations\RevokeTokenRequest(
+            referenceNumber: $referenceNumber,
+        );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens');
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens/{referenceNumber}', Operations\RevokeTokenRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/tokens', [], $this->sdkConfiguration->securitySource);
+        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'revokeToken', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -305,23 +314,14 @@ class Tokens
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
+            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
 
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\GenerateTokenResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2TokensResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    generateTokenResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
+            return new Operations\RevokeTokenResponse(
+                statusCode: $statusCode,
+                contentType: $contentType,
+                rawResponse: $httpResponse
+            );
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
             if (Utils\Utils::matchContentType($contentType, 'application/json')) {
                 $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);

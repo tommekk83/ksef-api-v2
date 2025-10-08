@@ -35,7 +35,7 @@ Wymagane uprawnienia: `CredentialsManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/persons/grants" method="post" path="/api/v2/permissions/persons/grants" -->
+<!-- UsageSnippet language="php" operationID="grantToPersons" method="post" path="/api/v2/permissions/persons/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -51,8 +51,8 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2PermissionsPersonsGrantsRequest(
-    subjectIdentifier: new Operations\PostApiV2PermissionsPersonsGrantsSubjectIdentifier(
+$request = new Operations\GrantToPersonsRequest(
+    subjectIdentifier: new Operations\GrantToPersonsSubjectIdentifier(
         type: Components\PersonPermissionsSubjectIdentifierType::Pesel,
         value: '15062788702',
     ),
@@ -60,7 +60,7 @@ $request = new Operations\PostApiV2PermissionsPersonsGrantsRequest(
         Components\PersonPermissionType::InvoiceRead,
         Components\PersonPermissionType::InvoiceWrite,
     ],
-    description: 'Uprawnienia do odczytu i wysyłania faktur',
+    description: 'praca w kontekście 5265877635; uprawniony PESEL: 15062788702, Adam Abacki',
 );
 
 $response = $sdk->permissions->grantToPersons(
@@ -74,13 +74,13 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                  | Type                                                                                                                       | Required                                                                                                                   | Description                                                                                                                |
-| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                                                 | [Operations\PostApiV2PermissionsPersonsGrantsRequest](../../Models/Operations/PostApiV2PermissionsPersonsGrantsRequest.md) | :heavy_check_mark:                                                                                                         | The request object to use for the request.                                                                                 |
+| Parameter                                                                            | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `$request`                                                                           | [Operations\GrantToPersonsRequest](../../Models/Operations/GrantToPersonsRequest.md) | :heavy_check_mark:                                                                   | The request object to use for the request.                                           |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsPersonsGrantsResponse](../../Models/Operations/PostApiV2PermissionsPersonsGrantsResponse.md)**
+**[?Operations\GrantToPersonsResponse](../../Models/Operations/GrantToPersonsResponse.md)**
 
 ### Errors
 
@@ -100,7 +100,7 @@ Wymagane uprawnienia: `CredentialsManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/entities/grants" method="post" path="/api/v2/permissions/entities/grants" -->
+<!-- UsageSnippet language="php" operationID="grantToEntities" method="post" path="/api/v2/permissions/entities/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -116,8 +116,8 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2PermissionsEntitiesGrantsRequest(
-    subjectIdentifier: new Operations\PostApiV2PermissionsEntitiesGrantsSubjectIdentifier(
+$request = new Operations\GrantToEntitiesRequest(
+    subjectIdentifier: new Operations\GrantToEntitiesSubjectIdentifier(
         type: Components\EntityPermissionsSubjectIdentifierType::Nip,
         value: '7762811692',
     ),
@@ -131,7 +131,7 @@ $request = new Operations\PostApiV2PermissionsEntitiesGrantsRequest(
             canDelegate: true,
         ),
     ],
-    description: 'Uprawnienia do odczytu i wysyłania faktur z możliwością nadania ich pośrednio',
+    description: 'praca w kontekście 5265877635; uprawniony NIP: 7762811692, Firma "FRM" Sp. z o.o.',
 );
 
 $response = $sdk->permissions->grantToEntities(
@@ -145,13 +145,13 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                    | Type                                                                                                                         | Required                                                                                                                     | Description                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                                                   | [Operations\PostApiV2PermissionsEntitiesGrantsRequest](../../Models/Operations/PostApiV2PermissionsEntitiesGrantsRequest.md) | :heavy_check_mark:                                                                                                           | The request object to use for the request.                                                                                   |
+| Parameter                                                                              | Type                                                                                   | Required                                                                               | Description                                                                            |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `$request`                                                                             | [Operations\GrantToEntitiesRequest](../../Models/Operations/GrantToEntitiesRequest.md) | :heavy_check_mark:                                                                     | The request object to use for the request.                                             |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsEntitiesGrantsResponse](../../Models/Operations/PostApiV2PermissionsEntitiesGrantsResponse.md)**
+**[?Operations\GrantToEntitiesResponse](../../Models/Operations/GrantToEntitiesResponse.md)**
 
 ### Errors
 
@@ -171,7 +171,7 @@ Wymagane uprawnienia: `CredentialsManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/authorizations/grants" method="post" path="/api/v2/permissions/authorizations/grants" -->
+<!-- UsageSnippet language="php" operationID="grantAuthorizations" method="post" path="/api/v2/permissions/authorizations/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -187,13 +187,13 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2PermissionsAuthorizationsGrantsRequest(
-    subjectIdentifier: new Operations\PostApiV2PermissionsAuthorizationsGrantsSubjectIdentifier(
+$request = new Operations\GrantAuthorizationsRequest(
+    subjectIdentifier: new Operations\GrantAuthorizationsSubjectIdentifier(
         type: Components\EntityAuthorizationPermissionsSubjectIdentifierType::Nip,
         value: '7762811692',
     ),
     permission: Components\EntityAuthorizationPermissionType::SelfInvoicing,
-    description: 'Uprawnienia do samofakturowania',
+    description: 'praca w kontekście 5265877635; uprawniony NIP: 7762811692, Firma "FRM" Sp. z o.o.',
 );
 
 $response = $sdk->permissions->grantAuthorizations(
@@ -207,13 +207,13 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                                | Type                                                                                                                                     | Required                                                                                                                                 | Description                                                                                                                              |
-| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                                                               | [Operations\PostApiV2PermissionsAuthorizationsGrantsRequest](../../Models/Operations/PostApiV2PermissionsAuthorizationsGrantsRequest.md) | :heavy_check_mark:                                                                                                                       | The request object to use for the request.                                                                                               |
+| Parameter                                                                                      | Type                                                                                           | Required                                                                                       | Description                                                                                    |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `$request`                                                                                     | [Operations\GrantAuthorizationsRequest](../../Models/Operations/GrantAuthorizationsRequest.md) | :heavy_check_mark:                                                                             | The request object to use for the request.                                                     |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsAuthorizationsGrantsResponse](../../Models/Operations/PostApiV2PermissionsAuthorizationsGrantsResponse.md)**
+**[?Operations\GrantAuthorizationsResponse](../../Models/Operations/GrantAuthorizationsResponse.md)**
 
 ### Errors
 
@@ -233,7 +233,7 @@ Wymagane uprawnienia: `CredentialsManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/indirect/grants" method="post" path="/api/v2/permissions/indirect/grants" -->
+<!-- UsageSnippet language="php" operationID="grantIndirectly" method="post" path="/api/v2/permissions/indirect/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -249,16 +249,19 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2PermissionsIndirectGrantsRequest(
-    subjectIdentifier: new Operations\PostApiV2PermissionsIndirectGrantsSubjectIdentifier(
+$request = new Operations\GrantIndirectlyRequest(
+    subjectIdentifier: new Operations\GrantIndirectlySubjectIdentifier(
         type: Components\IndirectPermissionsSubjectIdentifierType::Pesel,
         value: '15062788702',
+    ),
+    targetIdentifier: new Operations\GrantIndirectlyTargetIdentifier(
+        type: Components\IndirectPermissionsTargetIdentifierType::AllPartners,
     ),
     permissions: [
         Components\IndirectPermissionType::InvoiceWrite,
         Components\IndirectPermissionType::InvoiceRead,
     ],
-    description: 'Uprawnienia generalne do odczytu i wysyłania faktur, nadane w sposób pośredni',
+    description: 'praca w kontekście 5265877635; uprawniony PESEL: 15062788702, Adam Abacki',
 );
 
 $response = $sdk->permissions->grantIndirectly(
@@ -272,13 +275,13 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                    | Type                                                                                                                         | Required                                                                                                                     | Description                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                                                   | [Operations\PostApiV2PermissionsIndirectGrantsRequest](../../Models/Operations/PostApiV2PermissionsIndirectGrantsRequest.md) | :heavy_check_mark:                                                                                                           | The request object to use for the request.                                                                                   |
+| Parameter                                                                              | Type                                                                                   | Required                                                                               | Description                                                                            |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `$request`                                                                             | [Operations\GrantIndirectlyRequest](../../Models/Operations/GrantIndirectlyRequest.md) | :heavy_check_mark:                                                                     | The request object to use for the request.                                             |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsIndirectGrantsResponse](../../Models/Operations/PostApiV2PermissionsIndirectGrantsResponse.md)**
+**[?Operations\GrantIndirectlyResponse](../../Models/Operations/GrantIndirectlyResponse.md)**
 
 ### Errors
 
@@ -298,7 +301,7 @@ Wymagane uprawnienia: `SubunitManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/subunits/grants" method="post" path="/api/v2/permissions/subunits/grants" -->
+<!-- UsageSnippet language="php" operationID="grantToSubunits" method="post" path="/api/v2/permissions/subunits/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -314,16 +317,17 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2PermissionsSubunitsGrantsRequest(
-    subjectIdentifier: new Operations\PostApiV2PermissionsSubunitsGrantsSubjectIdentifier(
+$request = new Operations\GrantToSubunitsRequest(
+    subjectIdentifier: new Operations\GrantToSubunitsSubjectIdentifier(
         type: Components\SubunitPermissionsSubjectIdentifierType::Pesel,
         value: '15062788702',
     ),
-    contextIdentifier: new Operations\PostApiV2PermissionsSubunitsGrantsContextIdentifier(
+    contextIdentifier: new Operations\GrantToSubunitsContextIdentifier(
         type: Components\SubunitPermissionsContextIdentifierType::InternalId,
         value: '7762811692-11111',
     ),
-    description: 'Administrator jednostki podrzędnej',
+    description: 'praca w kontekście 7762811692-11111; uprawniony PESEL: 15062788702, Adam Abacki',
+    subunitName: 'Nazwa jednostki podrzędnej',
 );
 
 $response = $sdk->permissions->grantToSubunits(
@@ -337,13 +341,13 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                    | Type                                                                                                                         | Required                                                                                                                     | Description                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                                                   | [Operations\PostApiV2PermissionsSubunitsGrantsRequest](../../Models/Operations/PostApiV2PermissionsSubunitsGrantsRequest.md) | :heavy_check_mark:                                                                                                           | The request object to use for the request.                                                                                   |
+| Parameter                                                                              | Type                                                                                   | Required                                                                               | Description                                                                            |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `$request`                                                                             | [Operations\GrantToSubunitsRequest](../../Models/Operations/GrantToSubunitsRequest.md) | :heavy_check_mark:                                                                     | The request object to use for the request.                                             |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsSubunitsGrantsResponse](../../Models/Operations/PostApiV2PermissionsSubunitsGrantsResponse.md)**
+**[?Operations\GrantToSubunitsResponse](../../Models/Operations/GrantToSubunitsResponse.md)**
 
 ### Errors
 
@@ -363,7 +367,7 @@ Wymagane uprawnienia: `CredentialsManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/eu-entities/administration/grants" method="post" path="/api/v2/permissions/eu-entities/administration/grants" -->
+<!-- UsageSnippet language="php" operationID="grantRights" method="post" path="/api/v2/permissions/eu-entities/administration/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -379,16 +383,16 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest(
-    subjectIdentifier: new Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsSubjectIdentifier(
+$request = new Operations\GrantRightsRequest(
+    subjectIdentifier: new Operations\GrantRightsSubjectIdentifier(
         type: Components\EuEntityAdministrationPermissionsSubjectIdentifierType::Fingerprint,
         value: 'CEB3643BAC2C111ADDE971BDA5A80163441867D65389FC0BC0DFF8B4C1CD4E59',
     ),
-    contextIdentifier: new Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsContextIdentifier(
+    contextIdentifier: new Operations\GrantRightsContextIdentifier(
         type: Components\EuEntityAdministrationPermissionsContextIdentifierType::NipVatUe,
         value: '7762811692-DE123456789012',
     ),
-    description: 'Administrator podmiotu unijnego DE123456789012',
+    description: 'praca w kontekście 7762811692-DE123456789012; uprawniony FP: CEB3643BAC2C111ADDE971BDA5A80163441867D65389FC0BC0DFF8B4C1CD4E59, Firma "FRM" Sp. z o.o.',
     euEntityName: 'Nazwa podmiotu unijnego',
 );
 
@@ -403,13 +407,13 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                                                    | Type                                                                                                                                                         | Required                                                                                                                                                     | Description                                                                                                                                                  |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `$request`                                                                                                                                                   | [Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest](../../Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest.md) | :heavy_check_mark:                                                                                                                                           | The request object to use for the request.                                                                                                                   |
+| Parameter                                                                      | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `$request`                                                                     | [Operations\GrantRightsRequest](../../Models/Operations/GrantRightsRequest.md) | :heavy_check_mark:                                                             | The request object to use for the request.                                     |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse](../../Models/Operations/PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse.md)**
+**[?Operations\GrantRightsResponse](../../Models/Operations/GrantRightsResponse.md)**
 
 ### Errors
 
@@ -429,7 +433,7 @@ Wymagane uprawnienia: `VatUeManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/eu-entities/grants" method="post" path="/api/v2/permissions/eu-entities/grants" -->
+<!-- UsageSnippet language="php" operationID="grantToEuEntities" method="post" path="/api/v2/permissions/eu-entities/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -445,8 +449,8 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2PermissionsEuEntitiesGrantsRequest(
-    subjectIdentifier: new Operations\PostApiV2PermissionsEuEntitiesGrantsSubjectIdentifier(
+$request = new Operations\GrantToEuEntitiesRequest(
+    subjectIdentifier: new Operations\GrantToEuEntitiesSubjectIdentifier(
         type: Components\EuEntityPermissionsSubjectIdentifierType::Fingerprint,
         value: 'CEB3643BAC2C111ADDE971BDA5A80163441867D65389FC0BC0DFF8B4C1CD4E59',
     ),
@@ -454,7 +458,7 @@ $request = new Operations\PostApiV2PermissionsEuEntitiesGrantsRequest(
         Components\EuEntityPermissionType::InvoiceRead,
         Components\EuEntityPermissionType::InvoiceWrite,
     ],
-    description: 'Reprezentant podmiotu unijnego',
+    description: 'praca w kontekście 5194084033-IT932928602745; uprawniony FP: CEB3643BAC2C111ADDE971BDA5A80163441867D65389FC0BC0DFF8B4C1CD4E59, Hans Fisher; 10.02.1990; paszport AT: AP759478',
 );
 
 $response = $sdk->permissions->grantToEuEntities(
@@ -468,13 +472,13 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                        | Type                                                                                                                             | Required                                                                                                                         | Description                                                                                                                      |
-| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                                                       | [Operations\PostApiV2PermissionsEuEntitiesGrantsRequest](../../Models/Operations/PostApiV2PermissionsEuEntitiesGrantsRequest.md) | :heavy_check_mark:                                                                                                               | The request object to use for the request.                                                                                       |
+| Parameter                                                                                  | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `$request`                                                                                 | [Operations\GrantToEuEntitiesRequest](../../Models/Operations/GrantToEuEntitiesRequest.md) | :heavy_check_mark:                                                                         | The request object to use for the request.                                                 |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsEuEntitiesGrantsResponse](../../Models/Operations/PostApiV2PermissionsEuEntitiesGrantsResponse.md)**
+**[?Operations\GrantToEuEntitiesResponse](../../Models/Operations/GrantToEuEntitiesResponse.md)**
 
 ### Errors
 
@@ -502,7 +506,7 @@ Wymagane uprawnienia: `CredentialsManage`, `VatUeManage`, `SubunitManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="delete_/api/v2/permissions/common/grants/{permissionId}" method="delete" path="/api/v2/permissions/common/grants/{permissionId}" -->
+<!-- UsageSnippet language="php" operationID="revokePermissions" method="delete" path="/api/v2/permissions/common/grants/{permissionId}" -->
 ```php
 declare(strict_types=1);
 
@@ -535,7 +539,7 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Response
 
-**[?Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdResponse](../../Models/Operations/DeleteApiV2PermissionsCommonGrantsPermissionIdResponse.md)**
+**[?Operations\RevokePermissionsResponse](../../Models/Operations/RevokePermissionsResponse.md)**
 
 ### Errors
 
@@ -556,7 +560,7 @@ Wymagane uprawnienia: `CredentialsManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="delete_/api/v2/permissions/authorizations/grants/{permissionId}" method="delete" path="/api/v2/permissions/authorizations/grants/{permissionId}" -->
+<!-- UsageSnippet language="php" operationID="revokeAuthorizations" method="delete" path="/api/v2/permissions/authorizations/grants/{permissionId}" -->
 ```php
 declare(strict_types=1);
 
@@ -589,7 +593,7 @@ if ($response->permissionsOperationResponse !== null) {
 
 ### Response
 
-**[?Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse](../../Models/Operations/DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse.md)**
+**[?Operations\RevokeAuthorizationsResponse](../../Models/Operations/RevokeAuthorizationsResponse.md)**
 
 ### Errors
 
@@ -604,7 +608,7 @@ Zwraca status operacji asynchronicznej związanej z nadaniem lub odebraniem upra
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/permissions/operations/{operationReferenceNumber}" method="get" path="/api/v2/permissions/operations/{operationReferenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getOperationStatus" method="get" path="/api/v2/permissions/operations/{operationReferenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -637,7 +641,7 @@ if ($response->permissionsOperationStatusResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2PermissionsOperationsOperationReferenceNumberResponse](../../Models/Operations/GetApiV2PermissionsOperationsOperationReferenceNumberResponse.md)**
+**[?Operations\GetOperationStatusResponse](../../Models/Operations/GetOperationStatusResponse.md)**
 
 ### Errors
 
@@ -654,7 +658,7 @@ Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/permissions/attachments/status" method="get" path="/api/v2/permissions/attachments/status" -->
+<!-- UsageSnippet language="php" operationID="checkAttachmentStatus" method="get" path="/api/v2/permissions/attachments/status" -->
 ```php
 declare(strict_types=1);
 
@@ -681,7 +685,7 @@ if ($response->checkAttachmentPermissionStatusResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2PermissionsAttachmentsStatusResponse](../../Models/Operations/GetApiV2PermissionsAttachmentsStatusResponse.md)**
+**[?Operations\CheckAttachmentStatusResponse](../../Models/Operations/CheckAttachmentStatusResponse.md)**
 
 ### Errors
 
@@ -699,13 +703,14 @@ Zwraca listę uprawnień przysługujących uwierzytelnionemu podmiotowi.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/query/personal/grants" method="post" path="/api/v2/permissions/query/personal/grants" -->
+<!-- UsageSnippet language="php" operationID="getPersonalGrants" method="post" path="/api/v2/permissions/query/personal/grants" -->
 ```php
 declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Components;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -713,10 +718,26 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$personalPermissionsQueryRequest = new Components\PersonalPermissionsQueryRequest(
+    contextIdentifier: new Components\PersonalPermissionsQueryRequestContextIdentifier(
+        type: Components\PersonalPermissionsContextIdentifierType::Nip,
+        value: '5265877635',
+    ),
+    targetIdentifier: new Components\PersonalPermissionsQueryRequestTargetIdentifier(
+        type: Components\PersonalPermissionsTargetIdentifierType::Nip,
+        value: '7762811692',
+    ),
+    permissionTypes: [
+        Components\PersonalPermissionType::CredentialsManage,
+    ],
+    permissionState: Components\PersonalPermissionsQueryRequestPermissionState::Active,
+);
 
 $response = $sdk->permissions->getPersonalGrants(
+    pageOffset: 0,
+    pageSize: 10,
     personalPermissionsQueryRequest: $personalPermissionsQueryRequest
+
 );
 
 if ($response->queryPersonalPermissionsResponse !== null) {
@@ -734,7 +755,7 @@ if ($response->queryPersonalPermissionsResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsQueryPersonalGrantsResponse](../../Models/Operations/PostApiV2PermissionsQueryPersonalGrantsResponse.md)**
+**[?Operations\GetPersonalGrantsResponse](../../Models/Operations/GetPersonalGrantsResponse.md)**
 
 ### Errors
 
@@ -754,7 +775,7 @@ Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/query/persons/grants" method="post" path="/api/v2/permissions/query/persons/grants" -->
+<!-- UsageSnippet language="php" operationID="getPersonGrants" method="post" path="/api/v2/permissions/query/persons/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -770,7 +791,7 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$requestBody = new Operations\PostApiV2PermissionsQueryPersonsGrantsRequestBody(
+$requestBody = new Operations\GetPersonGrantsRequestBody(
     authorIdentifier: new Operations\AuthorIdentifier(
         type: Components\PersonPermissionsAuthorIdentifierType::Nip,
         value: '7762811692',
@@ -785,7 +806,10 @@ $requestBody = new Operations\PostApiV2PermissionsQueryPersonsGrantsRequestBody(
 );
 
 $response = $sdk->permissions->getPersonGrants(
+    pageOffset: 0,
+    pageSize: 10,
     requestBody: $requestBody
+
 );
 
 if ($response->queryPersonPermissionsResponse !== null) {
@@ -795,15 +819,15 @@ if ($response->queryPersonPermissionsResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                                     | Type                                                                                                                                          | Required                                                                                                                                      | Description                                                                                                                                   |
-| --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pageOffset`                                                                                                                                  | *?int*                                                                                                                                        | :heavy_minus_sign:                                                                                                                            | Numer strony wyników.                                                                                                                         |
-| `pageSize`                                                                                                                                    | *?int*                                                                                                                                        | :heavy_minus_sign:                                                                                                                            | Rozmiar strony wyników.                                                                                                                       |
-| `requestBody`                                                                                                                                 | [?Operations\PostApiV2PermissionsQueryPersonsGrantsRequestBody](../../Models/Operations/PostApiV2PermissionsQueryPersonsGrantsRequestBody.md) | :heavy_minus_sign:                                                                                                                            | N/A                                                                                                                                           |
+| Parameter                                                                                       | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `pageOffset`                                                                                    | *?int*                                                                                          | :heavy_minus_sign:                                                                              | Numer strony wyników.                                                                           |
+| `pageSize`                                                                                      | *?int*                                                                                          | :heavy_minus_sign:                                                                              | Rozmiar strony wyników.                                                                         |
+| `requestBody`                                                                                   | [?Operations\GetPersonGrantsRequestBody](../../Models/Operations/GetPersonGrantsRequestBody.md) | :heavy_minus_sign:                                                                              | N/A                                                                                             |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsQueryPersonsGrantsResponse](../../Models/Operations/PostApiV2PermissionsQueryPersonsGrantsResponse.md)**
+**[?Operations\GetPersonGrantsResponse](../../Models/Operations/GetPersonGrantsResponse.md)**
 
 ### Errors
 
@@ -823,7 +847,7 @@ Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/query/subunits/grants" method="post" path="/api/v2/permissions/query/subunits/grants" -->
+<!-- UsageSnippet language="php" operationID="getSubunitsGrants" method="post" path="/api/v2/permissions/query/subunits/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -846,7 +870,10 @@ $subunitPermissionsQueryRequest = new Components\SubunitPermissionsQueryRequest(
 );
 
 $response = $sdk->permissions->getSubunitsGrants(
+    pageOffset: 0,
+    pageSize: 10,
     subunitPermissionsQueryRequest: $subunitPermissionsQueryRequest
+
 );
 
 if ($response->querySubunitPermissionsResponse !== null) {
@@ -864,7 +891,7 @@ if ($response->querySubunitPermissionsResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsQuerySubunitsGrantsResponse](../../Models/Operations/PostApiV2PermissionsQuerySubunitsGrantsResponse.md)**
+**[?Operations\GetSubunitsGrantsResponse](../../Models/Operations/GetSubunitsGrantsResponse.md)**
 
 ### Errors
 
@@ -884,7 +911,7 @@ Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/permissions/query/entities/roles" method="get" path="/api/v2/permissions/query/entities/roles" -->
+<!-- UsageSnippet language="php" operationID="getEntityRoles" method="get" path="/api/v2/permissions/query/entities/roles" -->
 ```php
 declare(strict_types=1);
 
@@ -901,6 +928,8 @@ $sdk = Apiv2\Client::builder()
 
 
 $response = $sdk->permissions->getEntityRoles(
+    pageOffset: 0,
+    pageSize: 10
 
 );
 
@@ -918,7 +947,7 @@ if ($response->queryEntityRolesResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2PermissionsQueryEntitiesRolesResponse](../../Models/Operations/GetApiV2PermissionsQueryEntitiesRolesResponse.md)**
+**[?Operations\GetEntityRolesResponse](../../Models/Operations/GetEntityRolesResponse.md)**
 
 ### Errors
 
@@ -938,7 +967,7 @@ Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/query/subordinate-entities/roles" method="post" path="/api/v2/permissions/query/subordinate-entities/roles" -->
+<!-- UsageSnippet language="php" operationID="getSubordinateEntitiesRoles" method="post" path="/api/v2/permissions/query/subordinate-entities/roles" -->
 ```php
 declare(strict_types=1);
 
@@ -961,7 +990,10 @@ $subordinateEntityRolesQueryRequest = new Components\SubordinateEntityRolesQuery
 );
 
 $response = $sdk->permissions->getSubordinateEntitiesRoles(
+    pageOffset: 0,
+    pageSize: 10,
     subordinateEntityRolesQueryRequest: $subordinateEntityRolesQueryRequest
+
 );
 
 if ($response->querySubordinateEntityRolesResponse !== null) {
@@ -979,7 +1011,7 @@ if ($response->querySubordinateEntityRolesResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse](../../Models/Operations/PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse.md)**
+**[?Operations\GetSubordinateEntitiesRolesResponse](../../Models/Operations/GetSubordinateEntitiesRolesResponse.md)**
 
 ### Errors
 
@@ -999,7 +1031,7 @@ Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/query/authorizations/grants" method="post" path="/api/v2/permissions/query/authorizations/grants" -->
+<!-- UsageSnippet language="php" operationID="getAuthorizationsGrants" method="post" path="/api/v2/permissions/query/authorizations/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -1015,8 +1047,8 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$requestBody = new Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody(
-    authorizedIdentifier: new Operations\PostApiV2PermissionsQueryAuthorizationsGrantsAuthorizedIdentifier(
+$requestBody = new Operations\GetAuthorizationsGrantsRequestBody(
+    authorizedIdentifier: new Operations\GetAuthorizationsGrantsAuthorizedIdentifier(
         type: Components\EntityAuthorizationsAuthorizedEntityIdentifierType::Nip,
         value: '7762811692',
     ),
@@ -1029,7 +1061,10 @@ $requestBody = new Operations\PostApiV2PermissionsQueryAuthorizationsGrantsReque
 );
 
 $response = $sdk->permissions->getAuthorizationsGrants(
+    pageOffset: 0,
+    pageSize: 10,
     requestBody: $requestBody
+
 );
 
 if ($response->queryEntityAuthorizationPermissionsResponse !== null) {
@@ -1039,15 +1074,15 @@ if ($response->queryEntityAuthorizationPermissionsResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                                                   | Type                                                                                                                                                        | Required                                                                                                                                                    | Description                                                                                                                                                 |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pageOffset`                                                                                                                                                | *?int*                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                          | Numer strony wyników.                                                                                                                                       |
-| `pageSize`                                                                                                                                                  | *?int*                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                          | Rozmiar strony wyników.                                                                                                                                     |
-| `requestBody`                                                                                                                                               | [?Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody](../../Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody.md) | :heavy_minus_sign:                                                                                                                                          | N/A                                                                                                                                                         |
+| Parameter                                                                                                       | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `pageOffset`                                                                                                    | *?int*                                                                                                          | :heavy_minus_sign:                                                                                              | Numer strony wyników.                                                                                           |
+| `pageSize`                                                                                                      | *?int*                                                                                                          | :heavy_minus_sign:                                                                                              | Rozmiar strony wyników.                                                                                         |
+| `requestBody`                                                                                                   | [?Operations\GetAuthorizationsGrantsRequestBody](../../Models/Operations/GetAuthorizationsGrantsRequestBody.md) | :heavy_minus_sign:                                                                                              | N/A                                                                                                             |
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsQueryAuthorizationsGrantsResponse](../../Models/Operations/PostApiV2PermissionsQueryAuthorizationsGrantsResponse.md)**
+**[?Operations\GetAuthorizationsGrantsResponse](../../Models/Operations/GetAuthorizationsGrantsResponse.md)**
 
 ### Errors
 
@@ -1067,7 +1102,7 @@ Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `VatUeManage`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/permissions/query/eu-entities/grants" method="post" path="/api/v2/permissions/query/eu-entities/grants" -->
+<!-- UsageSnippet language="php" operationID="getEuEntityGrants" method="post" path="/api/v2/permissions/query/eu-entities/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -1091,7 +1126,10 @@ $euEntityPermissionsQueryRequest = new Components\EuEntityPermissionsQueryReques
 );
 
 $response = $sdk->permissions->getEuEntityGrants(
+    pageOffset: 0,
+    pageSize: 10,
     euEntityPermissionsQueryRequest: $euEntityPermissionsQueryRequest
+
 );
 
 if ($response->queryEuEntityPermissionsResponse !== null) {
@@ -1109,7 +1147,7 @@ if ($response->queryEuEntityPermissionsResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2PermissionsQueryEuEntitiesGrantsResponse](../../Models/Operations/PostApiV2PermissionsQueryEuEntitiesGrantsResponse.md)**
+**[?Operations\GetEuEntityGrantsResponse](../../Models/Operations/GetEuEntityGrantsResponse.md)**
 
 ### Errors
 

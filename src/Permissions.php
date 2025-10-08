@@ -46,33 +46,819 @@ class Permissions
     }
 
     /**
-     * Odebranie uprawnień podmiotowych
+     * Sprawdzenie statusu zgody na wystawianie faktur z załącznikiem
      *
-     * Rozpoczyna asynchroniczną operacje odbierania uprawnienia o podanym identyfikatorze.
-     * Ta metoda służy do odbierania uprawnień podmiotowych.
+     * Sprawdzenie czy obecny kontekst posiada zgodę na wystawianie faktur z załącznikiem.
      *
-     * > Więcej informacji:
-     * > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84-podmiotowych)
+     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
      *
-     * Wymagane uprawnienia: `CredentialsManage`.
-     *
-     * @param  string  $permissionId
-     * @return Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse
+     * @return Operations\CheckAttachmentStatusResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function revokeAuthorizations(string $permissionId, ?Options $options = null): Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse
+    public function checkAttachmentStatus(?Options $options = null): Operations\CheckAttachmentStatusResponse
     {
-        $request = new Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdRequest(
-            permissionId: $permissionId,
-        );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/authorizations/grants/{permissionId}', Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/attachments/status');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'delete_/api/v2/permissions/authorizations/grants/{permissionId}', [], $this->sdkConfiguration->securitySource);
+        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'checkAttachmentStatus', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\CheckAttachmentPermissionStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\CheckAttachmentStatusResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    checkAttachmentPermissionStatusResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie listy uprawnień podmiotowych do obsługi faktur
+     *
+     * Zwraca listę uprawnień podmiotowych do obsługi faktur.
+     *
+     * > Więcej informacji:
+     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-podmiotowych-do-obs%C5%82ugi-faktur)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+     *
+     * @param  ?Operations\GetAuthorizationsGrantsRequestBody  $requestBody
+     * @param  ?int  $pageOffset
+     * @param  ?int  $pageSize
+     * @return Operations\GetAuthorizationsGrantsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getAuthorizationsGrants(?Operations\GetAuthorizationsGrantsRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetAuthorizationsGrantsResponse
+    {
+        $request = new Operations\GetAuthorizationsGrantsRequest(
+            pageOffset: $pageOffset,
+            pageSize: $pageSize,
+            requestBody: $requestBody,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/authorizations/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetAuthorizationsGrantsRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getAuthorizationsGrants', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryEntityAuthorizationPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetAuthorizationsGrantsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    queryEntityAuthorizationPermissionsResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie listy ról podmiotu
+     *
+     * Zwraca listę ról podmiotu.
+     *
+     * > Więcej informacji:
+     * > - [Pobieranie listy ról](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-r%C3%B3l-podmiotu)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+     *
+     * @param  ?int  $pageOffset
+     * @param  ?int  $pageSize
+     * @return Operations\GetEntityRolesResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getEntityRoles(?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetEntityRolesResponse
+    {
+        $request = new Operations\GetEntityRolesRequest(
+            pageOffset: $pageOffset,
+            pageSize: $pageSize,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/entities/roles');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetEntityRolesRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getEntityRoles', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryEntityRolesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetEntityRolesResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    queryEntityRolesResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie listy uprawnień administratorów lub reprezentantów podmiotów unijnych uprawnionych do samofakturowania
+     *
+     * Zwraca listę uprawnień administratorów lub reprezentantów podmiotów unijnych uprawnionych do samofakturowania.
+     *
+     * > Więcej informacji:
+     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-lub-reprezentant%C3%B3w-podmiot%C3%B3w-unijnych-uprawnionych-do-samofakturowania)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `VatUeManage`.
+     *
+     * @param  ?Components\EuEntityPermissionsQueryRequest  $euEntityPermissionsQueryRequest
+     * @param  ?int  $pageOffset
+     * @param  ?int  $pageSize
+     * @return Operations\GetEuEntityGrantsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getEuEntityGrants(?Components\EuEntityPermissionsQueryRequest $euEntityPermissionsQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetEuEntityGrantsResponse
+    {
+        $request = new Operations\GetEuEntityGrantsRequest(
+            pageOffset: $pageOffset,
+            pageSize: $pageSize,
+            euEntityPermissionsQueryRequest: $euEntityPermissionsQueryRequest,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/eu-entities/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'euEntityPermissionsQueryRequest', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetEuEntityGrantsRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getEuEntityGrants', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryEuEntityPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetEuEntityGrantsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    queryEuEntityPermissionsResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie statusu operacji
+     *
+     * Zwraca status operacji asynchronicznej związanej z nadaniem lub odebraniem uprawnień.
+     *
+     * @param  string  $operationReferenceNumber
+     * @return Operations\GetOperationStatusResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getOperationStatus(string $operationReferenceNumber, ?Options $options = null): Operations\GetOperationStatusResponse
+    {
+        $request = new Operations\GetOperationStatusRequest(
+            operationReferenceNumber: $operationReferenceNumber,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/operations/{operationReferenceNumber}', Operations\GetOperationStatusRequest::class, $request);
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getOperationStatus', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetOperationStatusResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationStatusResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie listy uprawnień do pracy w KSeF nadanych osobom fizycznym lub podmiotom
+     *
+     * Zwraca listę uprawnień do pracy w KSeF nadanych osobom fizycznym lub podmiotom.
+     *
+     * > Więcej informacji:
+     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-do-pracy-w-ksef-nadanych-osobom-fizycznym-lub-podmiotom)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+     *
+     * @param  ?Operations\GetPersonGrantsRequestBody  $requestBody
+     * @param  ?int  $pageOffset
+     * @param  ?int  $pageSize
+     * @return Operations\GetPersonGrantsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getPersonGrants(?Operations\GetPersonGrantsRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetPersonGrantsResponse
+    {
+        $request = new Operations\GetPersonGrantsRequest(
+            pageOffset: $pageOffset,
+            pageSize: $pageSize,
+            requestBody: $requestBody,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/persons/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetPersonGrantsRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getPersonGrants', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryPersonPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetPersonGrantsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    queryPersonPermissionsResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie listy własnych uprawnień
+     *
+     * Zwraca listę uprawnień przysługujących uwierzytelnionemu podmiotowi.
+     *
+     * > Więcej informacji:
+     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-w%C5%82asnych-uprawnie%C5%84)
+     *
+     * @param  ?Components\PersonalPermissionsQueryRequest  $personalPermissionsQueryRequest
+     * @param  ?int  $pageOffset
+     * @param  ?int  $pageSize
+     * @return Operations\GetPersonalGrantsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getPersonalGrants(?Components\PersonalPermissionsQueryRequest $personalPermissionsQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetPersonalGrantsResponse
+    {
+        $request = new Operations\GetPersonalGrantsRequest(
+            pageOffset: $pageOffset,
+            pageSize: $pageSize,
+            personalPermissionsQueryRequest: $personalPermissionsQueryRequest,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/personal/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'personalPermissionsQueryRequest', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetPersonalGrantsRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getPersonalGrants', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryPersonalPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetPersonalGrantsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    queryPersonalPermissionsResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie listy podmiotów podrzędnych
+     *
+     * Zwraca liste podmiotów podrzędnych.
+     *
+     * > Więcej informacji:
+     * > - [Pobieranie listy podmiotów podrzędnych](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-podmiot%C3%B3w-podrz%C4%99dnych)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
+     *
+     * @param  ?Components\SubordinateEntityRolesQueryRequest  $subordinateEntityRolesQueryRequest
+     * @param  ?int  $pageOffset
+     * @param  ?int  $pageSize
+     * @return Operations\GetSubordinateEntitiesRolesResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getSubordinateEntitiesRoles(?Components\SubordinateEntityRolesQueryRequest $subordinateEntityRolesQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetSubordinateEntitiesRolesResponse
+    {
+        $request = new Operations\GetSubordinateEntitiesRolesRequest(
+            pageOffset: $pageOffset,
+            pageSize: $pageSize,
+            subordinateEntityRolesQueryRequest: $subordinateEntityRolesQueryRequest,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/subordinate-entities/roles');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'subordinateEntityRolesQueryRequest', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetSubordinateEntitiesRolesRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getSubordinateEntitiesRoles', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QuerySubordinateEntityRolesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetSubordinateEntitiesRolesResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    querySubordinateEntityRolesResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Pobranie listy uprawnień administratorów jednostek i podmiotów podrzędnych
+     *
+     * Zwraca listę uprawnień administratorów jednostek i podmiotów podrzędnych.
+     *
+     * > Więcej informacji:
+     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-jednostek-i-podmiot%C3%B3w-podrz%C4%99dnych)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
+     *
+     * @param  ?Components\SubunitPermissionsQueryRequest  $subunitPermissionsQueryRequest
+     * @param  ?int  $pageOffset
+     * @param  ?int  $pageSize
+     * @return Operations\GetSubunitsGrantsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function getSubunitsGrants(?Components\SubunitPermissionsQueryRequest $subunitPermissionsQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetSubunitsGrantsResponse
+    {
+        $request = new Operations\GetSubunitsGrantsRequest(
+            pageOffset: $pageOffset,
+            pageSize: $pageSize,
+            subunitPermissionsQueryRequest: $subunitPermissionsQueryRequest,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/subunits/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'subunitPermissionsQueryRequest', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+
+        $qp = Utils\Utils::getQueryParams(Operations\GetSubunitsGrantsRequest::class, $request, $urlOverride);
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getSubunitsGrants', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QuerySubunitPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GetSubunitsGrantsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    querySubunitPermissionsResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Nadanie uprawnień podmiotowych
+     *
+     * Rozpoczyna asynchroniczną operację nadawania uprawnień podmiotowych.
+     *
+     * > Więcej informacji:
+     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-podmiotowych)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`.
+     *
+     * @param  ?Operations\GrantAuthorizationsRequest  $request
+     * @return Operations\GrantAuthorizationsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function grantAuthorizations(?Operations\GrantAuthorizationsRequest $request = null, ?Options $options = null): Operations\GrantAuthorizationsResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/authorizations/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'grantAuthorizations', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -96,7 +882,581 @@ class Permissions
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\DeleteApiV2PermissionsAuthorizationsGrantsPermissionIdResponse(
+                $response = new Operations\GrantAuthorizationsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Nadanie uprawnień w sposób pośredni
+     *
+     * Rozpoczyna asynchroniczną operację nadawania uprawnień w sposób pośredni.
+     *
+     * > Więcej informacji:
+     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-w-spos%C3%B3b-po%C5%9Bredni)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`.
+     *
+     * @param  ?Operations\GrantIndirectlyRequest  $request
+     * @return Operations\GrantIndirectlyResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function grantIndirectly(?Operations\GrantIndirectlyRequest $request = null, ?Options $options = null): Operations\GrantIndirectlyResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/indirect/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'grantIndirectly', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GrantIndirectlyResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Nadanie uprawnień administratora podmiotu unijnego
+     *
+     * Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu unijnego.
+     *
+     * > Więcej informacji:
+     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-unijnego)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`.
+     *
+     * @param  ?Operations\GrantRightsRequest  $request
+     * @return Operations\GrantRightsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function grantRights(?Operations\GrantRightsRequest $request = null, ?Options $options = null): Operations\GrantRightsResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/eu-entities/administration/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'grantRights', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GrantRightsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Nadanie podmiotom uprawnień do obsługi faktur
+     *
+     * Rozpoczyna asynchroniczną operację nadawania podmiotom uprawnień do obsługi faktur.
+     *
+     * > Więcej informacji:
+     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-podmiotom-uprawnie%C5%84-do-obs%C5%82ugi-faktur)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`.
+     *
+     * @param  ?Operations\GrantToEntitiesRequest  $request
+     * @return Operations\GrantToEntitiesResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function grantToEntities(?Operations\GrantToEntitiesRequest $request = null, ?Options $options = null): Operations\GrantToEntitiesResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/entities/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'grantToEntities', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GrantToEntitiesResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Nadanie uprawnień reprezentanta podmiotu unijnego
+     *
+     * Rozpoczyna asynchroniczną operację nadawania uprawnień reprezentanta podmiotu unijnego.
+     *
+     * > Więcej informacji:
+     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-reprezentanta-podmiotu-unijnego)
+     *
+     * Wymagane uprawnienia: `VatUeManage`.
+     *
+     * @param  ?Operations\GrantToEuEntitiesRequest  $request
+     * @return Operations\GrantToEuEntitiesResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function grantToEuEntities(?Operations\GrantToEuEntitiesRequest $request = null, ?Options $options = null): Operations\GrantToEuEntitiesResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/eu-entities/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'grantToEuEntities', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GrantToEuEntitiesResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Nadanie osobom fizycznym uprawnień do pracy w KSeF
+     *
+     * Rozpoczyna asynchroniczną operację nadawania osobom fizycznym uprawnień do pracy w KSeF.
+     *
+     * > Więcej informacji:
+     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadawanie-uprawnie%C5%84-osobom-fizycznym-do-pracy-w-ksef)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`.
+     *
+     * @param  ?Operations\GrantToPersonsRequest  $request
+     * @return Operations\GrantToPersonsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function grantToPersons(?Operations\GrantToPersonsRequest $request = null, ?Options $options = null): Operations\GrantToPersonsResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/persons/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'grantToPersons', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GrantToPersonsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Nadanie uprawnień administratora podmiotu podrzędnego
+     *
+     * Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu podrzędnego.
+     *
+     * > Więcej informacji:
+     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-podrz%C4%99dnego)
+     *
+     * Wymagane uprawnienia: `SubunitManage`.
+     *
+     * @param  ?Operations\GrantToSubunitsRequest  $request
+     * @return Operations\GrantToSubunitsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function grantToSubunits(?Operations\GrantToSubunitsRequest $request = null, ?Options $options = null): Operations\GrantToSubunitsResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/subunits/grants');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'grantToSubunits', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\GrantToSubunitsResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    permissionsOperationResponse: $obj);
+
+                return $response;
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Odebranie uprawnień podmiotowych
+     *
+     * Rozpoczyna asynchroniczną operacje odbierania uprawnienia o podanym identyfikatorze.
+     * Ta metoda służy do odbierania uprawnień podmiotowych.
+     *
+     * > Więcej informacji:
+     * > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84-podmiotowych)
+     *
+     * Wymagane uprawnienia: `CredentialsManage`.
+     *
+     * @param  string  $permissionId
+     * @return Operations\RevokeAuthorizationsResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function revokeAuthorizations(string $permissionId, ?Options $options = null): Operations\RevokeAuthorizationsResponse
+    {
+        $request = new Operations\RevokeAuthorizationsRequest(
+            permissionId: $permissionId,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/authorizations/grants/{permissionId}', Operations\RevokeAuthorizationsRequest::class, $request);
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'revokeAuthorizations', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\RevokeAuthorizationsResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -146,22 +1506,22 @@ class Permissions
      * Wymagane uprawnienia: `CredentialsManage`, `VatUeManage`, `SubunitManage`.
      *
      * @param  string  $permissionId
-     * @return Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdResponse
+     * @return Operations\RevokePermissionsResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function revoke(string $permissionId, ?Options $options = null): Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdResponse
+    public function revoke(string $permissionId, ?Options $options = null): Operations\RevokePermissionsResponse
     {
-        $request = new Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdRequest(
+        $request = new Operations\RevokePermissionsRequest(
             permissionId: $permissionId,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/common/grants/{permissionId}', Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/common/grants/{permissionId}', Operations\RevokePermissionsRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('DELETE', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'delete_/api/v2/permissions/common/grants/{permissionId}', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'revokePermissions', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -185,1367 +1545,7 @@ class Permissions
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\DeleteApiV2PermissionsCommonGrantsPermissionIdResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    permissionsOperationResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Sprawdzenie statusu zgody na wystawianie faktur z załącznikiem
-     *
-     * Sprawdzenie czy obecny kontekst posiada zgodę na wystawianie faktur z załącznikiem.
-     *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
-     *
-     * @return Operations\GetApiV2PermissionsAttachmentsStatusResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function checkAttachmentStatus(?Options $options = null): Operations\GetApiV2PermissionsAttachmentsStatusResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/attachments/status');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/permissions/attachments/status', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\CheckAttachmentPermissionStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2PermissionsAttachmentsStatusResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    checkAttachmentPermissionStatusResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie statusu operacji
-     *
-     * Zwraca status operacji asynchronicznej związanej z nadaniem lub odebraniem uprawnień.
-     *
-     * @param  string  $operationReferenceNumber
-     * @return Operations\GetApiV2PermissionsOperationsOperationReferenceNumberResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getOperationStatus(string $operationReferenceNumber, ?Options $options = null): Operations\GetApiV2PermissionsOperationsOperationReferenceNumberResponse
-    {
-        $request = new Operations\GetApiV2PermissionsOperationsOperationReferenceNumberRequest(
-            operationReferenceNumber: $operationReferenceNumber,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/operations/{operationReferenceNumber}', Operations\GetApiV2PermissionsOperationsOperationReferenceNumberRequest::class, $request);
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/permissions/operations/{operationReferenceNumber}', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2PermissionsOperationsOperationReferenceNumberResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    permissionsOperationStatusResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy ról podmiotu
-     *
-     * Zwraca listę ról podmiotu.
-     *
-     * > Więcej informacji:
-     * > - [Pobieranie listy ról](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-r%C3%B3l-podmiotu)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
-     *
-     * @param  ?int  $pageOffset
-     * @param  ?int  $pageSize
-     * @return Operations\GetApiV2PermissionsQueryEntitiesRolesResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getEntityRoles(?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetApiV2PermissionsQueryEntitiesRolesResponse
-    {
-        $request = new Operations\GetApiV2PermissionsQueryEntitiesRolesRequest(
-            pageOffset: $pageOffset,
-            pageSize: $pageSize,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/entities/roles');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-
-        $qp = Utils\Utils::getQueryParams(Operations\GetApiV2PermissionsQueryEntitiesRolesRequest::class, $request, $urlOverride);
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/permissions/query/entities/roles', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryEntityRolesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2PermissionsQueryEntitiesRolesResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    queryEntityRolesResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Nadanie uprawnień podmiotowych
-     *
-     * Rozpoczyna asynchroniczną operację nadawania uprawnień podmiotowych.
-     *
-     * > Więcej informacji:
-     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-podmiotowych)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsAuthorizationsGrantsRequest  $request
-     * @return Operations\PostApiV2PermissionsAuthorizationsGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function grantAuthorizations(?Operations\PostApiV2PermissionsAuthorizationsGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsAuthorizationsGrantsResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/authorizations/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/authorizations/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsAuthorizationsGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    permissionsOperationResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Nadanie podmiotom uprawnień do obsługi faktur
-     *
-     * Rozpoczyna asynchroniczną operację nadawania podmiotom uprawnień do obsługi faktur.
-     *
-     * > Więcej informacji:
-     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-podmiotom-uprawnie%C5%84-do-obs%C5%82ugi-faktur)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsEntitiesGrantsRequest  $request
-     * @return Operations\PostApiV2PermissionsEntitiesGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function grantToEntities(?Operations\PostApiV2PermissionsEntitiesGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsEntitiesGrantsResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/entities/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/entities/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsEntitiesGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    permissionsOperationResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Nadanie uprawnień administratora podmiotu unijnego
-     *
-     * Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu unijnego.
-     *
-     * > Więcej informacji:
-     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-unijnego)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest  $request
-     * @return Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function grantRights(?Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/eu-entities/administration/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/eu-entities/administration/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsEuEntitiesAdministrationGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    permissionsOperationResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Nadanie uprawnień reprezentanta podmiotu unijnego
-     *
-     * Rozpoczyna asynchroniczną operację nadawania uprawnień reprezentanta podmiotu unijnego.
-     *
-     * > Więcej informacji:
-     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-reprezentanta-podmiotu-unijnego)
-     *
-     * Wymagane uprawnienia: `VatUeManage`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsEuEntitiesGrantsRequest  $request
-     * @return Operations\PostApiV2PermissionsEuEntitiesGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function grantToEuEntities(?Operations\PostApiV2PermissionsEuEntitiesGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsEuEntitiesGrantsResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/eu-entities/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/eu-entities/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsEuEntitiesGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    permissionsOperationResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Nadanie uprawnień w sposób pośredni
-     *
-     * Rozpoczyna asynchroniczną operację nadawania uprawnień w sposób pośredni.
-     *
-     * > Więcej informacji:
-     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-w-spos%C3%B3b-po%C5%9Bredni)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsIndirectGrantsRequest  $request
-     * @return Operations\PostApiV2PermissionsIndirectGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function grantIndirectly(?Operations\PostApiV2PermissionsIndirectGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsIndirectGrantsResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/indirect/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/indirect/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsIndirectGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    permissionsOperationResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Nadanie osobom fizycznym uprawnień do pracy w KSeF
-     *
-     * Rozpoczyna asynchroniczną operację nadawania osobom fizycznym uprawnień do pracy w KSeF.
-     *
-     * > Więcej informacji:
-     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadawanie-uprawnie%C5%84-osobom-fizycznym-do-pracy-w-ksef)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsPersonsGrantsRequest  $request
-     * @return Operations\PostApiV2PermissionsPersonsGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function grantToPersons(?Operations\PostApiV2PermissionsPersonsGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsPersonsGrantsResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/persons/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/persons/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsPersonsGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    permissionsOperationResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy uprawnień podmiotowych do obsługi faktur
-     *
-     * Zwraca listę uprawnień podmiotowych do obsługi faktur.
-     *
-     * > Więcej informacji:
-     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-podmiotowych-do-obs%C5%82ugi-faktur)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody  $requestBody
-     * @param  ?int  $pageOffset
-     * @param  ?int  $pageSize
-     * @return Operations\PostApiV2PermissionsQueryAuthorizationsGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getAuthorizationsGrants(?Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQueryAuthorizationsGrantsResponse
-    {
-        $request = new Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequest(
-            pageOffset: $pageOffset,
-            pageSize: $pageSize,
-            requestBody: $requestBody,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/authorizations/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2PermissionsQueryAuthorizationsGrantsRequest::class, $request, $urlOverride);
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/query/authorizations/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryEntityAuthorizationPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsQueryAuthorizationsGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    queryEntityAuthorizationPermissionsResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy uprawnień administratorów lub reprezentantów podmiotów unijnych uprawnionych do samofakturowania
-     *
-     * Zwraca listę uprawnień administratorów lub reprezentantów podmiotów unijnych uprawnionych do samofakturowania.
-     *
-     * > Więcej informacji:
-     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-lub-reprezentant%C3%B3w-podmiot%C3%B3w-unijnych-uprawnionych-do-samofakturowania)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `VatUeManage`.
-     *
-     * @param  ?Components\EuEntityPermissionsQueryRequest  $euEntityPermissionsQueryRequest
-     * @param  ?int  $pageOffset
-     * @param  ?int  $pageSize
-     * @return Operations\PostApiV2PermissionsQueryEuEntitiesGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getEuEntityGrants(?Components\EuEntityPermissionsQueryRequest $euEntityPermissionsQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQueryEuEntitiesGrantsResponse
-    {
-        $request = new Operations\PostApiV2PermissionsQueryEuEntitiesGrantsRequest(
-            pageOffset: $pageOffset,
-            pageSize: $pageSize,
-            euEntityPermissionsQueryRequest: $euEntityPermissionsQueryRequest,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/eu-entities/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'euEntityPermissionsQueryRequest', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2PermissionsQueryEuEntitiesGrantsRequest::class, $request, $urlOverride);
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/query/eu-entities/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryEuEntityPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsQueryEuEntitiesGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    queryEuEntityPermissionsResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy własnych uprawnień
-     *
-     * Zwraca listę uprawnień przysługujących uwierzytelnionemu podmiotowi.
-     *
-     * > Więcej informacji:
-     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-w%C5%82asnych-uprawnie%C5%84)
-     *
-     * @param  ?Components\PersonalPermissionsQueryRequest  $personalPermissionsQueryRequest
-     * @param  ?int  $pageOffset
-     * @param  ?int  $pageSize
-     * @return Operations\PostApiV2PermissionsQueryPersonalGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getPersonalGrants(?Components\PersonalPermissionsQueryRequest $personalPermissionsQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQueryPersonalGrantsResponse
-    {
-        $request = new Operations\PostApiV2PermissionsQueryPersonalGrantsRequest(
-            pageOffset: $pageOffset,
-            pageSize: $pageSize,
-            personalPermissionsQueryRequest: $personalPermissionsQueryRequest,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/personal/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'personalPermissionsQueryRequest', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2PermissionsQueryPersonalGrantsRequest::class, $request, $urlOverride);
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/query/personal/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryPersonalPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsQueryPersonalGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    queryPersonalPermissionsResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy uprawnień do pracy w KSeF nadanych osobom fizycznym lub podmiotom
-     *
-     * Zwraca listę uprawnień do pracy w KSeF nadanych osobom fizycznym lub podmiotom.
-     *
-     * > Więcej informacji:
-     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-do-pracy-w-ksef-nadanych-osobom-fizycznym-lub-podmiotom)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsQueryPersonsGrantsRequestBody  $requestBody
-     * @param  ?int  $pageOffset
-     * @param  ?int  $pageSize
-     * @return Operations\PostApiV2PermissionsQueryPersonsGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getPersonGrants(?Operations\PostApiV2PermissionsQueryPersonsGrantsRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQueryPersonsGrantsResponse
-    {
-        $request = new Operations\PostApiV2PermissionsQueryPersonsGrantsRequest(
-            pageOffset: $pageOffset,
-            pageSize: $pageSize,
-            requestBody: $requestBody,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/persons/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2PermissionsQueryPersonsGrantsRequest::class, $request, $urlOverride);
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/query/persons/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryPersonPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsQueryPersonsGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    queryPersonPermissionsResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy podmiotów podrzędnych
-     *
-     * Zwraca liste podmiotów podrzędnych.
-     *
-     * > Więcej informacji:
-     * > - [Pobieranie listy podmiotów podrzędnych](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-podmiot%C3%B3w-podrz%C4%99dnych)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
-     *
-     * @param  ?Components\SubordinateEntityRolesQueryRequest  $subordinateEntityRolesQueryRequest
-     * @param  ?int  $pageOffset
-     * @param  ?int  $pageSize
-     * @return Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getSubordinateEntitiesRoles(?Components\SubordinateEntityRolesQueryRequest $subordinateEntityRolesQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse
-    {
-        $request = new Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesRequest(
-            pageOffset: $pageOffset,
-            pageSize: $pageSize,
-            subordinateEntityRolesQueryRequest: $subordinateEntityRolesQueryRequest,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/subordinate-entities/roles');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'subordinateEntityRolesQueryRequest', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesRequest::class, $request, $urlOverride);
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/query/subordinate-entities/roles', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QuerySubordinateEntityRolesResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsQuerySubordinateEntitiesRolesResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    querySubordinateEntityRolesResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Pobranie listy uprawnień administratorów jednostek i podmiotów podrzędnych
-     *
-     * Zwraca listę uprawnień administratorów jednostek i podmiotów podrzędnych.
-     *
-     * > Więcej informacji:
-     * > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-jednostek-i-podmiot%C3%B3w-podrz%C4%99dnych)
-     *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
-     *
-     * @param  ?Components\SubunitPermissionsQueryRequest  $subunitPermissionsQueryRequest
-     * @param  ?int  $pageOffset
-     * @param  ?int  $pageSize
-     * @return Operations\PostApiV2PermissionsQuerySubunitsGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function getSubunitsGrants(?Components\SubunitPermissionsQueryRequest $subunitPermissionsQueryRequest = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\PostApiV2PermissionsQuerySubunitsGrantsResponse
-    {
-        $request = new Operations\PostApiV2PermissionsQuerySubunitsGrantsRequest(
-            pageOffset: $pageOffset,
-            pageSize: $pageSize,
-            subunitPermissionsQueryRequest: $subunitPermissionsQueryRequest,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/subunits/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'subunitPermissionsQueryRequest', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-
-        $qp = Utils\Utils::getQueryParams(Operations\PostApiV2PermissionsQuerySubunitsGrantsRequest::class, $request, $urlOverride);
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/query/subunits/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['200'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QuerySubunitPermissionsResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsQuerySubunitsGrantsResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    querySubunitPermissionsResponse: $obj);
-
-                return $response;
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Nadanie uprawnień administratora podmiotu podrzędnego
-     *
-     * Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu podrzędnego.
-     *
-     * > Więcej informacji:
-     * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-podrz%C4%99dnego)
-     *
-     * Wymagane uprawnienia: `SubunitManage`.
-     *
-     * @param  ?Operations\PostApiV2PermissionsSubunitsGrantsRequest  $request
-     * @return Operations\PostApiV2PermissionsSubunitsGrantsResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function grantToSubunits(?Operations\PostApiV2PermissionsSubunitsGrantsRequest $request = null, ?Options $options = null): Operations\PostApiV2PermissionsSubunitsGrantsResponse
-    {
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/subunits/grants');
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/permissions/subunits/grants', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['202'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\PermissionsOperationResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\PostApiV2PermissionsSubunitsGrantsResponse(
+                $response = new Operations\RevokePermissionsResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,

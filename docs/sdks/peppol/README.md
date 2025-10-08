@@ -13,7 +13,7 @@ Zwraca listę dostawców usług Peppol zarejestrowanych w systemie.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/peppol/query" method="get" path="/api/v2/peppol/query" -->
+<!-- UsageSnippet language="php" operationID="listPeppolProviders" method="get" path="/api/v2/peppol/query" -->
 ```php
 declare(strict_types=1);
 
@@ -30,6 +30,8 @@ $sdk = Apiv2\Client::builder()
 
 
 $response = $sdk->peppol->listProviders(
+    pageOffset: 0,
+    pageSize: 10
 
 );
 
@@ -47,7 +49,7 @@ if ($response->queryPeppolProvidersResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2PeppolQueryResponse](../../Models/Operations/GetApiV2PeppolQueryResponse.md)**
+**[?Operations\ListPeppolProvidersResponse](../../Models/Operations/ListPeppolProvidersResponse.md)**
 
 ### Errors
 

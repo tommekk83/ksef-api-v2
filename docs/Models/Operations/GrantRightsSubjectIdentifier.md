@@ -1,0 +1,14 @@
+# GrantRightsSubjectIdentifier
+
+Identyfikator podmiotu uprawnionego.
+| Type | Value |
+| --- | --- |
+| Fingerprint | Odcisk palca certyfikatu |
+
+
+## Fields
+
+| Field                                                                                                                                                  | Type                                                                                                                                                   | Required                                                                                                                                               | Description                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `type`                                                                                                                                                 | [Components\EuEntityAdministrationPermissionsSubjectIdentifierType](../../Models/Components/EuEntityAdministrationPermissionsSubjectIdentifierType.md) | :heavy_check_mark:                                                                                                                                     | Typ identyfikatora.                                                                                                                                    |
+| `value`                                                                                                                                                | *string*                                                                                                                                               | :heavy_check_mark:                                                                                                                                     | Wartość identyfikatora.                                                                                                                                |

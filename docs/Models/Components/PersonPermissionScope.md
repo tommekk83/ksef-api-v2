@@ -12,4 +12,3 @@
 | `Introspection`         | Introspection           |
 | `SubunitManage`         | SubunitManage           |
 | `EnforcementOperations` | EnforcementOperations   |
-| `Owner`                 | Owner                   |

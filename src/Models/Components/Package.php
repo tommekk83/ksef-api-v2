@@ -13,7 +13,7 @@ use Brick\DateTime\LocalDate;
 class Package
 {
     /**
-     * Łączna liczba faktur w paczce. Maksymalna liczba faktur w paczce to 10 000.
+     * Łączna liczba faktur w paczce.
      *
      * @var int $invoiceCount
      */

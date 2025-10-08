@@ -23,7 +23,7 @@ Wymagane uprawnienia:
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions" method="get" path="/api/v2/sessions" -->
+<!-- UsageSnippet language="php" operationID="getSessionList" method="get" path="/api/v2/sessions" -->
 ```php
 declare(strict_types=1);
 
@@ -39,8 +39,9 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\GetApiV2SessionsRequest(
-    sessionType: Components\SessionType::Batch,
+$request = new Operations\GetSessionListRequest(
+    pageSize: 350600,
+    sessionType: Components\SessionType::Online,
 );
 
 $response = $sdk->sessions->getList(
@@ -54,13 +55,13 @@ if ($response->sessionsQueryResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                | Type                                                                                     | Required                                                                                 | Description                                                                              |
-| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `$request`                                                                               | [Operations\GetApiV2SessionsRequest](../../Models/Operations/GetApiV2SessionsRequest.md) | :heavy_check_mark:                                                                       | The request object to use for the request.                                               |
+| Parameter                                                                            | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `$request`                                                                           | [Operations\GetSessionListRequest](../../Models/Operations/GetSessionListRequest.md) | :heavy_check_mark:                                                                   | The request object to use for the request.                                           |
 
 ### Response
 
-**[?Operations\GetApiV2SessionsResponse](../../Models/Operations/GetApiV2SessionsResponse.md)**
+**[?Operations\GetSessionListResponse](../../Models/Operations/GetSessionListResponse.md)**
 
 ### Errors
 
@@ -77,7 +78,7 @@ Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}" method="get" path="/api/v2/sessions/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getSessionStatus" method="get" path="/api/v2/sessions/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -110,7 +111,7 @@ if ($response->sessionStatusResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2SessionsReferenceNumberResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberResponse.md)**
+**[?Operations\GetSessionStatusResponse](../../Models/Operations/GetSessionStatusResponse.md)**
 
 ### Errors
 
@@ -127,7 +128,7 @@ Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}" method="get" path="/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getSessionUpo" method="get" path="/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -163,7 +164,7 @@ if ($response->res !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberResponse.md)**
+**[?Operations\GetSessionUpoResponse](../../Models/Operations/GetSessionUpoResponse.md)**
 
 ### Errors
 
@@ -184,7 +185,7 @@ Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="onlineSession.open" method="post" path="/api/v2/sessions/online" -->
+<!-- UsageSnippet language="php" operationID="openOnlineSession" method="post" path="/api/v2/sessions/online" -->
 ```php
 declare(strict_types=1);
 
@@ -199,13 +200,13 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\OnlineSessionOpenRequest(
-    formCode: new Operations\OnlineSessionOpenFormCode(
+$request = new Operations\OpenOnlineSessionRequest(
+    formCode: new Operations\OpenOnlineSessionFormCode(
         systemCode: 'FA (3)',
         schemaVersion: '1-0E',
         value: 'FA',
     ),
-    encryption: new Operations\OnlineSessionOpenEncryption(
+    encryption: new Operations\OpenOnlineSessionEncryption(
         encryptedSymmetricKey: 'bdUVjqLj+y2q6aBUuLxxXYAMqeDuIBRTyr+hB96DaWKaGzuVHw9p+Nk9vhzgF/Q5cavK2k6eCh6SdsrWI0s9mFFj4A4UJtsyD8Dn3esLfUZ5A1juuG3q3SBi/XOC/+9W+0T/KdwdE393mbiUNyx1K/0bw31vKJL0COeJIDP7usAMDl42/H1TNvkjk+8iZ80V0qW7D+RZdz+tdiY1xV0f2mfgwJ46V0CpZ+sB9UAssRj+eVffavJ0TOg2b5JaBxE8MCAvrF6rO5K4KBjUmoy7PP7g1qIbm8xI2GO0KnfPOO5OWj8rsotRwBgu7x19Ine3qYUvuvCZlXRGGZ5NHIzWPM4O74+gNalaMgFCsmv8mMhETSU4SfAGmJr9edxPjQSbgD5i2X4eDRDMwvyaAa7CP1b2oICju+0L7Fywd2ZtUcr6El++eTVoi8HYsTArntET++gULT7XXjmb8e3O0nxrYiYsE9GMJ7HBGv3NOoJ1NTm3a7U6+c0ZJiBVLvn6xXw10LQX243xH+ehsKo6djQJKYtqcNPaXtCwM1c9RrsOx/wRXyWCtTffqLiaR0LbYvfMJAcEWceG+RaeAx4p37OiQqdJypd6LAv9/0ECWK8Bip8yyoA+0EYiAJb9YuDz2YlQX9Mx9E9FzFIAsgEQ2w723HZYWgPywLb+dlsum4lTZKQ=',
         initializationVector: 'OmtDQdl6vkOI1GLKZSjgEg==',
     ),
@@ -224,11 +225,11 @@ if ($response->openOnlineSessionResponse !== null) {
 
 | Parameter                                                                                  | Type                                                                                       | Required                                                                                   | Description                                                                                |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| `$request`                                                                                 | [Operations\OnlineSessionOpenRequest](../../Models/Operations/OnlineSessionOpenRequest.md) | :heavy_check_mark:                                                                         | The request object to use for the request.                                                 |
+| `$request`                                                                                 | [Operations\OpenOnlineSessionRequest](../../Models/Operations/OpenOnlineSessionRequest.md) | :heavy_check_mark:                                                                         | The request object to use for the request.                                                 |
 
 ### Response
 
-**[?Operations\OnlineSessionOpenResponse](../../Models/Operations/OnlineSessionOpenResponse.md)**
+**[?Operations\OpenOnlineSessionResponse](../../Models/Operations/OpenOnlineSessionResponse.md)**
 
 ### Errors
 
@@ -245,7 +246,7 @@ Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/sessions/online/{referenceNumber}/close" method="post" path="/api/v2/sessions/online/{referenceNumber}/close" -->
+<!-- UsageSnippet language="php" operationID="closeOnlineSession" method="post" path="/api/v2/sessions/online/{referenceNumber}/close" -->
 ```php
 declare(strict_types=1);
 
@@ -278,7 +279,7 @@ if ($response->statusCode === 200) {
 
 ### Response
 
-**[?Operations\PostApiV2SessionsOnlineReferenceNumberCloseResponse](../../Models/Operations/PostApiV2SessionsOnlineReferenceNumberCloseResponse.md)**
+**[?Operations\CloseOnlineSessionResponse](../../Models/Operations/CloseOnlineSessionResponse.md)**
 
 ### Errors
 
@@ -299,7 +300,7 @@ Wymagane uprawnienia: `InvoiceWrite`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="batch.open" method="post" path="/api/v2/sessions/batch" -->
+<!-- UsageSnippet language="php" operationID="openBatchSession" method="post" path="/api/v2/sessions/batch" -->
 ```php
 declare(strict_types=1);
 
@@ -315,8 +316,8 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\BatchOpenRequest(
-    formCode: new Operations\BatchOpenFormCode(
+$request = new Operations\OpenBatchSessionRequest(
+    formCode: new Operations\OpenBatchSessionFormCode(
         systemCode: 'FA (2)',
         schemaVersion: '1-0E',
         value: 'FA',
@@ -333,7 +334,7 @@ $request = new Operations\BatchOpenRequest(
             ),
         ],
     ),
-    encryption: new Operations\BatchOpenEncryption(
+    encryption: new Operations\OpenBatchSessionEncryption(
         encryptedSymmetricKey: 'bYqmPAglF01AxZim4oNa+1NerhZYfFgLMnvksBprUur1aesQ0Y5jsmOIfCrozfMkF2tjdO+uOsBg4FPlDgjChwN2/tz2Hqwtxq3RkTr1SjY4x8jxJFpPedcS7EI+XO8C+i9mLj7TFx9p/bg07yM9vHtMAk5b88Ay9Qc3+T5Ch1DM2ClR3sVu2DqdlKzmbINY+rhfGtXn58Qo0XRyESGgc6M0iTZVBRPuPXLnD8a1KpOneCpNzLwxgT6Ei3ivLOpPWT53PxkRTaQ8puj6CIiCKo4FHQzHuI/NmrAhYU7TkNm2kymP/OxBgWdg3XB74tqNFfT8RZN1bZXuPhBidDOqa+xsqY3E871FSDmQwZf58HmoNl31XNvpnryiRGfnAISt+m+ELqgksAresVu6E9poUL1yiff+IOHSZABoYpNiqwnbT8qyW1uk8lKLyFVFu+kOsbzBk1OWWHqSkNFDaznDa2MKjHonOXI0uyKaKWvoBFC4dWN1PVumfpSSFAeYgNpAyVrZdcVOuiliEWepTDjGzJoOafTvwr5za2S6B5bPECDpX7JXazV7Olkq7ezG0w8y3olx+0C+NHoCk8B5/cm4gtVHTgKjiLSGpKJVOJABLXFkOyIOjbQsVe4ryX0Qy+SfL7JIQvTWvM5xkCoOMbzLdMo9tNo5qE34sguFI+lIevY=',
         initializationVector: 'jWpJLNBHJ5pQEGCBglmIAw==',
     ),
@@ -350,13 +351,13 @@ if ($response->openBatchSessionResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                  | Type                                                                       | Required                                                                   | Description                                                                |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| `$request`                                                                 | [Operations\BatchOpenRequest](../../Models/Operations/BatchOpenRequest.md) | :heavy_check_mark:                                                         | The request object to use for the request.                                 |
+| Parameter                                                                                | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `$request`                                                                               | [Operations\OpenBatchSessionRequest](../../Models/Operations/OpenBatchSessionRequest.md) | :heavy_check_mark:                                                                       | The request object to use for the request.                                               |
 
 ### Response
 
-**[?Operations\BatchOpenResponse](../../Models/Operations/BatchOpenResponse.md)**
+**[?Operations\OpenBatchSessionResponse](../../Models/Operations/OpenBatchSessionResponse.md)**
 
 ### Errors
 
@@ -373,7 +374,7 @@ Wymagane uprawnienia: `InvoiceWrite`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/sessions/batch/{referenceNumber}/close" method="post" path="/api/v2/sessions/batch/{referenceNumber}/close" -->
+<!-- UsageSnippet language="php" operationID="closeBatchSession" method="post" path="/api/v2/sessions/batch/{referenceNumber}/close" -->
 ```php
 declare(strict_types=1);
 
@@ -406,7 +407,7 @@ if ($response->statusCode === 200) {
 
 ### Response
 
-**[?Operations\PostApiV2SessionsBatchReferenceNumberCloseResponse](../../Models/Operations/PostApiV2SessionsBatchReferenceNumberCloseResponse.md)**
+**[?Operations\CloseBatchSessionResponse](../../Models/Operations/CloseBatchSessionResponse.md)**
 
 ### Errors
 

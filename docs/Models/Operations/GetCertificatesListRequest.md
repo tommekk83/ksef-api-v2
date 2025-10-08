@@ -1,0 +1,10 @@
+# GetCertificatesListRequest
+
+
+## Fields
+
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `pageSize`                                                                                  | *?int*                                                                                      | :heavy_minus_sign:                                                                          | Rozmiar strony wyników                                                                      |
+| `pageOffset`                                                                                | *?int*                                                                                      | :heavy_minus_sign:                                                                          | Numer strony wyników                                                                        |
+| `queryCertificatesRequest`                                                                  | [?Components\QueryCertificatesRequest](../../Models/Components/QueryCertificatesRequest.md) | :heavy_minus_sign:                                                                          | Kryteria filtrowania                                                                        |

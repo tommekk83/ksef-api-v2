@@ -1,9 +1,0 @@
-# TestDataPermissionsGrantRequestContextIdentifier
-
-
-## Fields
-
-| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
-| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `type`                                                                                                | [?Components\TestDataContextIdentifierType](../../Models/Components/TestDataContextIdentifierType.md) | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |
-| `value`                                                                                               | *?string*                                                                                             | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |

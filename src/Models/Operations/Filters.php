@@ -33,11 +33,11 @@ class Filters
     /**
      * Typ i zakres dat, według którego mają być filtrowane faktury. Dozwolony maksymalny okres wynosi 2 lata.
      *
-     * @var PostApiV2InvoicesExportsDateRange $dateRange
+     * @var ExportDateRange $dateRange
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('dateRange')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesExportsDateRange')]
-    public PostApiV2InvoicesExportsDateRange $dateRange;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\ExportDateRange')]
+    public ExportDateRange $dateRange;
 
     /**
      * Numer KSeF faktury.
@@ -60,12 +60,12 @@ class Filters
     /**
      * Filtr kwotowy – brutto, netto lub VAT (z wartością).
      *
-     * @var ?PostApiV2InvoicesExportsAmount $amount
+     * @var ?ExportAmount $amount
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('amount')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesExportsAmount|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\ExportAmount|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesExportsAmount $amount = null;
+    public ?ExportAmount $amount = null;
 
     /**
      * Nip sprzedawcy.
@@ -79,12 +79,12 @@ class Filters
     /**
      * Identyfikator nabywcy.
      *
-     * @var ?PostApiV2InvoicesExportsBuyerIdentifier $buyerIdentifier
+     * @var ?ExportBuyerIdentifier $buyerIdentifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('buyerIdentifier')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesExportsBuyerIdentifier|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\ExportBuyerIdentifier|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesExportsBuyerIdentifier $buyerIdentifier = null;
+    public ?ExportBuyerIdentifier $buyerIdentifier = null;
 
     /**
      * Kody walut.
@@ -99,12 +99,12 @@ class Filters
     /**
      * Tryb wystawienia faktury: online lub offline.
      *
-     * @var ?PostApiV2InvoicesExportsInvoicingMode $invoicingMode
+     * @var ?ExportInvoicingMode $invoicingMode
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('invoicingMode')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesExportsInvoicingMode|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\ExportInvoicingMode|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesExportsInvoicingMode $invoicingMode = null;
+    public ?ExportInvoicingMode $invoicingMode = null;
 
     /**
      * Czy faktura została wystawiona w trybie samofakturowania.
@@ -125,12 +125,12 @@ class Filters
      * | RR | Faktura RR |
      *
      *
-     * @var ?PostApiV2InvoicesExportsFormType $formType
+     * @var ?ExportFormType $formType
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('formType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\PostApiV2InvoicesExportsFormType|null')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\ExportFormType|null')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?PostApiV2InvoicesExportsFormType $formType = null;
+    public ?ExportFormType $formType = null;
 
     /**
      * Rodzaje faktur.
@@ -169,21 +169,21 @@ class Filters
 
     /**
      * @param  Components\InvoiceQuerySubjectType  $subjectType
-     * @param  PostApiV2InvoicesExportsDateRange  $dateRange
+     * @param  ExportDateRange  $dateRange
      * @param  ?string  $ksefNumber
      * @param  ?string  $invoiceNumber
-     * @param  ?PostApiV2InvoicesExportsAmount  $amount
+     * @param  ?ExportAmount  $amount
      * @param  ?string  $sellerNip
-     * @param  ?PostApiV2InvoicesExportsBuyerIdentifier  $buyerIdentifier
+     * @param  ?ExportBuyerIdentifier  $buyerIdentifier
      * @param  ?array<Components\CurrencyCode>  $currencyCodes
-     * @param  ?PostApiV2InvoicesExportsInvoicingMode  $invoicingMode
+     * @param  ?ExportInvoicingMode  $invoicingMode
      * @param  ?bool  $isSelfInvoicing
-     * @param  ?PostApiV2InvoicesExportsFormType  $formType
+     * @param  ?ExportFormType  $formType
      * @param  ?array<Components\InvoiceType>  $invoiceTypes
      * @param  ?bool  $hasAttachment
      * @phpstan-pure
      */
-    public function __construct(Components\InvoiceQuerySubjectType $subjectType, PostApiV2InvoicesExportsDateRange $dateRange, ?string $ksefNumber = null, ?string $invoiceNumber = null, ?PostApiV2InvoicesExportsAmount $amount = null, ?string $sellerNip = null, ?PostApiV2InvoicesExportsBuyerIdentifier $buyerIdentifier = null, ?array $currencyCodes = null, ?PostApiV2InvoicesExportsInvoicingMode $invoicingMode = null, ?bool $isSelfInvoicing = null, ?PostApiV2InvoicesExportsFormType $formType = null, ?array $invoiceTypes = null, ?bool $hasAttachment = null)
+    public function __construct(Components\InvoiceQuerySubjectType $subjectType, ExportDateRange $dateRange, ?string $ksefNumber = null, ?string $invoiceNumber = null, ?ExportAmount $amount = null, ?string $sellerNip = null, ?ExportBuyerIdentifier $buyerIdentifier = null, ?array $currencyCodes = null, ?ExportInvoicingMode $invoicingMode = null, ?bool $isSelfInvoicing = null, ?ExportFormType $formType = null, ?array $invoiceTypes = null, ?bool $hasAttachment = null)
     {
         $this->subjectType = $subjectType;
         $this->dateRange = $dateRange;

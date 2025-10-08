@@ -1,0 +1,9 @@
+# EffectiveSubjectLimits
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `enrollment`                                                                                                  | [?Components\EffectiveSubjectLimitsEnrollment](../../Models/Components/EffectiveSubjectLimitsEnrollment.md)   | :heavy_minus_sign:                                                                                            | N/A                                                                                                           |
+| `certificate`                                                                                                 | [?Components\EffectiveSubjectLimitsCertificate](../../Models/Components/EffectiveSubjectLimitsCertificate.md) | :heavy_minus_sign:                                                                                            | N/A                                                                                                           |

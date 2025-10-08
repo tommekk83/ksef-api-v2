@@ -13,29 +13,27 @@ class TestDataPermission
 {
     /**
      *
-     * @var ?TestDataPermissionType $permissionType
+     * @var string $description
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('permissionType')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\TestDataPermissionType|null')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?TestDataPermissionType $permissionType = null;
+    #[\Speakeasy\Serializer\Annotation\SerializedName('description')]
+    public string $description;
 
     /**
      *
-     * @var ?string $description
+     * @var TestDataPermissionType $permissionType
      */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('description')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $description = null;
+    #[\Speakeasy\Serializer\Annotation\SerializedName('permissionType')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\TestDataPermissionType')]
+    public TestDataPermissionType $permissionType;
 
     /**
-     * @param  ?TestDataPermissionType  $permissionType
-     * @param  ?string  $description
+     * @param  string  $description
+     * @param  TestDataPermissionType  $permissionType
      * @phpstan-pure
      */
-    public function __construct(?TestDataPermissionType $permissionType = null, ?string $description = null)
+    public function __construct(string $description, TestDataPermissionType $permissionType)
     {
-        $this->permissionType = $permissionType;
         $this->description = $description;
+        $this->permissionType = $permissionType;
     }
 }

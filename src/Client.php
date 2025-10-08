@@ -11,7 +11,7 @@ namespace Intermedia\Ksef\Apiv2;
 
 
 /**
- * Client - KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc5.1-te-20250930.2+da669dab01e821a0d0c0be37cd6e8386840a6498)<br>
+ * Client - KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc5.2-te-20251007.1+e79581180c86686f01304d52388f584305f14cc2)<br>
  *
  * **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
  * **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
@@ -32,13 +32,13 @@ class Client
 
     public TestData $testData;
 
+    public Limits $limits;
+
     public Permissions $permissions;
 
-    public GetInvoices $getInvoices;
+    public Invoices $invoices;
 
     public Sessions $sessions;
-
-    public Invoices $invoices;
 
     public Tokens $tokens;
 
@@ -64,10 +64,10 @@ class Client
         $this->certificates = new Certificates($this->sdkConfiguration);
         $this->security = new Security($this->sdkConfiguration);
         $this->testData = new TestData($this->sdkConfiguration);
+        $this->limits = new Limits($this->sdkConfiguration);
         $this->permissions = new Permissions($this->sdkConfiguration);
-        $this->getInvoices = new GetInvoices($this->sdkConfiguration);
-        $this->sessions = new Sessions($this->sdkConfiguration);
         $this->invoices = new Invoices($this->sdkConfiguration);
+        $this->sessions = new Sessions($this->sdkConfiguration);
         $this->tokens = new Tokens($this->sdkConfiguration);
         $this->peppol = new Peppol($this->sdkConfiguration);
         $this->initHooks();

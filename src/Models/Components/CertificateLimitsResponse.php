@@ -23,28 +23,28 @@ class CertificateLimitsResponse
     /**
      * Informacje o limitach związanych z liczbą możliwych do złożenia wniosków certyfikacyjnych.
      *
-     * @var Enrollment $enrollment
+     * @var CertificateLimitsResponseEnrollment $enrollment
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('enrollment')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\Enrollment')]
-    public Enrollment $enrollment;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\CertificateLimitsResponseEnrollment')]
+    public CertificateLimitsResponseEnrollment $enrollment;
 
     /**
      * Informacje o limitach dotyczących liczby aktywnych certyfikatów wydanych dla danego podmiotu.
      *
-     * @var Certificate $certificate
+     * @var CertificateLimitsResponseCertificate $certificate
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('certificate')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\Certificate')]
-    public Certificate $certificate;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\CertificateLimitsResponseCertificate')]
+    public CertificateLimitsResponseCertificate $certificate;
 
     /**
      * @param  bool  $canRequest
-     * @param  Enrollment  $enrollment
-     * @param  Certificate  $certificate
+     * @param  CertificateLimitsResponseEnrollment  $enrollment
+     * @param  CertificateLimitsResponseCertificate  $certificate
      * @phpstan-pure
      */
-    public function __construct(bool $canRequest, Enrollment $enrollment, Certificate $certificate)
+    public function __construct(bool $canRequest, CertificateLimitsResponseEnrollment $enrollment, CertificateLimitsResponseCertificate $certificate)
     {
         $this->canRequest = $canRequest;
         $this->enrollment = $enrollment;

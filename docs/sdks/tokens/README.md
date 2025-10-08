@@ -18,7 +18,7 @@ Token może być generowany tylko w kontekście NIP lub identyfikatora wewnętrz
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/tokens" method="post" path="/api/v2/tokens" -->
+<!-- UsageSnippet language="php" operationID="generateToken" method="post" path="/api/v2/tokens" -->
 ```php
 declare(strict_types=1);
 
@@ -51,7 +51,7 @@ if ($response->generateTokenResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2TokensResponse](../../Models/Operations/PostApiV2TokensResponse.md)**
+**[?Operations\GenerateTokenResponse](../../Models/Operations/GenerateTokenResponse.md)**
 
 ### Errors
 
@@ -66,14 +66,13 @@ Pobranie listy wygenerowanych tokenów
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/tokens" method="get" path="/api/v2/tokens" -->
+<!-- UsageSnippet language="php" operationID="getTokenList" method="get" path="/api/v2/tokens" -->
 ```php
 declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
-use Intermedia\Ksef\Apiv2\Models\Operations;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -81,9 +80,7 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\GetApiV2TokensRequest(
-    pageSize: 10,
-);
+
 
 $response = $sdk->tokens->getList(
     request: $request
@@ -96,13 +93,13 @@ if ($response->queryTokensResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                            | Type                                                                                 | Required                                                                             | Description                                                                          |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `$request`                                                                           | [Operations\GetApiV2TokensRequest](../../Models/Operations/GetApiV2TokensRequest.md) | :heavy_check_mark:                                                                   | The request object to use for the request.                                           |
+| Parameter                                                                        | Type                                                                             | Required                                                                         | Description                                                                      |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `$request`                                                                       | [Operations\GetTokenListRequest](../../Models/Operations/GetTokenListRequest.md) | :heavy_check_mark:                                                               | The request object to use for the request.                                       |
 
 ### Response
 
-**[?Operations\GetApiV2TokensResponse](../../Models/Operations/GetApiV2TokensResponse.md)**
+**[?Operations\GetTokenListResponse](../../Models/Operations/GetTokenListResponse.md)**
 
 ### Errors
 
@@ -117,7 +114,7 @@ Pobranie statusu tokena
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/tokens/{referenceNumber}" method="get" path="/api/v2/tokens/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getTokenStatus" method="get" path="/api/v2/tokens/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -150,7 +147,7 @@ if ($response->tokenStatusResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2TokensReferenceNumberResponse](../../Models/Operations/GetApiV2TokensReferenceNumberResponse.md)**
+**[?Operations\GetTokenStatusResponse](../../Models/Operations/GetTokenStatusResponse.md)**
 
 ### Errors
 
@@ -165,7 +162,7 @@ Unieważniony token nie pozwoli już na uwierzytelnienie się za jego pomocą. U
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="delete_/api/v2/tokens/{referenceNumber}" method="delete" path="/api/v2/tokens/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="revokeToken" method="delete" path="/api/v2/tokens/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -198,7 +195,7 @@ if ($response->statusCode === 200) {
 
 ### Response
 
-**[?Operations\DeleteApiV2TokensReferenceNumberResponse](../../Models/Operations/DeleteApiV2TokensReferenceNumberResponse.md)**
+**[?Operations\RevokeTokenResponse](../../Models/Operations/RevokeTokenResponse.md)**
 
 ### Errors
 

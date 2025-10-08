@@ -12,3 +12,4 @@
 | `Introspection`         | Introspection           |
 | `SubunitManage`         | SubunitManage           |
 | `EnforcementOperations` | EnforcementOperations   |
+| `VatUeManage`           | VatUeManage             |

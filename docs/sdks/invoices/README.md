@@ -5,28 +5,79 @@
 
 ### Available Operations
 
-* [getList](#getlist) - Pobranie faktur sesji
-* [getInvoiceStatus](#getinvoicestatus) - Pobranie statusu faktury z sesji
-* [getFailed](#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
-* [getInvoiceUpoByKsefNumber](#getinvoiceupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
-* [getUpo](#getupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
-* [sendOnline](#sendonline) - Wysłanie faktury
+* [getByKsefNumber](#getbyksefnumber) - Pobranie faktury po numerze KSeF
+* [getList](#getlist) - Pobranie listy metadanych faktur
+* [export](#export) - Eksport paczki faktur
+* [getExportStatus](#getexportstatus) - Pobranie statusu eksportu paczki faktur
+
+## getByKsefNumber
+
+Zwraca fakturę o podanym numerze KSeF.
+
+Wymagane uprawnienia: `InvoiceRead`.
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="getByKsefNumber" method="get" path="/api/v2/invoices/ksef/{ksefNumber}" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->invoices->getByKsefNumber(
+    ksefNumber: '<value>'
+);
+
+if ($response->res !== null) {
+    // handle response
+}
+```
+
+### Parameters
+
+| Parameter           | Type                | Required            | Description         |
+| ------------------- | ------------------- | ------------------- | ------------------- |
+| `ksefNumber`        | *string*            | :heavy_check_mark:  | Numer KSeF faktury. |
+
+### Response
+
+**[?Operations\GetByKsefNumberResponse](../../Models/Operations/GetByKsefNumberResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
 ## getList
 
-Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
+Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania. Wyniki sortowane są rosnąco według typu daty przekazanej w `DateRange`. Do realizacji pobierania przyrostowego należy stosować typ `PermanentStorage`. Maksymalnie można pobrać faktury w zakresie do 10 000 rekordów
 
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+Wymagane uprawnienia: `InvoiceRead`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}/invoices" method="get" path="/api/v2/sessions/{referenceNumber}/invoices" -->
+<!-- UsageSnippet language="php" operationID="getInvoicesList" method="post" path="/api/v2/invoices/query/metadata" -->
 ```php
 declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Components;
+use Intermedia\Ksef\Apiv2\Models\Operations;
+use Intermedia\Ksef\Apiv2\Utils;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -34,306 +85,153 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$requestBody = new Operations\GetInvoicesListRequestBody(
+    subjectType: Components\InvoiceQuerySubjectType::Subject1,
+    dateRange: new Operations\GetInvoicesListDateRange(
+        dateType: Components\InvoiceQueryDateType::PermanentStorage,
+        from: Utils\Utils::parseDateTime('2025-08-28T09:22:13.388+00:00'),
+        to: Utils\Utils::parseDateTime('2025-09-28T09:22:13.388+00:00'),
+    ),
+    amount: new Operations\GetInvoicesListAmount(
+        type: Components\AmountType::Brutto,
+        from: 100.5,
+        to: 250,
+    ),
+    currencyCodes: [
+        Components\CurrencyCode::Pln,
+        Components\CurrencyCode::Eur,
+    ],
+    invoicingMode: Operations\GetInvoicesListInvoicingMode::Online,
+    formType: Operations\GetInvoicesListFormType::Fa,
+    invoiceTypes: [
+        Components\InvoiceType::Vat,
+    ],
+    hasAttachment: true,
+);
 
 $response = $sdk->invoices->getList(
-    referenceNumber: '<value>',
-    pageSize: 10
-
-);
-
-if ($response->sessionInvoicesResponse !== null) {
-    // handle response
-}
-```
-
-### Parameters
-
-| Parameter                                          | Type                                               | Required                                           | Description                                        |
-| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| `referenceNumber`                                  | *string*                                           | :heavy_check_mark:                                 | Numer referencyjny sesji.                          |
-| `xContinuationToken`                               | *?string*                                          | :heavy_minus_sign:                                 | Token służący do pobrania kolejnej strony wyników. |
-| `pageSize`                                         | *?int*                                             | :heavy_minus_sign:                                 | Rozmiar strony wyników.                            |
-
-### Response
-
-**[?Operations\GetApiV2SessionsReferenceNumberInvoicesResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberInvoicesResponse.md)**
-
-### Errors
-
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| Errors\ExceptionResponse | 400                      | application/json         |
-| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
-
-## getInvoiceStatus
-
-Zwraca fakturę przesłaną w sesji wraz ze statusem.
-
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
-
-### Example Usage
-
-<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}" -->
-```php
-declare(strict_types=1);
-
-require 'vendor/autoload.php';
-
-use Intermedia\Ksef\Apiv2;
-
-$sdk = Apiv2\Client::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-
-
-$response = $sdk->invoices->getInvoiceStatus(
-    referenceNumber: '<value>',
-    invoiceReferenceNumber: '<value>'
-
-);
-
-if ($response->sessionInvoiceStatusResponse !== null) {
-    // handle response
-}
-```
-
-### Parameters
-
-| Parameter                   | Type                        | Required                    | Description                 |
-| --------------------------- | --------------------------- | --------------------------- | --------------------------- |
-| `referenceNumber`           | *string*                    | :heavy_check_mark:          | Numer referencyjny sesji.   |
-| `invoiceReferenceNumber`    | *string*                    | :heavy_check_mark:          | Numer referencyjny faktury. |
-
-### Response
-
-**[?Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberResponse.md)**
-
-### Errors
-
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| Errors\ExceptionResponse | 400                      | application/json         |
-| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
-
-## getFailed
-
-Zwraca listę niepoprawnie przetworzonych faktur przesłanych w sesji wraz z ich statusami.
-
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
-
-### Example Usage
-
-<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}/invoices/failed" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/failed" -->
-```php
-declare(strict_types=1);
-
-require 'vendor/autoload.php';
-
-use Intermedia\Ksef\Apiv2;
-
-$sdk = Apiv2\Client::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-
-
-$response = $sdk->invoices->getFailed(
-    referenceNumber: '<value>',
-    pageSize: 10
-
-);
-
-if ($response->sessionInvoicesResponse !== null) {
-    // handle response
-}
-```
-
-### Parameters
-
-| Parameter                                          | Type                                               | Required                                           | Description                                        |
-| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| `referenceNumber`                                  | *string*                                           | :heavy_check_mark:                                 | Numer referencyjny sesji.                          |
-| `xContinuationToken`                               | *?string*                                          | :heavy_minus_sign:                                 | Token służący do pobrania kolejnej strony wyników. |
-| `pageSize`                                         | *?int*                                             | :heavy_minus_sign:                                 | Rozmiar strony wyników.                            |
-
-### Response
-
-**[?Operations\GetApiV2SessionsReferenceNumberInvoicesFailedResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberInvoicesFailedResponse.md)**
-
-### Errors
-
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| Errors\ExceptionResponse | 400                      | application/json         |
-| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
-
-## getInvoiceUpoByKsefNumber
-
-Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
-
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
-
-### Example Usage
-
-<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo" -->
-```php
-declare(strict_types=1);
-
-require 'vendor/autoload.php';
-
-use Intermedia\Ksef\Apiv2;
-
-$sdk = Apiv2\Client::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-
-
-$response = $sdk->invoices->getInvoiceUpoByKsefNumber(
-    referenceNumber: '<value>',
-    ksefNumber: '<value>'
-
-);
-
-if ($response->res !== null) {
-    // handle response
-}
-```
-
-### Parameters
-
-| Parameter                 | Type                      | Required                  | Description               |
-| ------------------------- | ------------------------- | ------------------------- | ------------------------- |
-| `referenceNumber`         | *string*                  | :heavy_check_mark:        | Numer referencyjny sesji. |
-| `ksefNumber`              | *string*                  | :heavy_check_mark:        | Numer KSeF faktury.       |
-
-### Response
-
-**[?Operations\GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberInvoicesKsefKsefNumberUpoResponse.md)**
-
-### Errors
-
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| Errors\ExceptionResponse | 400                      | application/json         |
-| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
-
-## getUpo
-
-Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
-
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
-
-### Example Usage
-
-<!-- UsageSnippet language="php" operationID="get_/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo" -->
-```php
-declare(strict_types=1);
-
-require 'vendor/autoload.php';
-
-use Intermedia\Ksef\Apiv2;
-
-$sdk = Apiv2\Client::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-
-
-$response = $sdk->invoices->getUpo(
-    referenceNumber: '<value>',
-    invoiceReferenceNumber: '<value>'
-
-);
-
-if ($response->res !== null) {
-    // handle response
-}
-```
-
-### Parameters
-
-| Parameter                   | Type                        | Required                    | Description                 |
-| --------------------------- | --------------------------- | --------------------------- | --------------------------- |
-| `referenceNumber`           | *string*                    | :heavy_check_mark:          | Numer referencyjny sesji.   |
-| `invoiceReferenceNumber`    | *string*                    | :heavy_check_mark:          | Numer referencyjny faktury. |
-
-### Response
-
-**[?Operations\GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse](../../Models/Operations/GetApiV2SessionsReferenceNumberInvoicesInvoiceReferenceNumberUpoResponse.md)**
-
-### Errors
-
-| Error Type               | Status Code              | Content Type             |
-| ------------------------ | ------------------------ | ------------------------ |
-| Errors\ExceptionResponse | 400                      | application/json         |
-| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
-
-## sendOnline
-
-Przyjmuje zaszyfrowaną fakturę oraz jej metadane i rozpoczyna jej przetwarzanie.
-
-> Więcej informacji:
-> - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
-
-Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
-
-### Example Usage
-
-<!-- UsageSnippet language="php" operationID="post_/api/v2/sessions/online/{referenceNumber}/invoices" method="post" path="/api/v2/sessions/online/{referenceNumber}/invoices" -->
-```php
-declare(strict_types=1);
-
-require 'vendor/autoload.php';
-
-use Intermedia\Ksef\Apiv2;
-use Intermedia\Ksef\Apiv2\Models\Operations;
-
-$sdk = Apiv2\Client::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-$requestBody = new Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody(
-    invoiceHash: 'EbrK4cOSjW4hEpJaHU71YXSOZZmqP5++dK9nLgTzgV4=',
-    invoiceSize: 6480,
-    encryptedInvoiceHash: 'miYb1z3Ljw5VucTZslv3Tlt+V/EK1V8Q8evD8HMQ0dc=',
-    encryptedInvoiceSize: 6496,
-    encryptedInvoiceContent: '<value>',
-);
-
-$response = $sdk->invoices->sendOnline(
-    referenceNumber: '<value>',
+    pageOffset: 0,
+    pageSize: 10,
     requestBody: $requestBody
 
 );
 
-if ($response->sendInvoiceResponse !== null) {
+if ($response->queryInvoicesMetadataResponse !== null) {
     // handle response
 }
 ```
 
 ### Parameters
 
-| Parameter                                                                                                                                                     | Type                                                                                                                                                          | Required                                                                                                                                                      | Description                                                                                                                                                   |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `referenceNumber`                                                                                                                                             | *string*                                                                                                                                                      | :heavy_check_mark:                                                                                                                                            | Numer referencyjny sesji                                                                                                                                      |
-| `requestBody`                                                                                                                                                 | [?Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody](../../Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesRequestBody.md) | :heavy_minus_sign:                                                                                                                                            | Dane faktury                                                                                                                                                  |
+| Parameter                                                                                       | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `pageOffset`                                                                                    | *?int*                                                                                          | :heavy_minus_sign:                                                                              | Indeks pierwszej strony wyników (0 = pierwsza strona).                                          |
+| `pageSize`                                                                                      | *?int*                                                                                          | :heavy_minus_sign:                                                                              | Rozmiar strony wyników.                                                                         |
+| `requestBody`                                                                                   | [?Operations\GetInvoicesListRequestBody](../../Models/Operations/GetInvoicesListRequestBody.md) | :heavy_minus_sign:                                                                              | Zestaw filtrów dla wyszukiwania metadanych.                                                     |
 
 ### Response
 
-**[?Operations\PostApiV2SessionsOnlineReferenceNumberInvoicesResponse](../../Models/Operations/PostApiV2SessionsOnlineReferenceNumberInvoicesResponse.md)**
+**[?Operations\GetInvoicesListResponse](../../Models/Operations/GetInvoicesListResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## export
+
+Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
+Wymagane jest przekazanie informacji o szyfrowaniu w polu `Encryption`, które służą do zabezpieczenia przygotowanej paczki z fakturami.
+
+Wymagane uprawnienia: `InvoiceRead`.
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="export" method="post" path="/api/v2/invoices/exports" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->invoices->export(
+    request: $request
+);
+
+if ($response->exportInvoicesResponse !== null) {
+    // handle response
+}
+```
+
+### Parameters
+
+| Parameter                                                            | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `$request`                                                           | [Operations\ExportRequest](../../Models/Operations/ExportRequest.md) | :heavy_check_mark:                                                   | The request object to use for the request.                           |
+
+### Response
+
+**[?Operations\ExportResponse](../../Models/Operations/ExportResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## getExportStatus
+
+
+Wymagane uprawnienia: `InvoiceRead`.
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="getExportStatus" method="get" path="/api/v2/invoices/exports/{operationReferenceNumber}" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->invoices->getExportStatus(
+    operationReferenceNumber: '<value>'
+);
+
+if ($response->invoiceExportStatusResponse !== null) {
+    // handle response
+}
+```
+
+### Parameters
+
+| Parameter                    | Type                         | Required                     | Description                  |
+| ---------------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
+| `operationReferenceNumber`   | *string*                     | :heavy_check_mark:           | Numer referencyjny operacji. |
+
+### Response
+
+**[?Operations\GetExportStatusResponse](../../Models/Operations/GetExportStatusResponse.md)**
 
 ### Errors
 

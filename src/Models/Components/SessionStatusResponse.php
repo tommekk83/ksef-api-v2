@@ -14,6 +14,7 @@ class SessionStatusResponse
     /**
      * Informacje o aktualnym statusie.
      *
+     *
      * Sesja wsadowa:
      * | Code | Description | Details |
      * | --- | --- | --- |

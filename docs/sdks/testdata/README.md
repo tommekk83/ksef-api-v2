@@ -20,7 +20,7 @@ Tworzenie nowego podmiotu testowego. W przypadku grupy VAT i JST istnieje możli
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/testdata/subject" method="post" path="/api/v2/testdata/subject" -->
+<!-- UsageSnippet language="php" operationID="createSubject" method="post" path="/api/v2/testdata/subject" -->
 ```php
 declare(strict_types=1);
 
@@ -49,11 +49,11 @@ if ($response->statusCode === 200) {
 
 | Parameter                                                                          | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `$request`                                                                         | [Components\SubjectCreateRequest](../../Models/Components/SubjectCreateRequest.md) | :heavy_check_mark:                                                                 | The request object to use for the request.                                         |
+| `$request`                                                                         | [Operations\CreateSubjectRequest](../../Models/Operations/CreateSubjectRequest.md) | :heavy_check_mark:                                                                 | The request object to use for the request.                                         |
 
 ### Response
 
-**[?Operations\PostApiV2TestdataSubjectResponse](../../Models/Operations/PostApiV2TestdataSubjectResponse.md)**
+**[?Operations\CreateSubjectResponse](../../Models/Operations/CreateSubjectResponse.md)**
 
 ### Errors
 
@@ -68,7 +68,7 @@ Usuwanie podmiotu testowego. W przypadku grupy VAT i JST usunięte zostaną rów
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/testdata/subject/remove" method="post" path="/api/v2/testdata/subject/remove" -->
+<!-- UsageSnippet language="php" operationID="removeSubject" method="post" path="/api/v2/testdata/subject/remove" -->
 ```php
 declare(strict_types=1);
 
@@ -97,11 +97,11 @@ if ($response->statusCode === 200) {
 
 | Parameter                                                                          | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `$request`                                                                         | [Components\SubjectRemoveRequest](../../Models/Components/SubjectRemoveRequest.md) | :heavy_check_mark:                                                                 | The request object to use for the request.                                         |
+| `$request`                                                                         | [Operations\RemoveSubjectRequest](../../Models/Operations/RemoveSubjectRequest.md) | :heavy_check_mark:                                                                 | The request object to use for the request.                                         |
 
 ### Response
 
-**[?Operations\PostApiV2TestdataSubjectRemoveResponse](../../Models/Operations/PostApiV2TestdataSubjectRemoveResponse.md)**
+**[?Operations\RemoveSubjectResponse](../../Models/Operations/RemoveSubjectResponse.md)**
 
 ### Errors
 
@@ -116,7 +116,7 @@ Tworzenie nowej osoby fizycznej, której system nadaje uprawnienia właściciels
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/testdata/person" method="post" path="/api/v2/testdata/person" -->
+<!-- UsageSnippet language="php" operationID="createPerson" method="post" path="/api/v2/testdata/person" -->
 ```php
 declare(strict_types=1);
 
@@ -145,11 +145,11 @@ if ($response->statusCode === 200) {
 
 | Parameter                                                                        | Type                                                                             | Required                                                                         | Description                                                                      |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `$request`                                                                       | [Components\PersonCreateRequest](../../Models/Components/PersonCreateRequest.md) | :heavy_check_mark:                                                               | The request object to use for the request.                                       |
+| `$request`                                                                       | [Operations\CreatePersonRequest](../../Models/Operations/CreatePersonRequest.md) | :heavy_check_mark:                                                               | The request object to use for the request.                                       |
 
 ### Response
 
-**[?Operations\PostApiV2TestdataPersonResponse](../../Models/Operations/PostApiV2TestdataPersonResponse.md)**
+**[?Operations\CreatePersonResponse](../../Models/Operations/CreatePersonResponse.md)**
 
 ### Errors
 
@@ -164,7 +164,7 @@ Usuwanie testowej osoby fizycznej. System automatycznie odbierze jej wszystkie u
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/testdata/person/remove" method="post" path="/api/v2/testdata/person/remove" -->
+<!-- UsageSnippet language="php" operationID="removePerson" method="post" path="/api/v2/testdata/person/remove" -->
 ```php
 declare(strict_types=1);
 
@@ -193,11 +193,11 @@ if ($response->statusCode === 200) {
 
 | Parameter                                                                        | Type                                                                             | Required                                                                         | Description                                                                      |
 | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `$request`                                                                       | [Components\PersonRemoveRequest](../../Models/Components/PersonRemoveRequest.md) | :heavy_check_mark:                                                               | The request object to use for the request.                                       |
+| `$request`                                                                       | [Operations\RemovePersonRequest](../../Models/Operations/RemovePersonRequest.md) | :heavy_check_mark:                                                               | The request object to use for the request.                                       |
 
 ### Response
 
-**[?Operations\PostApiV2TestdataPersonRemoveResponse](../../Models/Operations/PostApiV2TestdataPersonRemoveResponse.md)**
+**[?Operations\RemovePersonResponse](../../Models/Operations/RemovePersonResponse.md)**
 
 ### Errors
 
@@ -212,13 +212,15 @@ Nadawanie uprawnień testowemu podmiotowi lub osobie fizycznej, a także w ich k
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/testdata/permissions" method="post" path="/api/v2/testdata/permissions" -->
+<!-- UsageSnippet language="php" operationID="assignPermissions" method="post" path="/api/v2/testdata/permissions" -->
 ```php
 declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Components;
+use Intermedia\Ksef\Apiv2\Models\Operations;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -226,7 +228,22 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$request = new Operations\AssignPermissionsRequest(
+    contextIdentifier: new Operations\AssignPermissionsContextIdentifier(
+        type: Components\TestDataContextIdentifierType::Nip,
+        value: '5265877635',
+    ),
+    authorizedIdentifier: new Operations\AssignPermissionsAuthorizedIdentifier(
+        type: Components\TestDataAuthorizedIdentifierType::Nip,
+        value: '7762811692',
+    ),
+    permissions: [
+        new Components\TestDataPermission(
+            description: 'Opis testowy',
+            permissionType: Components\TestDataPermissionType::InvoiceRead,
+        ),
+    ],
+);
 
 $response = $sdk->testData->assignPermissions(
     request: $request
@@ -239,13 +256,13 @@ if ($response->statusCode === 200) {
 
 ### Parameters
 
-| Parameter                                                                                                | Type                                                                                                     | Required                                                                                                 | Description                                                                                              |
-| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                               | [Components\TestDataPermissionsGrantRequest](../../Models/Components/TestDataPermissionsGrantRequest.md) | :heavy_check_mark:                                                                                       | The request object to use for the request.                                                               |
+| Parameter                                                                                  | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `$request`                                                                                 | [Operations\AssignPermissionsRequest](../../Models/Operations/AssignPermissionsRequest.md) | :heavy_check_mark:                                                                         | The request object to use for the request.                                                 |
 
 ### Response
 
-**[?Operations\PostApiV2TestdataPermissionsResponse](../../Models/Operations/PostApiV2TestdataPermissionsResponse.md)**
+**[?Operations\AssignPermissionsResponse](../../Models/Operations/AssignPermissionsResponse.md)**
 
 ### Errors
 
@@ -260,13 +277,15 @@ Odbieranie uprawnień nadanych testowemu podmiotowi lub osobie fizycznej, a tak�
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/testdata/permissions/revoke" method="post" path="/api/v2/testdata/permissions/revoke" -->
+<!-- UsageSnippet language="php" operationID="revokeTestPermissions" method="post" path="/api/v2/testdata/permissions/revoke" -->
 ```php
 declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Components;
+use Intermedia\Ksef\Apiv2\Models\Operations;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -274,7 +293,16 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$request = new Operations\RevokeTestPermissionsRequest(
+    contextIdentifier: new Operations\RevokeTestPermissionsContextIdentifier(
+        type: Components\TestDataContextIdentifierType::Nip,
+        value: '5265877635',
+    ),
+    authorizedIdentifier: new Operations\RevokeTestPermissionsAuthorizedIdentifier(
+        type: Components\TestDataAuthorizedIdentifierType::Nip,
+        value: '7762811692',
+    ),
+);
 
 $response = $sdk->testData->revokePermissions(
     request: $request
@@ -287,13 +315,13 @@ if ($response->statusCode === 200) {
 
 ### Parameters
 
-| Parameter                                                                                                  | Type                                                                                                       | Required                                                                                                   | Description                                                                                                |
-| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                                 | [Components\TestDataPermissionsRevokeRequest](../../Models/Components/TestDataPermissionsRevokeRequest.md) | :heavy_check_mark:                                                                                         | The request object to use for the request.                                                                 |
+| Parameter                                                                                          | Type                                                                                               | Required                                                                                           | Description                                                                                        |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `$request`                                                                                         | [Operations\RevokeTestPermissionsRequest](../../Models/Operations/RevokeTestPermissionsRequest.md) | :heavy_check_mark:                                                                                 | The request object to use for the request.                                                         |
 
 ### Response
 
-**[?Operations\PostApiV2TestdataPermissionsRevokeResponse](../../Models/Operations/PostApiV2TestdataPermissionsRevokeResponse.md)**
+**[?Operations\RevokeTestPermissionsResponse](../../Models/Operations/RevokeTestPermissionsResponse.md)**
 
 ### Errors
 
@@ -308,7 +336,7 @@ Dodaje możliwość wysyłania faktur z załącznikiem przez wskazany podmiot
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/testdata/attachment" method="post" path="/api/v2/testdata/attachment" -->
+<!-- UsageSnippet language="php" operationID="addAttachment" method="post" path="/api/v2/testdata/attachment" -->
 ```php
 declare(strict_types=1);
 
@@ -335,13 +363,13 @@ if ($response->statusCode === 200) {
 
 ### Parameters
 
-| Parameter                                                                                                  | Type                                                                                                       | Required                                                                                                   | Description                                                                                                |
-| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                                 | [Components\AttachmentPermissionGrantRequest](../../Models/Components/AttachmentPermissionGrantRequest.md) | :heavy_check_mark:                                                                                         | The request object to use for the request.                                                                 |
+| Parameter                                                                          | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `$request`                                                                         | [Operations\AddAttachmentRequest](../../Models/Operations/AddAttachmentRequest.md) | :heavy_check_mark:                                                                 | The request object to use for the request.                                         |
 
 ### Response
 
-**[?Operations\PostApiV2TestdataAttachmentResponse](../../Models/Operations/PostApiV2TestdataAttachmentResponse.md)**
+**[?Operations\AddAttachmentResponse](../../Models/Operations/AddAttachmentResponse.md)**
 
 ### Errors
 
@@ -356,7 +384,7 @@ Odbiera możliwość wysyłania faktur z załącznikiem przez wskazany podmiot
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/testdata/attachment/revoke" method="post" path="/api/v2/testdata/attachment/revoke" -->
+<!-- UsageSnippet language="php" operationID="revokeAttachment" method="post" path="/api/v2/testdata/attachment/revoke" -->
 ```php
 declare(strict_types=1);
 
@@ -383,13 +411,13 @@ if ($response->statusCode === 200) {
 
 ### Parameters
 
-| Parameter                                                                                                    | Type                                                                                                         | Required                                                                                                     | Description                                                                                                  |
-| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `$request`                                                                                                   | [Components\AttachmentPermissionRevokeRequest](../../Models/Components/AttachmentPermissionRevokeRequest.md) | :heavy_check_mark:                                                                                           | The request object to use for the request.                                                                   |
+| Parameter                                                                                | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `$request`                                                                               | [Operations\RevokeAttachmentRequest](../../Models/Operations/RevokeAttachmentRequest.md) | :heavy_check_mark:                                                                       | The request object to use for the request.                                               |
 
 ### Response
 
-**[?Operations\PostApiV2TestdataAttachmentRevokeResponse](../../Models/Operations/PostApiV2TestdataAttachmentRevokeResponse.md)**
+**[?Operations\RevokeAttachmentResponse](../../Models/Operations/RevokeAttachmentResponse.md)**
 
 ### Errors
 

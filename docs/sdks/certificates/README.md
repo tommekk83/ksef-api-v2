@@ -11,7 +11,7 @@
 * [getEnrollmentStatus](#getenrollmentstatus) - Pobranie statusu przetwarzania wniosku certyfikacyjnego
 * [retrieve](#retrieve) - Pobranie certyfikatu lub listy certyfikatów
 * [revoke](#revoke) - Unieważnienie certyfikatu
-* [get](#get) - Pobranie listy metadanych certyfikatów
+* [getList](#getlist) - Pobranie listy metadanych certyfikatów
 
 ## getLimits
 
@@ -19,7 +19,7 @@ Zwraca informacje o limitach certyfikatów oraz informacje czy użytkownik może
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/certificates/limits" method="get" path="/api/v2/certificates/limits" -->
+<!-- UsageSnippet language="php" operationID="getLimits" method="get" path="/api/v2/certificates/limits" -->
 ```php
 declare(strict_types=1);
 
@@ -46,7 +46,7 @@ if ($response->certificateLimitsResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2CertificatesLimitsResponse](../../Models/Operations/GetApiV2CertificatesLimitsResponse.md)**
+**[?Operations\GetLimitsResponse](../../Models/Operations/GetLimitsResponse.md)**
 
 ### Errors
 
@@ -63,12 +63,12 @@ Dane te są zwracane na podstawie certyfikatu użytego w procesie uwierzytelnien
 
 
 > Więcej informacji:
-> - [Pobranie danych do wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-client-docs/blob/main/certyfikaty-wewn%C4%99trzne-KSeF.md#2-pobranie-danych-do-wniosku-certyfikacyjnego)
-> - [Przygotowanie wniosku](https://github.com/CIRFMF/ksef-client-docs/blob/main/certyfikaty-wewn%C4%99trzne-KSeF.md#3-przygotowanie-csr-certificate-signing-request)
+> - [Pobranie danych do wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-docs/blob/main/certyfikaty-KSeF.md#2-pobranie-danych-do-wniosku-certyfikacyjnego)
+> - [Przygotowanie wniosku](https://github.com/CIRFMF/ksef-docs/blob/main/certyfikaty-KSeF.md#3-przygotowanie-csr-certificate-signing-request)
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/certificates/enrollments/data" method="get" path="/api/v2/certificates/enrollments/data" -->
+<!-- UsageSnippet language="php" operationID="getEnrollmentData" method="get" path="/api/v2/certificates/enrollments/data" -->
 ```php
 declare(strict_types=1);
 
@@ -95,7 +95,7 @@ if ($response->certificateEnrollmentDataResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2CertificatesEnrollmentsDataResponse](../../Models/Operations/GetApiV2CertificatesEnrollmentsDataResponse.md)**
+**[?Operations\GetEnrollmentDataResponse](../../Models/Operations/GetEnrollmentDataResponse.md)**
 
 ### Errors
 
@@ -126,11 +126,11 @@ Dozwolone funkcje skrótu użyte do podpisu CSR:
 - SHA512
 
 > Więcej informacji:
-> - [Wysłanie wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-client-docs/blob/main/certyfikaty-wewn%C4%99trzne-KSeF.md#4-wys%C5%82anie-wniosku-certyfikacyjnego)
+> - [Wysłanie wniosku certyfikacyjnego](https://github.com/CIRFMF/ksef-docs/blob/main/certyfikaty-KSeF.md#4-wys%C5%82anie-wniosku-certyfikacyjnego)
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/certificates/enrollments" method="post" path="/api/v2/certificates/enrollments" -->
+<!-- UsageSnippet language="php" operationID="processEnrollment" method="post" path="/api/v2/certificates/enrollments" -->
 ```php
 declare(strict_types=1);
 
@@ -157,13 +157,13 @@ if ($response->enrollCertificateResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                                | Type                                                                                                                     | Required                                                                                                                 | Description                                                                                                              |
-| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| `$request`                                                                                                               | [Operations\PostApiV2CertificatesEnrollmentsRequest](../../Models/Operations/PostApiV2CertificatesEnrollmentsRequest.md) | :heavy_check_mark:                                                                                                       | The request object to use for the request.                                                                               |
+| Parameter                                                                                  | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `$request`                                                                                 | [Operations\ProcessEnrollmentRequest](../../Models/Operations/ProcessEnrollmentRequest.md) | :heavy_check_mark:                                                                         | The request object to use for the request.                                                 |
 
 ### Response
 
-**[?Operations\PostApiV2CertificatesEnrollmentsResponse](../../Models/Operations/PostApiV2CertificatesEnrollmentsResponse.md)**
+**[?Operations\ProcessEnrollmentResponse](../../Models/Operations/ProcessEnrollmentResponse.md)**
 
 ### Errors
 
@@ -178,7 +178,7 @@ Zwraca informacje o statusie wniosku certyfikacyjnego.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/certificates/enrollments/{referenceNumber}" method="get" path="/api/v2/certificates/enrollments/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getEnrollmentStatus" method="get" path="/api/v2/certificates/enrollments/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -211,7 +211,7 @@ if ($response->certificateEnrollmentStatusResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2CertificatesEnrollmentsReferenceNumberResponse](../../Models/Operations/GetApiV2CertificatesEnrollmentsReferenceNumberResponse.md)**
+**[?Operations\GetEnrollmentStatusResponse](../../Models/Operations/GetEnrollmentStatusResponse.md)**
 
 ### Errors
 
@@ -226,7 +226,7 @@ Zwraca certyfikaty o podanych numerach seryjnych w formacie DER zakodowanym w Ba
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/certificates/retrieve" method="post" path="/api/v2/certificates/retrieve" -->
+<!-- UsageSnippet language="php" operationID="retrieveCertificates" method="post" path="/api/v2/certificates/retrieve" -->
 ```php
 declare(strict_types=1);
 
@@ -241,7 +241,7 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2CertificatesRetrieveRequest(
+$request = new Operations\RetrieveCertificatesRequest(
     certificateSerialNumbers: [
         '0321C82DA41B4362',
         '0321F21DA462A362',
@@ -259,13 +259,13 @@ if ($response->retrieveCertificatesResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                                          | Type                                                                                                               | Required                                                                                                           | Description                                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| `$request`                                                                                                         | [Operations\PostApiV2CertificatesRetrieveRequest](../../Models/Operations/PostApiV2CertificatesRetrieveRequest.md) | :heavy_check_mark:                                                                                                 | The request object to use for the request.                                                                         |
+| Parameter                                                                                        | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `$request`                                                                                       | [Operations\RetrieveCertificatesRequest](../../Models/Operations/RetrieveCertificatesRequest.md) | :heavy_check_mark:                                                                               | The request object to use for the request.                                                       |
 
 ### Response
 
-**[?Operations\PostApiV2CertificatesRetrieveResponse](../../Models/Operations/PostApiV2CertificatesRetrieveResponse.md)**
+**[?Operations\RetrieveCertificatesResponse](../../Models/Operations/RetrieveCertificatesResponse.md)**
 
 ### Errors
 
@@ -280,7 +280,7 @@ Unieważnia certyfikat o podanym numerze seryjnym.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/certificates/{certificateSerialNumber}/revoke" method="post" path="/api/v2/certificates/{certificateSerialNumber}/revoke" -->
+<!-- UsageSnippet language="php" operationID="revokeCertificates" method="post" path="/api/v2/certificates/{certificateSerialNumber}/revoke" -->
 ```php
 declare(strict_types=1);
 
@@ -316,7 +316,7 @@ if ($response->statusCode === 200) {
 
 ### Response
 
-**[?Operations\PostApiV2CertificatesCertificateSerialNumberRevokeResponse](../../Models/Operations/PostApiV2CertificatesCertificateSerialNumberRevokeResponse.md)**
+**[?Operations\RevokeCertificatesResponse](../../Models/Operations/RevokeCertificatesResponse.md)**
 
 ### Errors
 
@@ -325,14 +325,14 @@ if ($response->statusCode === 200) {
 | Errors\ExceptionResponse | 400                      | application/json         |
 | Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
 
-## get
+## getList
 
 Zwraca listę certyfikatów spełniających podane kryteria wyszukiwania.
 W przypadku braku podania kryteriów wyszukiwania zwrócona zostanie nieprzefiltrowana lista.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/certificates/query" method="post" path="/api/v2/certificates/query" -->
+<!-- UsageSnippet language="php" operationID="getCertificatesList" method="post" path="/api/v2/certificates/query" -->
 ```php
 declare(strict_types=1);
 
@@ -348,7 +348,7 @@ $sdk = Apiv2\Client::builder()
 
 
 
-$response = $sdk->certificates->get(
+$response = $sdk->certificates->getList(
     pageSize: 10,
     pageOffset: 0,
     queryCertificatesRequest: $queryCertificatesRequest
@@ -370,7 +370,7 @@ if ($response->queryCertificatesResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2CertificatesQueryResponse](../../Models/Operations/PostApiV2CertificatesQueryResponse.md)**
+**[?Operations\GetCertificatesListResponse](../../Models/Operations/GetCertificatesListResponse.md)**
 
 ### Errors
 

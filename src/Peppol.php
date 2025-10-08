@@ -51,12 +51,12 @@ class Peppol
      *
      * @param  ?int  $pageOffset
      * @param  ?int  $pageSize
-     * @return Operations\GetApiV2PeppolQueryResponse
+     * @return Operations\ListPeppolProvidersResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function listProviders(?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetApiV2PeppolQueryResponse
+    public function listProviders(?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\ListPeppolProvidersResponse
     {
-        $request = new Operations\GetApiV2PeppolQueryRequest(
+        $request = new Operations\ListPeppolProvidersRequest(
             pageOffset: $pageOffset,
             pageSize: $pageSize,
         );
@@ -65,11 +65,11 @@ class Peppol
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
-        $qp = Utils\Utils::getQueryParams(Operations\GetApiV2PeppolQueryRequest::class, $request, $urlOverride);
+        $qp = Utils\Utils::getQueryParams(Operations\ListPeppolProvidersRequest::class, $request, $urlOverride);
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/peppol/query', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'listPeppolProviders', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
@@ -94,7 +94,7 @@ class Peppol
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\QueryPeppolProvidersResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2PeppolQueryResponse(
+                $response = new Operations\ListPeppolProvidersResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,

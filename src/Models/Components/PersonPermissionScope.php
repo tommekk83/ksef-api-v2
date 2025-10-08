@@ -18,5 +18,4 @@ enum PersonPermissionScope: string
     case Introspection = 'Introspection';
     case SubunitManage = 'SubunitManage';
     case EnforcementOperations = 'EnforcementOperations';
-    case Owner = 'Owner';
 }

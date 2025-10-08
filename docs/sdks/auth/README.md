@@ -21,7 +21,7 @@ Zwraca listę aktywnych sesji uwierzytelnienia.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/auth/sessions" method="get" path="/api/v2/auth/sessions" -->
+<!-- UsageSnippet language="php" operationID="getCurrentSessions" method="get" path="/api/v2/auth/sessions" -->
 ```php
 declare(strict_types=1);
 
@@ -55,7 +55,7 @@ if ($response->authenticationListResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2AuthSessionsResponse](../../Models/Operations/GetApiV2AuthSessionsResponse.md)**
+**[?Operations\GetCurrentSessionsResponse](../../Models/Operations/GetCurrentSessionsResponse.md)**
 
 ### Errors
 
@@ -75,7 +75,7 @@ Sposób uwierzytelnienia: `RefreshToken` lub `AccessToken`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="delete_/api/v2/auth/sessions/current" method="delete" path="/api/v2/auth/sessions/current" -->
+<!-- UsageSnippet language="php" operationID="revokeCurrentSession" method="delete" path="/api/v2/auth/sessions/current" -->
 ```php
 declare(strict_types=1);
 
@@ -102,7 +102,7 @@ if ($response->statusCode === 200) {
 
 ### Response
 
-**[?Operations\DeleteApiV2AuthSessionsCurrentResponse](../../Models/Operations/DeleteApiV2AuthSessionsCurrentResponse.md)**
+**[?Operations\RevokeCurrentSessionResponse](../../Models/Operations/RevokeCurrentSessionResponse.md)**
 
 ### Errors
 
@@ -120,7 +120,7 @@ Unieważnienie sesji sprawia, że powiązany z nią refresh token przestaje dzia
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="delete_/api/v2/auth/sessions/{referenceNumber}" method="delete" path="/api/v2/auth/sessions/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="revokeSession" method="delete" path="/api/v2/auth/sessions/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -153,7 +153,7 @@ if ($response->statusCode === 200) {
 
 ### Response
 
-**[?Operations\DeleteApiV2AuthSessionsReferenceNumberResponse](../../Models/Operations/DeleteApiV2AuthSessionsReferenceNumberResponse.md)**
+**[?Operations\RevokeSessionResponse](../../Models/Operations/RevokeSessionResponse.md)**
 
 ### Errors
 
@@ -168,7 +168,7 @@ Generuje unikalny challenge wymagany w kolejnym kroku operacji uwierzytelnienia.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/auth/challenge" method="post" path="/api/v2/auth/challenge" -->
+<!-- UsageSnippet language="php" operationID="challenge" method="post" path="/api/v2/auth/challenge" -->
 ```php
 declare(strict_types=1);
 
@@ -195,7 +195,7 @@ if ($response->authenticationChallengeResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2AuthChallengeResponse](../../Models/Operations/PostApiV2AuthChallengeResponse.md)**
+**[?Operations\ChallengeResponse](../../Models/Operations/ChallengeResponse.md)**
 
 ### Errors
 
@@ -215,7 +215,7 @@ Rozpoczyna operację uwierzytelniania za pomocą dokumentu XML podpisanego podpi
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/auth/xades-signature" method="post" path="/api/v2/auth/xades-signature" -->
+<!-- UsageSnippet language="php" operationID="authWithXades" method="post" path="/api/v2/auth/xades-signature" -->
 ```php
 declare(strict_types=1);
 
@@ -234,7 +234,6 @@ $sdk = Apiv2\Client::builder()
 $response = $sdk->auth->withXades(
     requestBody: '<?xml version="1.0" encoding="utf-8"?>\n' .
     '<AuthTokenRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://ksef.mf.gov.pl/auth/token/2.0">\n' .
-    '\n' .
     '    <Challenge>20250625-CR-20F5EE4000-DA48AE4124-46</Challenge>\n' .
     '    <ContextIdentifier>\n' .
     '        <Nip>5265877635</Nip>\n' .
@@ -260,7 +259,7 @@ if ($response->authenticationInitResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2AuthXadesSignatureResponse](../../Models/Operations/PostApiV2AuthXadesSignatureResponse.md)**
+**[?Operations\AuthWithXadesResponse](../../Models/Operations/AuthWithXadesResponse.md)**
 
 ### Errors
 
@@ -279,7 +278,7 @@ Token KSeF wraz z timestampem ze wcześniej wygenerowanego challenge'a (w formac
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/auth/ksef-token" method="post" path="/api/v2/auth/ksef-token" -->
+<!-- UsageSnippet language="php" operationID="authWithKsefToken" method="post" path="/api/v2/auth/ksef-token" -->
 ```php
 declare(strict_types=1);
 
@@ -295,9 +294,9 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-$request = new Operations\PostApiV2AuthKsefTokenRequest(
+$request = new Operations\AuthWithKsefTokenRequest(
     challenge: '20250625-CR-2FDC223000-C2BFC98A9C-4E',
-    contextIdentifier: new Operations\PostApiV2AuthKsefTokenContextIdentifier(
+    contextIdentifier: new Operations\AuthWithKsefTokenContextIdentifier(
         type: Components\AuthenticationContextIdentifierType::Nip,
         value: '5265877635',
     ),
@@ -315,13 +314,13 @@ if ($response->authenticationInitResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                            | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `$request`                                                                                           | [Operations\PostApiV2AuthKsefTokenRequest](../../Models/Operations/PostApiV2AuthKsefTokenRequest.md) | :heavy_check_mark:                                                                                   | The request object to use for the request.                                                           |
+| Parameter                                                                                  | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `$request`                                                                                 | [Operations\AuthWithKsefTokenRequest](../../Models/Operations/AuthWithKsefTokenRequest.md) | :heavy_check_mark:                                                                         | The request object to use for the request.                                                 |
 
 ### Response
 
-**[?Operations\PostApiV2AuthKsefTokenResponse](../../Models/Operations/PostApiV2AuthKsefTokenResponse.md)**
+**[?Operations\AuthWithKsefTokenResponse](../../Models/Operations/AuthWithKsefTokenResponse.md)**
 
 ### Errors
 
@@ -338,7 +337,7 @@ Sposób uwierzytelnienia: `AuthenticationToken` otrzymany przy rozpoczęciu oper
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="get_/api/v2/auth/{referenceNumber}" method="get" path="/api/v2/auth/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getAuthStatus" method="get" path="/api/v2/auth/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -371,7 +370,7 @@ if ($response->authenticationOperationStatusResponse !== null) {
 
 ### Response
 
-**[?Operations\GetApiV2AuthReferenceNumberResponse](../../Models/Operations/GetApiV2AuthReferenceNumberResponse.md)**
+**[?Operations\GetAuthStatusResponse](../../Models/Operations/GetAuthStatusResponse.md)**
 
 ### Errors
 
@@ -389,7 +388,7 @@ Sposób uwierzytelnienia: `AuthenticationToken` otrzymany przy rozpoczęciu oper
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/auth/token/redeem" method="post" path="/api/v2/auth/token/redeem" -->
+<!-- UsageSnippet language="php" operationID="redeemAuthToken" method="post" path="/api/v2/auth/token/redeem" -->
 ```php
 declare(strict_types=1);
 
@@ -416,7 +415,7 @@ if ($response->authenticationTokensResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2AuthTokenRedeemResponse](../../Models/Operations/PostApiV2AuthTokenRedeemResponse.md)**
+**[?Operations\RedeemAuthTokenResponse](../../Models/Operations/RedeemAuthTokenResponse.md)**
 
 ### Errors
 
@@ -433,7 +432,7 @@ Sposób uwierzytelnienia: `RefreshToken`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="post_/api/v2/auth/token/refresh" method="post" path="/api/v2/auth/token/refresh" -->
+<!-- UsageSnippet language="php" operationID="refreshAuthToken" method="post" path="/api/v2/auth/token/refresh" -->
 ```php
 declare(strict_types=1);
 
@@ -460,7 +459,7 @@ if ($response->authenticationTokenRefreshResponse !== null) {
 
 ### Response
 
-**[?Operations\PostApiV2AuthTokenRefreshResponse](../../Models/Operations/PostApiV2AuthTokenRefreshResponse.md)**
+**[?Operations\RefreshAuthTokenResponse](../../Models/Operations/RefreshAuthTokenResponse.md)**
 
 ### Errors
 

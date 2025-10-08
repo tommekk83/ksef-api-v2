@@ -16,12 +16,15 @@ use Speakeasy\Serializer\DeserializationContext;
 class Sessions
 {
     private SDKConfiguration $sdkConfiguration;
+    public SessionsInvoices $invoices;
+
     /**
      * @param  SDKConfiguration  $sdkConfig
      */
     public function __construct(public SDKConfiguration $sdkConfig)
     {
         $this->sdkConfiguration = $sdkConfig;
+        $this->invoices = new SessionsInvoices($this->sdkConfiguration);
     }
     /**
      * @param  string  $baseUrl
@@ -45,34 +48,29 @@ class Sessions
     }
 
     /**
-     * Otwarcie sesji wsadowej
+     * Zamknięcie sesji wsadowej
      *
-     * Otwiera sesję do wysyłki wsadowej faktur. Należy przekazać schemat wysyłanych faktur, informacje o paczce faktur oraz informacje o kluczu używanym do szyfrowania.
-     *
-     * > Więcej informacji:
-     * > - [Przygotwanie paczki faktur](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-wsadowa.md)
-     * > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
+     * Zamyka sesję wsadową, rozpoczyna procesowanie paczki faktur i generowanie UPO dla prawidłowych faktur oraz zbiorczego UPO dla sesji.
      *
      * Wymagane uprawnienia: `InvoiceWrite`.
      *
-     * @param  ?Operations\BatchOpenRequest  $request
-     * @return Operations\BatchOpenResponse
+     * @param  string  $referenceNumber
+     * @return Operations\CloseBatchSessionResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function openBatch(?Operations\BatchOpenRequest $request = null, ?Options $options = null): Operations\BatchOpenResponse
+    public function closeBatch(string $referenceNumber, ?Options $options = null): Operations\CloseBatchSessionResponse
     {
+        $request = new Operations\CloseBatchSessionRequest(
+            referenceNumber: $referenceNumber,
+        );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/batch');
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/batch/{referenceNumber}/close', Operations\CloseBatchSessionRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
-        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
-        if ($body !== null) {
-            $httpOptions = array_merge_recursive($httpOptions, $body);
-        }
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'batch.open', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'closeBatchSession', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -89,23 +87,83 @@ class Sessions
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['201'])) {
+        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
+            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+            return new Operations\CloseBatchSessionResponse(
+                statusCode: $statusCode,
+                contentType: $contentType,
+                rawResponse: $httpResponse
+            );
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
             if (Utils\Utils::matchContentType($contentType, 'application/json')) {
                 $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
 
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\OpenBatchSessionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\BatchOpenResponse(
-                    statusCode: $statusCode,
-                    contentType: $contentType,
-                    rawResponse: $httpResponse,
-                    openBatchSessionResponse: $obj);
-
-                return $response;
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Zamknięcie sesji interaktywnej
+     *
+     * Zamyka sesję interaktywną i rozpoczyna generowanie zbiorczego UPO dla sesji.
+     *
+     * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
+     *
+     * @param  string  $referenceNumber
+     * @return Operations\CloseOnlineSessionResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function closeOnline(string $referenceNumber, ?Options $options = null): Operations\CloseOnlineSessionResponse
+    {
+        $request = new Operations\CloseOnlineSessionRequest(
+            referenceNumber: $referenceNumber,
+        );
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/online/{referenceNumber}/close', Operations\CloseOnlineSessionRequest::class, $request);
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'closeOnlineSession', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
+            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+            return new Operations\CloseOnlineSessionResponse(
+                statusCode: $statusCode,
+                contentType: $contentType,
+                rawResponse: $httpResponse
+            );
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
             if (Utils\Utils::matchContentType($contentType, 'application/json')) {
                 $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
@@ -136,18 +194,18 @@ class Sessions
      * - `Introspection` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
      * - `InvoiceWrite` – pozwala pobrać wyłącznie sesje utworzone przez podmiot uwierzytelniający, czyli podmiot inicjujący uwierzytelnienie.
      *
-     * @param  Operations\GetApiV2SessionsRequest  $request
-     * @return Operations\GetApiV2SessionsResponse
+     * @param  Operations\GetSessionListRequest  $request
+     * @return Operations\GetSessionListResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getList(Operations\GetApiV2SessionsRequest $request, ?Options $options = null): Operations\GetApiV2SessionsResponse
+    public function getList(Operations\GetSessionListRequest $request, ?Options $options = null): Operations\GetSessionListResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
-        $qp = Utils\Utils::getQueryParams(Operations\GetApiV2SessionsRequest::class, $request, $urlOverride);
+        $qp = Utils\Utils::getQueryParams(Operations\GetSessionListRequest::class, $request, $urlOverride);
         $httpOptions = array_merge_recursive($httpOptions, Utils\Utils::getHeaders($request));
         if (! array_key_exists('headers', $httpOptions)) {
             $httpOptions['headers'] = [];
@@ -155,7 +213,7 @@ class Sessions
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/sessions', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getSessionList', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions['query'] = Utils\QueryParameters::standardizeQueryParams($httpRequest, $qp);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
@@ -180,7 +238,7 @@ class Sessions
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\SessionsQueryResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2SessionsResponse(
+                $response = new Operations\GetSessionListResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -219,22 +277,22 @@ class Sessions
      * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
-     * @return Operations\GetApiV2SessionsReferenceNumberResponse
+     * @return Operations\GetSessionStatusResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getStatus(string $referenceNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberResponse
+    public function getStatus(string $referenceNumber, ?Options $options = null): Operations\GetSessionStatusResponse
     {
-        $request = new Operations\GetApiV2SessionsReferenceNumberRequest(
+        $request = new Operations\GetSessionStatusRequest(
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}', Operations\GetApiV2SessionsReferenceNumberRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}', Operations\GetSessionStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/sessions/{referenceNumber}', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getSessionStatus', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -258,7 +316,7 @@ class Sessions
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\SessionStatusResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\GetApiV2SessionsReferenceNumberResponse(
+                $response = new Operations\GetSessionStatusResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -298,23 +356,23 @@ class Sessions
      *
      * @param  string  $referenceNumber
      * @param  string  $upoReferenceNumber
-     * @return Operations\GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberResponse
+     * @return Operations\GetSessionUpoResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getUpo(string $referenceNumber, string $upoReferenceNumber, ?Options $options = null): Operations\GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberResponse
+    public function getUpo(string $referenceNumber, string $upoReferenceNumber, ?Options $options = null): Operations\GetSessionUpoResponse
     {
-        $request = new Operations\GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberRequest(
+        $request = new Operations\GetSessionUpoRequest(
             referenceNumber: $referenceNumber,
             upoReferenceNumber: $upoReferenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}', Operations\GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}', Operations\GetSessionUpoRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/xml';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('GET', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'get_/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'getSessionUpo', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -337,11 +395,94 @@ class Sessions
 
                 $obj = $httpResponse->getBody()->getContents();
 
-                return new Operations\GetApiV2SessionsReferenceNumberUpoUpoReferenceNumberResponse(
+                return new Operations\GetSessionUpoResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
                     res: $obj);
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $obj->rawResponse = $httpResponse;
+                throw $obj->toException();
+            } else {
+                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+            }
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        } else {
+            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
+        }
+    }
+
+    /**
+     * Otwarcie sesji wsadowej
+     *
+     * Otwiera sesję do wysyłki wsadowej faktur. Należy przekazać schemat wysyłanych faktur, informacje o paczce faktur oraz informacje o kluczu używanym do szyfrowania.
+     *
+     * > Więcej informacji:
+     * > - [Przygotwanie paczki faktur](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-wsadowa.md)
+     * > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
+     *
+     * Wymagane uprawnienia: `InvoiceWrite`.
+     *
+     * @param  ?Operations\OpenBatchSessionRequest  $request
+     * @return Operations\OpenBatchSessionResponse
+     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
+     */
+    public function openBatch(?Operations\OpenBatchSessionRequest $request = null, ?Options $options = null): Operations\OpenBatchSessionResponse
+    {
+        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/batch');
+        $urlOverride = null;
+        $httpOptions = ['http_errors' => false];
+        $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
+        if ($body !== null) {
+            $httpOptions = array_merge_recursive($httpOptions, $body);
+        }
+        $httpOptions['headers']['Accept'] = 'application/json';
+        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
+        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'openBatchSession', null, $this->sdkConfiguration->securitySource);
+        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
+        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
+        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
+        try {
+            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
+        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
+            $httpResponse = $res;
+        }
+        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
+
+        $statusCode = $httpResponse->getStatusCode();
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
+            $httpResponse = $res;
+        }
+        if (Utils\Utils::matchStatusCodes($statusCode, ['201'])) {
+            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
+                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
+
+                $serializer = Utils\JSON::createSerializer();
+                $responseData = (string) $httpResponse->getBody();
+                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\OpenBatchSessionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
+                $response = new Operations\OpenBatchSessionResponse(
+                    statusCode: $statusCode,
+                    contentType: $contentType,
+                    rawResponse: $httpResponse,
+                    openBatchSessionResponse: $obj);
+
+                return $response;
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
@@ -377,11 +518,11 @@ class Sessions
      *
      * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
      *
-     * @param  ?Operations\OnlineSessionOpenRequest  $request
-     * @return Operations\OnlineSessionOpenResponse
+     * @param  ?Operations\OpenOnlineSessionRequest  $request
+     * @return Operations\OpenOnlineSessionResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function openOnline(?Operations\OnlineSessionOpenRequest $request = null, ?Options $options = null): Operations\OnlineSessionOpenResponse
+    public function openOnline(?Operations\OpenOnlineSessionRequest $request = null, ?Options $options = null): Operations\OpenOnlineSessionResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/online');
@@ -394,7 +535,7 @@ class Sessions
         $httpOptions['headers']['Accept'] = 'application/json';
         $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
         $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'onlineSession.open', [], $this->sdkConfiguration->securitySource);
+        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'openOnlineSession', null, $this->sdkConfiguration->securitySource);
         $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
         $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
         $httpRequest = Utils\Utils::removeHeaders($httpRequest);
@@ -418,7 +559,7 @@ class Sessions
                 $serializer = Utils\JSON::createSerializer();
                 $responseData = (string) $httpResponse->getBody();
                 $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Components\OpenOnlineSessionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $response = new Operations\OnlineSessionOpenResponse(
+                $response = new Operations\OpenOnlineSessionResponse(
                     statusCode: $statusCode,
                     contentType: $contentType,
                     rawResponse: $httpResponse,
@@ -428,144 +569,6 @@ class Sessions
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Zamknięcie sesji wsadowej
-     *
-     * Zamyka sesję wsadową, rozpoczyna procesowanie paczki faktur i generowanie UPO dla prawidłowych faktur oraz zbiorczego UPO dla sesji.
-     *
-     * Wymagane uprawnienia: `InvoiceWrite`.
-     *
-     * @param  string  $referenceNumber
-     * @return Operations\PostApiV2SessionsBatchReferenceNumberCloseResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function closeBatch(string $referenceNumber, ?Options $options = null): Operations\PostApiV2SessionsBatchReferenceNumberCloseResponse
-    {
-        $request = new Operations\PostApiV2SessionsBatchReferenceNumberCloseRequest(
-            referenceNumber: $referenceNumber,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/batch/{referenceNumber}/close', Operations\PostApiV2SessionsBatchReferenceNumberCloseRequest::class, $request);
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/sessions/batch/{referenceNumber}/close', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
-            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-            return new Operations\PostApiV2SessionsBatchReferenceNumberCloseResponse(
-                statusCode: $statusCode,
-                contentType: $contentType,
-                rawResponse: $httpResponse
-            );
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
-            if (Utils\Utils::matchContentType($contentType, 'application/json')) {
-                $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-                $serializer = Utils\JSON::createSerializer();
-                $responseData = (string) $httpResponse->getBody();
-                $obj = $serializer->deserialize($responseData, '\Intermedia\Ksef\Apiv2\Models\Errors\ExceptionResponse', 'json', DeserializationContext::create()->setRequireAllRequiredProperties(true));
-                $obj->rawResponse = $httpResponse;
-                throw $obj->toException();
-            } else {
-                throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-            }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        } else {
-            throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown status code received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
-        }
-    }
-
-    /**
-     * Zamknięcie sesji interaktywnej
-     *
-     * Zamyka sesję interaktywną i rozpoczyna generowanie zbiorczego UPO dla sesji.
-     *
-     * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
-     *
-     * @param  string  $referenceNumber
-     * @return Operations\PostApiV2SessionsOnlineReferenceNumberCloseResponse
-     * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
-     */
-    public function closeOnline(string $referenceNumber, ?Options $options = null): Operations\PostApiV2SessionsOnlineReferenceNumberCloseResponse
-    {
-        $request = new Operations\PostApiV2SessionsOnlineReferenceNumberCloseRequest(
-            referenceNumber: $referenceNumber,
-        );
-        $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/online/{referenceNumber}/close', Operations\PostApiV2SessionsOnlineReferenceNumberCloseRequest::class, $request);
-        $urlOverride = null;
-        $httpOptions = ['http_errors' => false];
-        $httpOptions['headers']['Accept'] = 'application/json';
-        $httpOptions['headers']['user-agent'] = $this->sdkConfiguration->userAgent;
-        $httpRequest = new \GuzzleHttp\Psr7\Request('POST', $url);
-        $hookContext = new HookContext($this->sdkConfiguration, $baseUrl, 'post_/api/v2/sessions/online/{referenceNumber}/close', [], $this->sdkConfiguration->securitySource);
-        $httpRequest = $this->sdkConfiguration->hooks->beforeRequest(new Hooks\BeforeRequestContext($hookContext), $httpRequest);
-        $httpOptions = Utils\Utils::convertHeadersToOptions($httpRequest, $httpOptions);
-        $httpRequest = Utils\Utils::removeHeaders($httpRequest);
-        try {
-            $httpResponse = $this->sdkConfiguration->client->send($httpRequest, $httpOptions);
-        } catch (\GuzzleHttp\Exception\GuzzleException $error) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), null, $error);
-            $httpResponse = $res;
-        }
-        $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
-
-        $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
-            $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
-            $httpResponse = $res;
-        }
-        if (Utils\Utils::matchStatusCodes($statusCode, ['204'])) {
-            $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);
-
-            return new Operations\PostApiV2SessionsOnlineReferenceNumberCloseResponse(
-                statusCode: $statusCode,
-                contentType: $contentType,
-                rawResponse: $httpResponse
-            );
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['400'])) {
             if (Utils\Utils::matchContentType($contentType, 'application/json')) {
                 $httpResponse = $this->sdkConfiguration->hooks->afterSuccess(new Hooks\AfterSuccessContext($hookContext), $httpResponse);

@@ -124,6 +124,16 @@ class SessionInvoiceStatusResponse
     public ?string $upoDownloadUrl = null;
 
     /**
+     * Tryb fakturowania (online/offline).
+     *
+     * @var ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('invoicingMode')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SessionInvoiceStatusResponseInvoicingMode|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode = null;
+
+    /**
      * @param  int  $ordinalNumber
      * @param  \DateTime  $invoicingDate
      * @param  StatusInfo  $status
@@ -135,9 +145,10 @@ class SessionInvoiceStatusResponse
      * @param  ?\DateTime  $acquisitionDate
      * @param  ?\DateTime  $permanentStorageDate
      * @param  ?string  $upoDownloadUrl
+     * @param  ?SessionInvoiceStatusResponseInvoicingMode  $invoicingMode
      * @phpstan-pure
      */
-    public function __construct(int $ordinalNumber, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $referenceNumber = null, ?string $invoiceHash = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null)
+    public function __construct(int $ordinalNumber, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $referenceNumber = null, ?string $invoiceHash = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null, ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode = null)
     {
         $this->ordinalNumber = $ordinalNumber;
         $this->invoicingDate = $invoicingDate;
@@ -150,5 +161,6 @@ class SessionInvoiceStatusResponse
         $this->acquisitionDate = $acquisitionDate;
         $this->permanentStorageDate = $permanentStorageDate;
         $this->upoDownloadUrl = $upoDownloadUrl;
+        $this->invoicingMode = $invoicingMode;
     }
 }

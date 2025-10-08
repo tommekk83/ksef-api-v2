@@ -14,17 +14,16 @@ class PermissionsOperationResponse
     /**
      * Numer referencyjny asynchronicznej operacji nadawania lub odbierania uprawnień.
      *
-     * @var ?string $operationReferenceNumber
+     * @var string $operationReferenceNumber
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('operationReferenceNumber')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $operationReferenceNumber = null;
+    public string $operationReferenceNumber;
 
     /**
-     * @param  ?string  $operationReferenceNumber
+     * @param  string  $operationReferenceNumber
      * @phpstan-pure
      */
-    public function __construct(?string $operationReferenceNumber = null)
+    public function __construct(string $operationReferenceNumber)
     {
         $this->operationReferenceNumber = $operationReferenceNumber;
     }
