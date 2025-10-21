@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class QuerySubunitPermissionsResponse
 {
     /**
-     * Lista uprawnień.
+     * Lista odczytanych uprawnień.
      *
      * @var array<SubunitPermission> $permissions
      */

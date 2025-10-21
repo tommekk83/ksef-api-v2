@@ -16,17 +16,35 @@ class OnlineSession
      * Maksymalny rozmiar faktury w MiB.
      *
      * @var int $maxInvoiceSizeInMib
+     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('maxInvoiceSizeInMib')]
     public int $maxInvoiceSizeInMib;
 
     /**
+     * Maksymalny rozmiar faktury w MB.
+     *
+     * @var int $maxInvoiceSizeInMB
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('maxInvoiceSizeInMB')]
+    public int $maxInvoiceSizeInMB;
+
+    /**
      * Maksymalny rozmiar faktury z załącznikiem w MiB.
      *
      * @var int $maxInvoiceWithAttachmentSizeInMib
+     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('maxInvoiceWithAttachmentSizeInMib')]
     public int $maxInvoiceWithAttachmentSizeInMib;
+
+    /**
+     * Maksymalny rozmiar faktury z załącznikiem w MB.
+     *
+     * @var int $maxInvoiceWithAttachmentSizeInMB
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('maxInvoiceWithAttachmentSizeInMB')]
+    public int $maxInvoiceWithAttachmentSizeInMB;
 
     /**
      * Maksymalna ilość faktur które można przesłać w pojedynczej sesji.
@@ -38,14 +56,18 @@ class OnlineSession
 
     /**
      * @param  int  $maxInvoiceSizeInMib
+     * @param  int  $maxInvoiceSizeInMB
      * @param  int  $maxInvoiceWithAttachmentSizeInMib
+     * @param  int  $maxInvoiceWithAttachmentSizeInMB
      * @param  int  $maxInvoices
      * @phpstan-pure
      */
-    public function __construct(int $maxInvoiceSizeInMib, int $maxInvoiceWithAttachmentSizeInMib, int $maxInvoices)
+    public function __construct(int $maxInvoiceSizeInMib, int $maxInvoiceSizeInMB, int $maxInvoiceWithAttachmentSizeInMib, int $maxInvoiceWithAttachmentSizeInMB, int $maxInvoices)
     {
         $this->maxInvoiceSizeInMib = $maxInvoiceSizeInMib;
+        $this->maxInvoiceSizeInMB = $maxInvoiceSizeInMB;
         $this->maxInvoiceWithAttachmentSizeInMib = $maxInvoiceWithAttachmentSizeInMib;
+        $this->maxInvoiceWithAttachmentSizeInMB = $maxInvoiceWithAttachmentSizeInMB;
         $this->maxInvoices = $maxInvoices;
     }
 }

@@ -13,14 +13,6 @@ use Intermedia\Ksef\Apiv2\Utils\SpeakeasyMetadata;
 class GetSessionListRequest
 {
     /**
-     * Rozmiar strony.
-     *
-     * @var int $pageSize
-     */
-    #[SpeakeasyMetadata('queryParam:style=form,explode=true,name=pageSize')]
-    public int $pageSize;
-
-    /**
      * Typ sesji.
      *
      * | Wartość | Opis |
@@ -115,8 +107,16 @@ class GetSessionListRequest
     public ?string $xContinuationToken = null;
 
     /**
-     * @param  int  $pageSize
+     * Rozmiar strony.
+     *
+     * @var ?int $pageSize
+     */
+    #[SpeakeasyMetadata('queryParam:style=form,explode=true,name=pageSize')]
+    public ?int $pageSize = null;
+
+    /**
      * @param  Components\SessionType  $sessionType
+     * @param  ?int  $pageSize
      * @param  ?string  $referenceNumber
      * @param  ?\DateTime  $dateCreatedFrom
      * @param  ?\DateTime  $dateCreatedTo
@@ -128,9 +128,8 @@ class GetSessionListRequest
      * @param  ?string  $xContinuationToken
      * @phpstan-pure
      */
-    public function __construct(int $pageSize, Components\SessionType $sessionType, ?string $referenceNumber = null, ?\DateTime $dateCreatedFrom = null, ?\DateTime $dateCreatedTo = null, ?\DateTime $dateClosedFrom = null, ?\DateTime $dateClosedTo = null, ?\DateTime $dateModifiedFrom = null, ?\DateTime $dateModifiedTo = null, ?array $statuses = null, ?string $xContinuationToken = null)
+    public function __construct(Components\SessionType $sessionType, ?string $referenceNumber = null, ?\DateTime $dateCreatedFrom = null, ?\DateTime $dateCreatedTo = null, ?\DateTime $dateClosedFrom = null, ?\DateTime $dateClosedTo = null, ?\DateTime $dateModifiedFrom = null, ?\DateTime $dateModifiedTo = null, ?array $statuses = null, ?string $xContinuationToken = null, ?int $pageSize = 10)
     {
-        $this->pageSize = $pageSize;
         $this->sessionType = $sessionType;
         $this->referenceNumber = $referenceNumber;
         $this->dateCreatedFrom = $dateCreatedFrom;
@@ -141,5 +140,6 @@ class GetSessionListRequest
         $this->dateModifiedTo = $dateModifiedTo;
         $this->statuses = $statuses;
         $this->xContinuationToken = $xContinuationToken;
+        $this->pageSize = $pageSize;
     }
 }

@@ -19,5 +19,4 @@ enum PersonalPermissionScope: string
     case SubunitManage = 'SubunitManage';
     case EnforcementOperations = 'EnforcementOperations';
     case VatUeManage = 'VatUeManage';
-    case Owner = 'Owner';
 }

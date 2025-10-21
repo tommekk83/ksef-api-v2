@@ -47,7 +47,7 @@ class EntityAuthorizationGrant
     public AuthorizingEntityIdentifier $authorizingEntityIdentifier;
 
     /**
-     * Uprawnienie.
+     * Rodzaj uprawnienia.
      *
      * @var InvoicePermissionType $authorizationScope
      */

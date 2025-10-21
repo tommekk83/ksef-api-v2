@@ -20,6 +20,20 @@ class GetInvoicesListRequest
     public ?GetInvoicesListRequestBody $requestBody = null;
 
     /**
+     * Kolejność sortowania wyników.
+     *
+     * | Wartość | Opis |
+     * | --- | --- |
+     * | Asc | Sortowanie rosnąco. |
+     * | Desc | Sortowanie malejąco. |
+     *
+     *
+     * @var ?SortOrder $sortOrder
+     */
+    #[SpeakeasyMetadata('queryParam:style=form,explode=true,name=sortOrder')]
+    public ?SortOrder $sortOrder = null;
+
+    /**
      * Indeks pierwszej strony wyników (0 = pierwsza strona).
      *
      * @var ?int $pageOffset
@@ -36,14 +50,16 @@ class GetInvoicesListRequest
     public ?int $pageSize = null;
 
     /**
+     * @param  ?SortOrder  $sortOrder
      * @param  ?int  $pageOffset
      * @param  ?int  $pageSize
      * @param  ?GetInvoicesListRequestBody  $requestBody
      * @phpstan-pure
      */
-    public function __construct(?GetInvoicesListRequestBody $requestBody = null, ?int $pageOffset = 0, ?int $pageSize = 10)
+    public function __construct(?GetInvoicesListRequestBody $requestBody = null, ?SortOrder $sortOrder = SortOrder::Asc, ?int $pageOffset = 0, ?int $pageSize = 10)
     {
         $this->requestBody = $requestBody;
+        $this->sortOrder = $sortOrder;
         $this->pageOffset = $pageOffset;
         $this->pageSize = $pageSize;
     }

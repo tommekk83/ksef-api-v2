@@ -137,6 +137,9 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Components;
+use Intermedia\Ksef\Apiv2\Models\Operations;
+use Intermedia\Ksef\Apiv2\Utils;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -144,7 +147,12 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$request = new Operations\ProcessEnrollmentRequest(
+    certificateName: 'Certyfikat-Auth-004',
+    certificateType: Components\KsefCertificateType::Authentication,
+    csr: 'MIIDJjCCAd4CAQAwgbAxIjAgBgNVBAMMGUZpcm1hIEtvd2Fsc2tpIENlcnR5ZmlrYXQxIjAgBgNVBAoMGUZpcm1hIEtvd2Fsc2tpIFNwLiB6IG8uby4xEzARBgNVBGEMCjc3NjI4MTE2OTIxCzAJBgNVBAYTAlBMMRUwEwYDVQQFEwxBQkMxMjM0NTY3ODkxLTArBgNVBC0MJGQ5ZDIyNzI0LTQ2OTYtNDYwYy05ZTVlLWI5ZTNhYWZiMGFmMzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANZC1hJiB4ZBsxGy/a4yvtOUP0HQxDt7EUZrfKO78+cmI7KCO9aW96yr6O0R928/Y9vmymbgh6KvMUTzZZj24uyxar849O1laor5t8Wv63RDx/I4+9Rt7w+QPPofmpenOokJH+Fm+FDQwo2l07o8SppGfaZpvMak+cDSrh+73wfM37fvPImr9p4ckzzxA9q6f4uoqGqcGSDlSwRjfLQKzWZaEklpZBpY4jeCh54uN3+YLsMQYKdcIbW0Jart1UbwMd/wbHfzFhVmPGOAMMpwVEBw6E4A0CTWIiAX3Alqbx4+IkuqC+gEs3ETTec7eOqhxe9V9cywi7WR+Mz6JO6DJcUCAwEAAaAAMD0GCSqGSIb3DQEBCjAwoA0wCwYJYIZIAWUDBAIBoRowGAYJKoZIhvcNAQEIMAsGCWCGSAFlAwQCAaIDAgEgA4IBAQCJhtF2/2E+JmkWitE/BGbm3NU4fIxr1Z+w0UnHsP+F8n9UDwAnuncG1GH5wZFervldEMooegzEDnYaqxnEUnbZ4wxeAHqpbTZjOOfqrk7o0r66+mXUs5NnyD4M3j3ig98GcvhEdbcNH+RsIwi7FaLNXnOE4SLYL9KvW0geriywWjS+5MmA0Gcn1e4vCD6FeEls8EHzkhrWE+rUsoM5zT2a0OPNXG3fScyOqOZe+OdjT4Y7ScRGy711u3v2X9RoTqQUDfCJ3cob/KRcrzvs1TQVazGZPfcIa6an6SigUvZ7XAMHlUTyOeM4AwKqiEqQ0qfe/HhlDylgZSwulb9u0utT',
+    validFrom: Utils\Utils::parseDateTime('2025-08-28T09:22:13.388+00:00'),
+);
 
 $response = $sdk->certificates->processEnrollment(
     request: $request
@@ -339,6 +347,7 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Components;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -346,7 +355,10 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$queryCertificatesRequest = new Components\QueryCertificatesRequest(
+    type: Components\Type::Offline,
+    status: Components\Status::Active,
+);
 
 $response = $sdk->certificates->getList(
     pageSize: 10,

@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class QueryEntityRolesResponse
 {
     /**
-     * Lista ról.
+     * Lista odczytanych ról podmiotu.
      *
      * @var array<EntityRole> $roles
      */

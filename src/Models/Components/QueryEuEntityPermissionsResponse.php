@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class QueryEuEntityPermissionsResponse
 {
     /**
-     * Lista uprawnień.
+     * Lista odczytanych uprawnień.
      *
      * @var array<EuEntityPermission> $permissions
      */

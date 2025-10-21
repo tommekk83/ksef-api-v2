@@ -391,7 +391,7 @@ class SessionsInvoices
      * @return Operations\GetUpoByKsefNumberResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getUpoByKsefNumber(string $referenceNumber, string $ksefNumber, ?Options $options = null): Operations\GetUpoByKsefNumberResponse
+    public function getInvoiceUpoByKsefNumber(string $referenceNumber, string $ksefNumber, ?Options $options = null): Operations\GetUpoByKsefNumberResponse
     {
         $request = new Operations\GetUpoByKsefNumberRequest(
             referenceNumber: $referenceNumber,

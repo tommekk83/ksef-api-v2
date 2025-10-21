@@ -15,16 +15,27 @@ class ExportInvoicesResponse
      * Numer referencyjny operacji.
      *
      * @var string $operationReferenceNumber
+     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('operationReferenceNumber')]
     public string $operationReferenceNumber;
 
     /**
+     * Numer referencyjny operacji eksportu paczki faktur.
+     *
+     * @var string $referenceNumber
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('referenceNumber')]
+    public string $referenceNumber;
+
+    /**
      * @param  string  $operationReferenceNumber
+     * @param  string  $referenceNumber
      * @phpstan-pure
      */
-    public function __construct(string $operationReferenceNumber)
+    public function __construct(string $operationReferenceNumber, string $referenceNumber)
     {
         $this->operationReferenceNumber = $operationReferenceNumber;
+        $this->referenceNumber = $referenceNumber;
     }
 }

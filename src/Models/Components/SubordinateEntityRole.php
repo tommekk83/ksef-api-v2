@@ -25,7 +25,7 @@ class SubordinateEntityRole
     public SubordinateEntityRoleSubordinateEntityIdentifier $subordinateEntityIdentifier;
 
     /**
-     * Powiązanie.
+     * Typ roli - powiązania z podmiotem nadrzędnym.
      *
      * @var SubordinateEntityRoleType $role
      */
@@ -34,7 +34,7 @@ class SubordinateEntityRole
     public SubordinateEntityRoleType $role;
 
     /**
-     * Opis.
+     * Opis powiązania.
      *
      * @var string $description
      */

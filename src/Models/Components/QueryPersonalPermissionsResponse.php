@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class QueryPersonalPermissionsResponse
 {
     /**
-     * Lista uprawnień.
+     * Lista odczytanych uprawnień.
      *
      * @var array<PersonalPermission> $permissions
      */

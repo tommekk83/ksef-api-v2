@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 
 
 /**
- * PersonalPermissionContextIdentifier - Identyfikator kontekstu uprawnienia (dla uprawnień nadanych podmiotom do obsługi faktur).
+ * PersonalPermissionContextIdentifier - Identyfikator kontekstu podmiotu, który nadał uprawnienia do obsługi faktur.
  *
  * | Type | Value |
  * | --- | --- |

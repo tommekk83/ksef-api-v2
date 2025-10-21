@@ -13,4 +13,5 @@ enum PersonPermissionsTargetIdentifierType: string
 {
     case Nip = 'Nip';
     case AllPartners = 'AllPartners';
+    case InternalId = 'InternalId';
 }

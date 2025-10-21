@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 
 
 /**
- * PersonalPermissionAuthorizedIdentifier - Identyfikator podmiotu uprawnionego, jeśli inny niż podmiot uwierzytelnienia.
+ * PersonalPermissionAuthorizedIdentifier - Identyfikator podmiotu uprawnionego, jeżeli jest inny niż identyfikator uwierzytelnionego klienta API.
  *
  * | Type | Value |
  * | --- | --- |

@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class EntityPermission
 {
     /**
-     * Możliwe uprawnienia do nadania.
+     * Rodzaj uprawnienia.
      *
      * @var EntityPermissionType $type
      */

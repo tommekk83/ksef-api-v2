@@ -1,9 +1,10 @@
 # GrantAuthorizationsSubjectIdentifier
 
-Identyfikator podmiotu.
+Identyfikator podmiotu uprawnianego.
 | Type | Value |
 | --- | --- |
 | Nip | 10 cyfrowy numer NIP |
+| PeppolId | Identyfikator dostawcy usług Peppol |
 
 
 ## Fields

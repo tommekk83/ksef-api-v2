@@ -36,7 +36,7 @@ class GrantIndirectlyRequest
     public array $permissions;
 
     /**
-     * Opis nadawanych uprawnień.
+     * Opis uprawnienia
      *
      * @var string $description
      */
@@ -44,12 +44,13 @@ class GrantIndirectlyRequest
     public string $description;
 
     /**
-     * Identyfikator podmiotu, w którego kontekście chcemy pośrednio nadać uprawnienia.
+     * Identyfikator kontekstu klienta.
      *
      * | Type | Value |
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
      * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
+     * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
      *
      * @var ?GrantIndirectlyTargetIdentifier $targetIdentifier
      */

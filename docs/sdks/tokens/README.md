@@ -25,6 +25,8 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Components;
+use Intermedia\Ksef\Apiv2\Models\Operations;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -32,7 +34,13 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$request = new Operations\GenerateTokenRequest(
+    permissions: [
+        Components\TokenPermissionType::InvoiceRead,
+        Components\TokenPermissionType::InvoiceWrite,
+    ],
+    description: 'alongside apropos smoothly that since ouch that',
+);
 
 $response = $sdk->tokens->generate(
     request: $request
@@ -47,7 +55,7 @@ if ($response->generateTokenResponse !== null) {
 
 | Parameter                                                                          | Type                                                                               | Required                                                                           | Description                                                                        |
 | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `$request`                                                                         | [Components\GenerateTokenRequest](../../Models/Components/GenerateTokenRequest.md) | :heavy_check_mark:                                                                 | The request object to use for the request.                                         |
+| `$request`                                                                         | [Operations\GenerateTokenRequest](../../Models/Operations/GenerateTokenRequest.md) | :heavy_check_mark:                                                                 | The request object to use for the request.                                         |
 
 ### Response
 
@@ -73,6 +81,7 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Operations;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -80,7 +89,7 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$request = new Operations\GetTokenListRequest();
 
 $response = $sdk->tokens->getList(
     request: $request

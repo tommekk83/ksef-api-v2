@@ -48,7 +48,26 @@ class Invoices
      * Eksport paczki faktur
      *
      * Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
-     * Wymagane jest przekazanie informacji o szyfrowaniu w polu `Encryption`, które służą do zabezpieczenia przygotowanej paczki z fakturami.
+     * Wymagane jest przekazanie informacji o szyfrowaniu w polu <b>Encryption</b>, które służą do zabezpieczenia przygotowanej paczki z fakturami.
+     *
+     * System pobiera faktury rosnąco według daty określonej w filtrze (Invoicing, Issue, PermanentStorage) i dodaje je do paczki aż do osiągnięcia jednego z poniższych limitów:
+     * * Limit liczby faktur: 10 000 sztuk
+     * * Limit rozmiaru danych(skompresowanych): 1GB
+     *
+     * Paczka eksportu może zawierać dodatkowy plik z metadanymi faktur w formacie JSON (`_metadata.json`). Zawartość pliku to
+     * obiekt z tablicą <b>invoices</b>, gdzie każdy element jest obiektem typu <b>InvoiceMetadata</b>
+     * (taki jak zwracany przez endpoint `POST /invoices/query/metadata`).
+     *
+     * <b>Plik z metadanymi(_metadata.json) nie jest wliczany do limitów algorytmu budowania paczki</b>. 
+     *
+     * <b>Tryb preview (włączany nagłówkiem):</b> aby dołączyć plik metadanych w wersji zapoznawczej,
+     * dodaj do nagłówka żądania: `X-KSeF-Feature: include-metadata`.
+     * W tym trybie do paczki zostanie dodany plik o nazwie `_metadata.json`.
+     *
+     * <b>Domyślne zachowanie od 2025-10-27:</b> od tego dnia paczka eksportu <u>zawsze</u> będzie zawierać plik
+     * `_metadata.json` z metadanymi, a nagłówek `X-KSeF-Feature` nie będzie wymagany.
+     *
+     * `Do realizacji pobierania przyrostowego należy stosować filtrowanie po dacie PermanentStorage`.
      *
      * Wymagane uprawnienia: `InvoiceRead`.
      *
@@ -202,20 +221,25 @@ class Invoices
     /**
      * Pobranie statusu eksportu paczki faktur
      *
+     * Wyniki sortowane są rosnąco według typu daty przekazanej w <b>DateRange</b> przy inicjalizacji. 
+     *
+     * Paczka faktur jest dzielona na części o maksymalnym rozmiarze 50 MB. Każda część jest zaszyfrowana algorytmem AES-256-CBC z dopełnieniem PKCS#7, przy użyciu klucza symetrycznego przekazanego podczas inicjowania eksportu. 
+     *
+     * W przypadku ucięcia wyniku eksportu z powodu przekroczenia limitów, zwracana jest flaga <b>IsTruncated = true</b> oraz odpowiednia data, którą należy wykorzystać do wykonania kolejnego eksportu, aż do momentu, gdy flaga <b>IsTruncated = false</b>.
      *
      * Wymagane uprawnienia: `InvoiceRead`.
      *
-     * @param  string  $operationReferenceNumber
+     * @param  string  $referenceNumber
      * @return Operations\GetExportStatusResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getExportStatus(string $operationReferenceNumber, ?Options $options = null): Operations\GetExportStatusResponse
+    public function getExportStatus(string $referenceNumber, ?Options $options = null): Operations\GetExportStatusResponse
     {
         $request = new Operations\GetExportStatusRequest(
-            operationReferenceNumber: $operationReferenceNumber,
+            referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/exports/{operationReferenceNumber}', Operations\GetExportStatusRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/exports/{referenceNumber}', Operations\GetExportStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -279,19 +303,30 @@ class Invoices
     /**
      * Pobranie listy metadanych faktur
      *
-     * Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania. Wyniki sortowane są rosnąco według typu daty przekazanej w `DateRange`. Do realizacji pobierania przyrostowego należy stosować typ `PermanentStorage`. Maksymalnie można pobrać faktury w zakresie do 10 000 rekordów
+     * Zwraca metadane faktur spełniających filtry.
+     *
+     * Limit techniczny: ≤ 10 000 rekordów na zestaw filtrów, po jego osiągnięciu <b>isTruncated = true</b> i należy ponownie ustawić <b>dateRange</b>, używając ostatniej daty z wyników (tj. ustawić from/to - w zależności od kierunku sortowania, od daty ostatniego zwróconego rekordu) oraz wyzerować <b>pageOffset</b>.
+     *
+     * `Do scenariusza przyrostowego należy używać daty PermanentStorage oraz kolejność sortowania Asc`.
+     *
+     * <b>Scenariusz pobierania przyrostowego (skrót):</b>
+     * * Gdy <b>hasMore = false</b>, należy zakończyć,
+     * * Gdy <b>hasMore = true</b> i <b>isTruncated = false</b>, należy zwiększyć <b>pageOffset</b>,
+     * * Gdy <b>hasMore = true</b> i <b>isTruncated = true</b>, należy zawęzić <b>dateRange</b> (ustawić from od daty ostatniego rekordu), wyzerować <b>pageOffset</b> i kontynuować
      *
      * Wymagane uprawnienia: `InvoiceRead`.
      *
      * @param  ?Operations\GetInvoicesListRequestBody  $requestBody
+     * @param  ?Operations\SortOrder  $sortOrder
      * @param  ?int  $pageOffset
      * @param  ?int  $pageSize
      * @return Operations\GetInvoicesListResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function getList(?Operations\GetInvoicesListRequestBody $requestBody = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetInvoicesListResponse
+    public function getList(?Operations\GetInvoicesListRequestBody $requestBody = null, ?Operations\SortOrder $sortOrder = null, ?int $pageOffset = null, ?int $pageSize = null, ?Options $options = null): Operations\GetInvoicesListResponse
     {
         $request = new Operations\GetInvoicesListRequest(
+            sortOrder: $sortOrder,
             pageOffset: $pageOffset,
             pageSize: $pageSize,
             requestBody: $requestBody,

@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
 /**
- * GrantRightsContextIdentifier - Identyfikator zlożony z podmiotu polskiego i podmiotu unijnego.
+ * GrantRightsContextIdentifier - Identyfikator kontekstu złożonego.
  *
  * | Type | Value |
  * | --- | --- |

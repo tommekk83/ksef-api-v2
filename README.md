@@ -12,7 +12,7 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
 <!-- Start Summary [summary] -->
 ## Summary
 
-KSeF API TE: **Wersja API:** 2.0.0 (build 2.0.0-rc5.2-te-20251007.1+e79581180c86686f01304d52388f584305f14cc2)<br>
+KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc5.4-tr-20251015.4+8acd97600a19f8ffde92e22c6a7b401787af5b91)<br>
 **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
 **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
 **Rozszerzona dokumentacja API:** [ksef-docs](https://github.com/CIRFMF/ksef-docs/tree/main)
@@ -172,10 +172,6 @@ if ($response->authenticationListResponse !== null) {
 
 * [getContext](docs/sdks/limits/README.md#getcontext) - Pobranie limitów dla bieżącego kontekstu
 * [getSubject](docs/sdks/limits/README.md#getsubject) - Pobranie limitów dla bieżącego podmiotu
-* [updateContextSession](docs/sdks/limits/README.md#updatecontextsession) - Zmiana limitów sesji dla bieżącego kontekstu
-* [resetContextSession](docs/sdks/limits/README.md#resetcontextsession) - Przywrócenie domyślnych wartości limitów sesji dla bieżącego kontekstu
-* [updateSubjectCertificate](docs/sdks/limits/README.md#updatesubjectcertificate) - Zmiana limitów certyfikatów dla bieżącego podmiotu
-* [resetSubjectCertificate](docs/sdks/limits/README.md#resetsubjectcertificate) - Przywrócenie domyślnych wartości limitów certyfikatów dla bieżącego podmiotu
 
 ### [peppol](docs/sdks/peppol/README.md)
 
@@ -221,20 +217,9 @@ if ($response->authenticationListResponse !== null) {
 * [getList](docs/sdks/sessionsinvoices/README.md#getlist) - Pobranie faktur sesji
 * [getStatus](docs/sdks/sessionsinvoices/README.md#getstatus) - Pobranie statusu faktury z sesji
 * [getFailed](docs/sdks/sessionsinvoices/README.md#getfailed) - Pobranie niepoprawnie przetworzonych faktur sesji
-* [getUpoByKsefNumber](docs/sdks/sessionsinvoices/README.md#getupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
+* [getInvoiceUpoByKsefNumber](docs/sdks/sessionsinvoices/README.md#getinvoiceupobyksefnumber) - Pobranie UPO faktury z sesji na podstawie numeru KSeF
 * [getUpo](docs/sdks/sessionsinvoices/README.md#getupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
 * [sendOnline](docs/sdks/sessionsinvoices/README.md#sendonline) - Wysłanie faktury
-
-### [testData](docs/sdks/testdata/README.md)
-
-* [createSubject](docs/sdks/testdata/README.md#createsubject) - Utworzenie podmiotu
-* [removeSubject](docs/sdks/testdata/README.md#removesubject) - Usunięcie podmiotu
-* [createPerson](docs/sdks/testdata/README.md#createperson) - Utworzenie osoby fizycznej
-* [removePerson](docs/sdks/testdata/README.md#removeperson) - Usunięcie osoby fizycznej
-* [assignPermissions](docs/sdks/testdata/README.md#assignpermissions) - Nadanie uprawnień testowemu podmiotowi/osobie fizycznej
-* [revokePermissions](docs/sdks/testdata/README.md#revokepermissions) - Odebranie uprawnień testowemu podmiotowi/osobie fizycznej
-* [addAttachment](docs/sdks/testdata/README.md#addattachment) - Umożliwienie wysyłania faktur z załącznikiem
-* [revokeAttachment](docs/sdks/testdata/README.md#revokeattachment) - Odebranie możliwości wysyłania faktur z załącznikiem
 
 ### [tokens](docs/sdks/tokens/README.md)
 

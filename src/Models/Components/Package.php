@@ -21,7 +21,7 @@ class Package
     public int $invoiceCount;
 
     /**
-     * Rozmiar paczki w bajtach. Maksymalny rozmiar paczki to 1 GiB (1 073 741 824 bajtów).
+     * Rozmiar paczki w bajtach.
      *
      * @var int $size
      */
@@ -29,7 +29,7 @@ class Package
     public int $size;
 
     /**
-     * Lista dostępnych części paczki do pobrania. Każda część jest zaszyfrowana algorytmem AES-256-CBC z dopełnieniem PKCS#7, przy użyciu klucza symetrycznego przekazanego podczas inicjowania eksportu. Wyniki sortowane są rosnąco według typu daty przekazanej w `DateRange` przy inicjalizacji.
+     * Lista dostępnych części paczki do pobrania.
      *
      * @var array<InvoicePackagePart> $parts
      */

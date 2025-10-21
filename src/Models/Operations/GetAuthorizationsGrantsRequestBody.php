@@ -55,7 +55,7 @@ class GetAuthorizationsGrantsRequestBody
     public ?GetAuthorizationsGrantsAuthorizedIdentifier $authorizedIdentifier = null;
 
     /**
-     * Możliwe uprawnienia do filtrowania.
+     * Lista rodzajów wyszukiwanych uprawnień.
      *
      * @var ?array<Components\InvoicePermissionType> $permissionTypes
      */

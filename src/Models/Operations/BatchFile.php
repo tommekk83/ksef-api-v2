@@ -13,7 +13,7 @@ use Intermedia\Ksef\Apiv2\Models\Components;
 class BatchFile
 {
     /**
-     * Rozmiar pliku paczki w bajtach. Maksymalny rozmiar paczki to 5GiB (5 368 709 120 bajtów).
+     * Rozmiar pliku paczki w bajtach. Maksymalny rozmiar paczki to 5GB.
      *
      * @var int $fileSize
      */
@@ -29,7 +29,7 @@ class BatchFile
     public string $fileHash;
 
     /**
-     * Informacje o częściach pliku paczki. Maksymalna liczba części to 50.
+     * Informacje o częściach pliku paczki. Maksymalna liczba części to 50. Maksymalny dozwolony rozmiar części przed zaszyfrowaniem to 100MB.
      *
      * @var array<Components\BatchFilePartInfo> $fileParts
      */

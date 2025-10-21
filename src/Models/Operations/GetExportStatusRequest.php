@@ -12,19 +12,19 @@ use Intermedia\Ksef\Apiv2\Utils\SpeakeasyMetadata;
 class GetExportStatusRequest
 {
     /**
-     * Numer referencyjny operacji.
+     * Numer referencyjny operacji eksportu paczki faktur.
      *
-     * @var string $operationReferenceNumber
+     * @var string $referenceNumber
      */
-    #[SpeakeasyMetadata('pathParam:style=simple,explode=false,name=operationReferenceNumber')]
-    public string $operationReferenceNumber;
+    #[SpeakeasyMetadata('pathParam:style=simple,explode=false,name=referenceNumber')]
+    public string $referenceNumber;
 
     /**
-     * @param  string  $operationReferenceNumber
+     * @param  string  $referenceNumber
      * @phpstan-pure
      */
-    public function __construct(string $operationReferenceNumber)
+    public function __construct(string $referenceNumber)
     {
-        $this->operationReferenceNumber = $operationReferenceNumber;
+        $this->referenceNumber = $referenceNumber;
     }
 }

@@ -4,7 +4,7 @@ Stan uprawnienia.
 | Type | Value |
 | --- | --- |
 | Active | Uprawnienia aktywne |
-| Inactive | Uprawnienia nieaktywne, nadane w sposób pośredni |
+| Inactive | Uprawnienia nieaktywne |
 
 
 ## Values

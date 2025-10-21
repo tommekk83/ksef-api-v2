@@ -7,8 +7,8 @@ Obsługiwane schematy:
 | --- | --- | --- |
 | FA (2) | 1-0E | FA |
 | FA (3) | 1-0E | FA |
-| FA_PEF (3) | 2-1 | FA_PEF |
-| FA_KOR_PEF (3) | 2-1 | FA_PEF |
+| PEF (3) | 2-1 | PEF |
+| PEF_KOR (3) | 2-1 | PEF |
 
 
 

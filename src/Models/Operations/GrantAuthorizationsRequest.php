@@ -12,11 +12,12 @@ use Intermedia\Ksef\Apiv2\Models\Components;
 class GrantAuthorizationsRequest
 {
     /**
-     * Identyfikator podmiotu.
+     * Identyfikator podmiotu uprawnianego.
      *
      * | Type | Value |
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
+     * | PeppolId | Identyfikator dostawcy usług Peppol |
      *
      * @var GrantAuthorizationsSubjectIdentifier $subjectIdentifier
      */
@@ -25,7 +26,7 @@ class GrantAuthorizationsRequest
     public GrantAuthorizationsSubjectIdentifier $subjectIdentifier;
 
     /**
-     * Nadawane uprawnienie o charakterze upoważnienia.
+     * Rodzaj uprawnienia.
      *
      * @var Components\EntityAuthorizationPermissionType $permission
      */
@@ -34,7 +35,7 @@ class GrantAuthorizationsRequest
     public Components\EntityAuthorizationPermissionType $permission;
 
     /**
-     * Opis nadawanego uprawnienia.
+     * Opis uprawnienia
      *
      * @var string $description
      */

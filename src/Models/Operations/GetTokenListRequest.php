@@ -61,20 +61,20 @@ class GetTokenListRequest
     public ?Components\TokenAuthorIdentifierType $authorIdentifierType = null;
 
     /**
-     * Rozmiar strony wyników.
-     *
-     * @var ?int $pageSize
-     */
-    #[SpeakeasyMetadata('queryParam:style=form,explode=true,name=pageSize')]
-    public ?int $pageSize = null;
-
-    /**
      * Token służący do pobrania kolejnej strony wyników.
      *
      * @var ?string $xContinuationToken
      */
     #[SpeakeasyMetadata('header:style=simple,explode=false,name=x-continuation-token')]
     public ?string $xContinuationToken = null;
+
+    /**
+     * Rozmiar strony wyników.
+     *
+     * @var ?int $pageSize
+     */
+    #[SpeakeasyMetadata('queryParam:style=form,explode=true,name=pageSize')]
+    public ?int $pageSize = null;
 
     /**
      * @param  ?array<Components\AuthenticationTokenStatus>  $status
@@ -85,13 +85,13 @@ class GetTokenListRequest
      * @param  ?string  $xContinuationToken
      * @phpstan-pure
      */
-    public function __construct(?array $status = null, ?string $description = null, ?string $authorIdentifier = null, ?Components\TokenAuthorIdentifierType $authorIdentifierType = null, ?int $pageSize = null, ?string $xContinuationToken = null)
+    public function __construct(?array $status = null, ?string $description = null, ?string $authorIdentifier = null, ?Components\TokenAuthorIdentifierType $authorIdentifierType = null, ?string $xContinuationToken = null, ?int $pageSize = 10)
     {
         $this->status = $status;
         $this->description = $description;
         $this->authorIdentifier = $authorIdentifier;
         $this->authorIdentifierType = $authorIdentifierType;
-        $this->pageSize = $pageSize;
         $this->xContinuationToken = $xContinuationToken;
+        $this->pageSize = $pageSize;
     }
 }

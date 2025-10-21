@@ -12,7 +12,7 @@ use Intermedia\Ksef\Apiv2\Models\Components;
 class GrantToEuEntitiesRequest
 {
     /**
-     * Identyfikator podmiotu.
+     * Identyfikator podmiotu uprawnianego.
      *
      * | Type | Value |
      * | --- | --- |
@@ -34,7 +34,7 @@ class GrantToEuEntitiesRequest
     public array $permissions;
 
     /**
-     * Opis nadawanych uprawnień.
+     * Opis uprawnienia
      *
      * @var string $description
      */

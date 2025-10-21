@@ -10,11 +10,12 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
 /**
- * GrantAuthorizationsSubjectIdentifier - Identyfikator podmiotu.
+ * GrantAuthorizationsSubjectIdentifier - Identyfikator podmiotu uprawnianego.
  *
  * | Type | Value |
  * | --- | --- |
  * | Nip | 10 cyfrowy numer NIP |
+ * | PeppolId | Identyfikator dostawcy usług Peppol |
  */
 class GrantAuthorizationsSubjectIdentifier
 {

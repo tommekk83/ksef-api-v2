@@ -16,8 +16,8 @@ class GetPersonGrantsRequestBody
      *
      * | Type | Value |
      * | --- | --- |
-     * | PermissionsInCurrentContext | Uprawnienia obowiązujące w aktualnym kontekście |
-     * | PermissionsGrantedInCurrentContext | Uprawnienia nadane w aktualnym kontekście |
+     * | PermissionsInCurrentContext | Lista uprawnień obowiązujących w bieżącym kontekście |
+     * | PermissionsGrantedInCurrentContext | Lista uprawmoeń nadanych w bieżącym kontekście |
      *
      * @var Components\PersonPermissionsQueryType $queryType
      */
@@ -74,12 +74,13 @@ class GetPersonGrantsRequestBody
     public ?GetPersonGrantsContextIdentifier $contextIdentifier = null;
 
     /**
-     * Identyfikator podmiotu docelowego (dla uprawnień pośrednich).
+     * Identyfikator podmiotu docelowego dla uprawnień nadanych pośrednio.
      *
      * | Type | Value |
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
      * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
+     * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
      *
      * @var ?GetPersonGrantsTargetIdentifier $targetIdentifier
      */
@@ -89,7 +90,7 @@ class GetPersonGrantsRequestBody
     public ?GetPersonGrantsTargetIdentifier $targetIdentifier = null;
 
     /**
-     * Możliwe uprawnienia do filtrowania.
+     * Lista rodzajów wyszukiwanych uprawnień.
      *
      * @var ?array<Components\PersonPermissionType> $permissionTypes
      */

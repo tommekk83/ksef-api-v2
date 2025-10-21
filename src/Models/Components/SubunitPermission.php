@@ -64,7 +64,7 @@ class SubunitPermission
     public SubunitPermissionAuthorIdentifier $authorIdentifier;
 
     /**
-     * Uprawnienie.
+     * Rodzaj uprawnienia.
      *
      * @var SubunitPermissionScope $permissionScope
      */

@@ -10,12 +10,13 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
 /**
- * GrantIndirectlyTargetIdentifier - Identyfikator podmiotu, w którego kontekście chcemy pośrednio nadać uprawnienia.
+ * GrantIndirectlyTargetIdentifier - Identyfikator kontekstu klienta.
  *
  * | Type | Value |
  * | --- | --- |
  * | Nip | 10 cyfrowy numer NIP |
  * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
+ * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
  */
 class GrantIndirectlyTargetIdentifier
 {

@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class EntityRole
 {
     /**
-     * Rola.
+     * Typ roli - powiązania z podmiotem nadrzędnym.
      *
      * @var EntityRoleType $role
      */
@@ -21,7 +21,7 @@ class EntityRole
     public EntityRoleType $role;
 
     /**
-     * Opis.
+     * Opis roli.
      *
      * @var string $description
      */

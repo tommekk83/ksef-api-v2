@@ -26,7 +26,22 @@
 
 ## grantToPersons
 
-Rozpoczyna asynchroniczną operację nadawania osobom fizycznym uprawnień do pracy w KSeF.
+Metoda pozwala na nadanie osobie wskazanej w żądaniu uprawnień do pracy w KSeF  
+w kontekście bieżącym.
+
+W żądaniu określane są nadawane uprawnienia ze zbioru:  
+- **InvoiceWrite** – wystawianie faktur,  
+- **InvoiceRead** – przeglądanie faktur,  
+- **CredentialsManage** – zarządzanie uprawnieniami,  
+- **CredentialsRead** – przeglądanie uprawnień,  
+- **Introspection** – przeglądanie historii sesji i generowanie UPO,  
+- **SubunitManage** – zarządzanie jednostkami podrzędnymi,  
+- **EnforcementOperations** – wykonywanie operacji egzekucyjnych.
+
+Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.  
+Uprawnienie **EnforcementOperations** może być nadane wyłącznie wtedy,  
+gdy podmiot kontekstu ma rolę **EnforcementAuthority** (organ egzekucyjny)  
+lub **CourtBailiff** (komornik sądowy).
 
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadawanie-uprawnie%C5%84-osobom-fizycznym-do-pracy-w-ksef)
@@ -59,8 +74,10 @@ $request = new Operations\GrantToPersonsRequest(
     permissions: [
         Components\PersonPermissionType::InvoiceRead,
         Components\PersonPermissionType::InvoiceWrite,
+        Components\PersonPermissionType::Introspection,
+        Components\PersonPermissionType::CredentialsRead,
     ],
-    description: 'praca w kontekście 5265877635; uprawniony PESEL: 15062788702, Adam Abacki',
+    description: 'Opis uprawnienia',
 );
 
 $response = $sdk->permissions->grantToPersons(
@@ -91,7 +108,13 @@ if ($response->permissionsOperationResponse !== null) {
 
 ## grantToEntities
 
-Rozpoczyna asynchroniczną operację nadawania podmiotom uprawnień do obsługi faktur.
+Metoda pozwala na nadanie podmiotowi wskazanemu w żądaniu uprawnień do obsługi faktur podmiotu kontekstu.  
+W żądaniu określane są nadawane uprawnienia ze zbioru:  
+- **InvoiceWrite** – wystawianie faktur  
+- **InvoiceRead** – przeglądanie faktur  
+
+Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.  
+Dla każdego uprawnienia może być ustawiona flaga **canDelegate**, mówiąca o możliwości jego dalszego przekazywania poprzez nadawanie w sposób pośredni.
 
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-podmiotom-uprawnie%C5%84-do-obs%C5%82ugi-faktur)
@@ -131,7 +154,7 @@ $request = new Operations\GrantToEntitiesRequest(
             canDelegate: true,
         ),
     ],
-    description: 'praca w kontekście 5265877635; uprawniony NIP: 7762811692, Firma "FRM" Sp. z o.o.',
+    description: 'Opis uprawnienia',
 );
 
 $response = $sdk->permissions->grantToEntities(
@@ -162,7 +185,7 @@ if ($response->permissionsOperationResponse !== null) {
 
 ## grantAuthorizations
 
-Rozpoczyna asynchroniczną operację nadawania uprawnień podmiotowych.
+Metoda pozwala na nadanie jednego z uprawnień podmiotowych do obsługi podmiotu kontekstu  podmiotowi wskazanemu w żądaniu.
 
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-podmiotowych)
@@ -193,7 +216,7 @@ $request = new Operations\GrantAuthorizationsRequest(
         value: '7762811692',
     ),
     permission: Components\EntityAuthorizationPermissionType::SelfInvoicing,
-    description: 'praca w kontekście 5265877635; uprawniony NIP: 7762811692, Firma "FRM" Sp. z o.o.',
+    description: 'działanie w imieniu 3393244202 w kontekście 7762811692, Firma sp. z o.o.',
 );
 
 $response = $sdk->permissions->grantAuthorizations(
@@ -224,7 +247,18 @@ if ($response->permissionsOperationResponse !== null) {
 
 ## grantIndirectly
 
-Rozpoczyna asynchroniczną operację nadawania uprawnień w sposób pośredni.
+Metoda pozwala na nadanie w sposób pośredni osobie wskazanej w żądaniu uprawnień do obsługi faktur innego podmiotu – klienta.  
+Może to być jedna z możliwości:  
+- nadanie uprawnień generalnych – do obsługi wszystkich klientów  
+- nadanie uprawnień selektywnych – do obsługi wskazanego klienta  
+
+Uprawnienie selektywne może być nadane wyłącznie wtedy, gdy klient nadał wcześniej podmiotowi bieżącego kontekstu dowolne uprawnienie z prawem do jego dalszego przekazywania (patrz [POST /api/v2/permissions/entities/grants](/docs/v2/index.html#tag/Nadawanie-uprawnien/paths/~1api~1v2~1permissions~1entities~1grants/post)).  
+
+W żądaniu określane są nadawane uprawnienia ze zbioru:  
+- **InvoiceWrite** – wystawianie faktur  
+- **InvoiceRead** – przeglądanie faktur  
+
+Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.
 
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-w-spos%C3%B3b-po%C5%9Bredni)
@@ -252,16 +286,17 @@ $sdk = Apiv2\Client::builder()
 $request = new Operations\GrantIndirectlyRequest(
     subjectIdentifier: new Operations\GrantIndirectlySubjectIdentifier(
         type: Components\IndirectPermissionsSubjectIdentifierType::Pesel,
-        value: '15062788702',
+        value: '22271569167',
     ),
     targetIdentifier: new Operations\GrantIndirectlyTargetIdentifier(
-        type: Components\IndirectPermissionsTargetIdentifierType::AllPartners,
+        type: Components\IndirectPermissionsTargetIdentifierType::Nip,
+        value: '5687926712',
     ),
     permissions: [
         Components\IndirectPermissionType::InvoiceWrite,
         Components\IndirectPermissionType::InvoiceRead,
     ],
-    description: 'praca w kontekście 5265877635; uprawniony PESEL: 15062788702, Adam Abacki',
+    description: 'praca dla klienta 5687926712; uprawniony PESEL: 22271569167, Adam Abacki; pośrednik 3936518395',
 );
 
 $response = $sdk->permissions->grantIndirectly(
@@ -292,7 +327,19 @@ if ($response->permissionsOperationResponse !== null) {
 
 ## grantToSubunits
 
-Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu podrzędnego.
+Metoda pozwala na nadanie wskazanemu w żądaniu podmiotowi lub osobie fizycznej uprawnień administratora w kontekście:  
+- wskazanego NIP podmiotu podrzędnego – wyłącznie jeżeli podmiot bieżącego kontekstu logowania ma rolę podmiotu nadrzędnego:
+  - **LocalGovernmentUnit** 
+  - **VatGroupUnit**  
+- wskazanego lub utworzonego identyfikatora wewnętrznego  
+
+Wraz z utworzeniem administratora jednostki podrzędnej tworzony jest identyfikator wewnętrzny składający się z numeru NIP podmiotu kontekstu logowania oraz 5 cyfr unikalnie identyfikujących jednostkę wewnętrzną.  
+W żądaniu podaje się również nazwę tej jednostki.  
+
+Uprawnienia administratora jednostki podrzędnej obejmują:  
+- **CredentialsManage** – zarządzanie uprawnieniami  
+
+Metoda automatycznie nadaje powyższe uprawnienie, bez konieczności podawania go w żądaniu.
 
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-podrz%C4%99dnego)
@@ -324,10 +371,10 @@ $request = new Operations\GrantToSubunitsRequest(
     ),
     contextIdentifier: new Operations\GrantToSubunitsContextIdentifier(
         type: Components\SubunitPermissionsContextIdentifierType::InternalId,
-        value: '7762811692-11111',
+        value: '7762811692-12345',
     ),
-    description: 'praca w kontekście 7762811692-11111; uprawniony PESEL: 15062788702, Adam Abacki',
-    subunitName: 'Nazwa jednostki podrzędnej',
+    description: 'Opis uprawnienia',
+    subunitName: 'Jednostka 014',
 );
 
 $response = $sdk->permissions->grantToSubunits(
@@ -358,7 +405,21 @@ if ($response->permissionsOperationResponse !== null) {
 
 ## grantRights
 
-Rozpoczyna asynchroniczną operację nadawania uprawnień administratora podmiotu unijnego.
+Metoda pozwala na nadanie wskazanemu w żądaniu podmiotowi lub osobie fizycznej uprawnień administratora w kontekście złożonym z identyfikatora NIP podmiotu kontekstu bieżącego oraz numeru VAT UE podmiotu unijnego wskazanego w żądaniu.  
+Wraz z utworzeniem administratora podmiotu unijnego tworzony jest kontekst złożony składający się z numeru NIP podmiotu kontekstu logowania oraz wskazanego numeru identyfikacyjnego VAT UE podmiotu unijnego.  
+W żądaniu podaje się również nazwę i adres podmiotu unijnego.  
+
+Jedynym sposobem identyfikacji uprawnianego jest odcisk palca certyfikatu kwalifikowanego:  
+- certyfikat podpisu elektronicznego dla osób fizycznych  
+- certyfikat pieczęci elektronicznej dla podmiotów  
+
+Uprawnienia administratora podmiotu unijnego obejmują:  
+- **VatEuManage** – zarządzanie uprawnieniami w ramach podmiotu unijnego  
+- **InvoiceWrite** – wystawianie faktur  
+- **InvoiceRead** – przeglądanie faktur  
+- **Introspection** – przeglądanie historii sesji  
+
+Metoda automatycznie nadaje wszystkie powyższe uprawnienia, bez konieczności ich wskazywania w żądaniu.
 
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-unijnego)
@@ -392,8 +453,8 @@ $request = new Operations\GrantRightsRequest(
         type: Components\EuEntityAdministrationPermissionsContextIdentifierType::NipVatUe,
         value: '7762811692-DE123456789012',
     ),
-    description: 'praca w kontekście 7762811692-DE123456789012; uprawniony FP: CEB3643BAC2C111ADDE971BDA5A80163441867D65389FC0BC0DFF8B4C1CD4E59, Firma "FRM" Sp. z o.o.',
-    euEntityName: 'Nazwa podmiotu unijnego',
+    description: 'Opis uprawnienia',
+    euEntityName: 'Firma G.m.b.H.',
 );
 
 $response = $sdk->permissions->grantRights(
@@ -424,7 +485,17 @@ if ($response->permissionsOperationResponse !== null) {
 
 ## grantToEuEntities
 
-Rozpoczyna asynchroniczną operację nadawania uprawnień reprezentanta podmiotu unijnego.
+Metoda pozwala na nadanie wskazanemu w żądaniu podmiotowi lub osobie fizycznej uprawnień do wystawiania i/lub przeglądania faktur w kontekście złożonym kontekstu bieżącego.  
+
+Jedynym sposobem identyfikacji uprawnianego jest odcisk palca certyfikatu kwalifikowanego:  
+- certyfikat podpisu elektronicznego dla osób fizycznych  
+- certyfikat pieczęci elektronicznej dla podmiotów  
+
+W żądaniu określane są nadawane uprawnienia ze zbioru:  
+- **InvoiceWrite** – wystawianie faktur  
+- **InvoiceRead** – przeglądanie faktur  
+
+Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.
 
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-reprezentanta-podmiotu-unijnego)
@@ -458,7 +529,7 @@ $request = new Operations\GrantToEuEntitiesRequest(
         Components\EuEntityPermissionType::InvoiceRead,
         Components\EuEntityPermissionType::InvoiceWrite,
     ],
-    description: 'praca w kontekście 5194084033-IT932928602745; uprawniony FP: CEB3643BAC2C111ADDE971BDA5A80163441867D65389FC0BC0DFF8B4C1CD4E59, Hans Fisher; 10.02.1990; paszport AT: AP759478',
+    description: 'Opis uprawnienia',
 );
 
 $response = $sdk->permissions->grantToEuEntities(
@@ -489,15 +560,9 @@ if ($response->permissionsOperationResponse !== null) {
 
 ## revoke
 
-Rozpoczyna asynchroniczną operacje odbierania uprawnienia o podanym identyfikatorze.
-
-Ta metoda służy do odbierania uprawnień takich jak:
-- nadanych nadanych osobom fizycznym lub podmiotom do pracy w KSeF
-- nadanych podmiotom do obsługi faktur
-- nadanych w sposób pośredni
-- administratorów jednostek i podmiotów podrzędnych
-- administratorów podmiotów unijnych uprawnionych do samofakturowania
-- reprezentantów podmiotów unijnych
+Metoda pozwala na odebranie uprawnienia o wskazanym identyfikatorze.  
+Wymagane jest wcześniejsze odczytanie uprawnień w celu uzyskania  
+identyfikatora uprawnienia, które ma zostać odebrane.
 
 > Więcej informacji:
 > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84)
@@ -550,8 +615,9 @@ if ($response->permissionsOperationResponse !== null) {
 
 ## revokeAuthorizations
 
-Rozpoczyna asynchroniczną operacje odbierania uprawnienia o podanym identyfikatorze.
-Ta metoda służy do odbierania uprawnień podmiotowych.
+Metoda pozwala na odebranie uprawnienia podmiotowego o wskazanym identyfikatorze.  
+Wymagane jest wcześniejsze odczytanie uprawnień w celu uzyskania  
+identyfikatora uprawnienia, które ma zostać odebrane.
 
 > Więcej informacji:
 > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84-podmiotowych)
@@ -608,7 +674,7 @@ Zwraca status operacji asynchronicznej związanej z nadaniem lub odebraniem upra
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getOperationStatus" method="get" path="/api/v2/permissions/operations/{operationReferenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getOperationStatus" method="get" path="/api/v2/permissions/operations/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -625,7 +691,7 @@ $sdk = Apiv2\Client::builder()
 
 
 $response = $sdk->permissions->getOperationStatus(
-    operationReferenceNumber: '<value>'
+    referenceNumber: '<value>'
 );
 
 if ($response->permissionsOperationStatusResponse !== null) {
@@ -637,7 +703,7 @@ if ($response->permissionsOperationStatusResponse !== null) {
 
 | Parameter                   | Type                        | Required                    | Description                 |
 | --------------------------- | --------------------------- | --------------------------- | --------------------------- |
-| `operationReferenceNumber`  | *string*                    | :heavy_check_mark:          | Numer referencyjny operacji |
+| `referenceNumber`           | *string*                    | :heavy_check_mark:          | Numer referencyjny operacji |
 
 ### Response
 
@@ -696,10 +762,38 @@ if ($response->checkAttachmentPermissionStatusResponse !== null) {
 
 ## getPersonalGrants
 
-Zwraca listę uprawnień przysługujących uwierzytelnionemu podmiotowi.
+ Metoda pozwala na odczytanie własnych uprawnień uwierzytelnionego klienta API w bieżącym kontekście logowania.  
 
-> Więcej informacji:
-> - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-w%C5%82asnych-uprawnie%C5%84)
+ W odpowiedzi przekazywane są następujące uprawnienia:  
+ - nadane w sposób bezpośredni w bieżącym kontekście  
+ - nadane przez podmiot nadrzędny  
+ - nadane w sposób pośredni, jeżeli podmiot kontekstu logowania jest w uprawnieniu pośrednikiem lub podmiotem docelowym  
+ - nadane podmiotowi do obsługi faktur przez inny podmiot, jeśli podmiot uwierzytelniony ma w bieżącym kontekście uprawnienia właścicielskie  
+
+ Uprawnienia zwracane przez operację obejmują:  
+ - **CredentialsManage** – zarządzanie uprawnieniami  
+ - **CredentialsRead** – przeglądanie uprawnień  
+ - **InvoiceWrite** – wystawianie faktur  
+ - **InvoiceRead** – przeglądanie faktur  
+ - **Introspection** – przeglądanie historii sesji  
+ - **SubunitManage** – zarządzanie podmiotami podrzędnymi  
+ - **EnforcementOperations** – wykonywanie operacji egzekucyjnych  
+ - **VatEuManage** – zarządzanie uprawnieniami w ramach podmiotu unijnego  
+
+ Odpowiedź może być filtrowana na podstawie następujących parametrów:  
+ - **contextIdentifier** – identyfikator podmiotu, który nadał uprawnienie do obsługi faktur  
+ - **targetIdentifier** – identyfikator podmiotu docelowego dla uprawnień nadanych pośrednio  
+ - **permissionTypes** – lista rodzajów wyszukiwanych uprawnień  
+ - **permissionState** – status uprawnienia  
+
+#### Stronicowanie wyników
+Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w ścieżce.
+- Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
+- Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
+- W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
+
+ > Więcej informacji:
+ > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-w%C5%82asnych-uprawnie%C5%84)
 
 ### Example Usage
 
@@ -721,14 +815,10 @@ $sdk = Apiv2\Client::builder()
 $personalPermissionsQueryRequest = new Components\PersonalPermissionsQueryRequest(
     contextIdentifier: new Components\PersonalPermissionsQueryRequestContextIdentifier(
         type: Components\PersonalPermissionsContextIdentifierType::Nip,
-        value: '5265877635',
-    ),
-    targetIdentifier: new Components\PersonalPermissionsQueryRequestTargetIdentifier(
-        type: Components\PersonalPermissionsTargetIdentifierType::Nip,
-        value: '7762811692',
+        value: '3568707925',
     ),
     permissionTypes: [
-        Components\PersonalPermissionType::CredentialsManage,
+        Components\PersonalPermissionType::InvoiceWrite,
     ],
     permissionState: Components\PersonalPermissionsQueryRequestPermissionState::Active,
 );
@@ -766,10 +856,44 @@ if ($response->queryPersonalPermissionsResponse !== null) {
 
 ## getPersonGrants
 
-Zwraca listę uprawnień do pracy w KSeF nadanych osobom fizycznym lub podmiotom.
+ Metoda pozwala na odczytanie uprawnień nadanych osobie fizycznej lub podmiotowi.  
+ Lista pobranych uprawnień może być dwóch rodzajów:  
+ - Lista wszystkich uprawnień obowiązujących w bieżącym kontekście logowania (używana, gdy administrator chce przejrzeć uprawnienia wszystkich użytkowników w bieżącym kontekście)  
+ - Lista wszystkich uprawnień nadanych w bieżącym kontekście przez uwierzytelnionego klienta API (używana, gdy administrator chce przejrzeć listę nadanych przez siebie uprawnień w bieżącym kontekście)  
 
-> Więcej informacji:
-> - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-do-pracy-w-ksef-nadanych-osobom-fizycznym-lub-podmiotom)
+ Dla pierwszej listy (obowiązujących uprawnień) w odpowiedzi przekazywane są:  
+ - osoby i podmioty mogące pracować w bieżącym kontekście z wyjątkiem osób uprawnionych w sposób pośredni  
+ - osoby uprawnione w sposób pośredni przez podmiot bieżącego kontekstu  
+
+ Dla drugiej listy (nadanych uprawnień) w odpowiedzi przekazywane są:  
+ - uprawnienia nadane w sposób bezpośredni do pracy w bieżącym kontekście lub w kontekście jednostek podrzędnych  
+ - uprawnienia nadane w sposób pośredni do obsługi klientów podmiotu bieżącego kontekstu  
+
+ Uprawnienia zwracane przez operację obejmują:  
+ - **CredentialsManage** – zarządzanie uprawnieniami  
+ - **CredentialsRead** – przeglądanie uprawnień  
+ - **InvoiceWrite** – wystawianie faktur  
+ - **InvoiceRead** – przeglądanie faktur  
+ - **Introspection** – przeglądanie historii sesji  
+ - **SubunitManage** – zarządzanie podmiotami podrzędnymi  
+ - **EnforcementOperations** – wykonywanie operacji egzekucyjnych  
+
+ Odpowiedź może być filtrowana na podstawie parametrów:  
+ - **authorIdentifier** – identyfikator osoby, która nadała uprawnienie  
+ - **authorizedIdentifier** – identyfikator osoby lub podmiotu uprawnionego  
+ - **targetIdentifier** – identyfikator podmiotu docelowego dla uprawnień nadanych pośrednio  
+ - **permissionTypes** – lista rodzajów wyszukiwanych uprawnień  
+ - **permissionState** – status uprawnienia  
+ - **queryType** – typ zapytania określający, która z dwóch list ma zostać zwrócona  
+
+#### Stronicowanie wyników
+Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w ścieżce.
+- Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
+- Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
+- W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
+
+ > Więcej informacji:
+ > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-do-pracy-w-ksef-nadanych-osobom-fizycznym-lub-podmiotom)
 
 Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
 
@@ -838,10 +962,24 @@ if ($response->queryPersonPermissionsResponse !== null) {
 
 ## getSubunitsGrants
 
-Zwraca listę uprawnień administratorów jednostek i podmiotów podrzędnych.
+ Metoda pozwala na odczytanie uprawnień do zarządzania uprawnieniami nadanych administratorom:  
+ - jednostek podrzędnych identyfikowanych identyfikatorem wewnętrznym  
+ - podmiotów podrzędnych (podrzędnych JST lub członków grupy VAT) identyfikowanych przez NIP  
 
-> Więcej informacji:
-> - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-jednostek-i-podmiot%C3%B3w-podrz%C4%99dnych)
+ Lista zwraca wyłącznie uprawnienia do zarządzania uprawnieniami nadane z kontekstu bieżącego (z podmiotu nadrzędnego).  
+ Nie są odczytywane uprawnienia nadane przez administratorów jednostek podrzędnych wewnątrz tych jednostek.  
+
+ Odpowiedź może być filtrowana na podstawie parametru:  
+ - **subunitIdentifier** – identyfikator jednostki lub podmiotu podrzędnego  
+
+#### Stronicowanie wyników
+Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w ścieżce.
+- Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
+- Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
+- W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
+
+ > Więcej informacji:
+ > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-jednostek-i-podmiot%C3%B3w-podrz%C4%99dnych)
 
 Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
 
@@ -902,10 +1040,24 @@ if ($response->querySubunitPermissionsResponse !== null) {
 
 ## getEntityRoles
 
-Zwraca listę ról podmiotu.
+ Metoda pozwala na **odczytanie listy ról podmiotu bieżącego kontekstu logowania**.
 
-> Więcej informacji:
-> - [Pobieranie listy ról](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-r%C3%B3l-podmiotu)
+#### Role podmiotów zwracane przez operację:
+- **CourtBailiff** – komornik sądowy  
+- **EnforcementAuthority** – organ egzekucyjny  
+- **LocalGovernmentUnit** – nadrzędna JST  
+- **LocalGovernmentSubUnit** – podrzędne JST  
+- **VatGroupUnit** – grupa VAT  
+- **VatGroupSubUnit** – członek grupy VAT
+
+#### Stronicowanie wyników
+Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w ścieżce.
+- Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
+- Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
+- W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
+
+ > Więcej informacji:
+ > - [Pobieranie listy ról](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-r%C3%B3l-podmiotu)
 
 Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
 
@@ -958,10 +1110,26 @@ if ($response->queryEntityRolesResponse !== null) {
 
 ## getSubordinateEntitiesRoles
 
-Zwraca liste podmiotów podrzędnych.
+ Metoda pozwala na odczytanie listy podmiotów podrzędnych,  
+ jeżeli podmiot bieżącego kontekstu ma rolę podmiotu nadrzędnego:
+ - **nadrzędna JST** – odczytywane są podrzędne JST,  
+ - **grupa VAT** – odczytywane są podmioty będące członkami grupy VAT.
 
-> Więcej informacji:
-> - [Pobieranie listy podmiotów podrzędnych](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-podmiot%C3%B3w-podrz%C4%99dnych)
+ Role podmiotów zwracane przez operację obejmują:  
+ - **LocalGovernmentSubUnit** – podrzędne JST,  
+ - **VatGroupSubUnit** – członek grupy VAT.
+
+ Odpowiedź może być filtrowana według parametru:  
+ - **subordinateEntityIdentifier** – identyfikator podmiotu podrzędnego.
+
+#### Stronicowanie wyników
+Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w ścieżce.
+- Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
+- Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
+- W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
+
+ > Więcej informacji:
+ > - [Pobieranie listy podmiotów podrzędnych](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-podmiot%C3%B3w-podrz%C4%99dnych)
 
 Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
 
@@ -1022,10 +1190,31 @@ if ($response->querySubordinateEntityRolesResponse !== null) {
 
 ## getAuthorizationsGrants
 
-Zwraca listę uprawnień podmiotowych do obsługi faktur.
+ Metoda pozwala na odczytanie uprawnień podmiotowych:  
+ - otrzymanych przez podmiot bieżącego kontekstu  
+ - nadanych przez podmiot bieżącego kontekstu  
 
-> Więcej informacji:
-> - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-podmiotowych-do-obs%C5%82ugi-faktur)
+ Wybór listy nadanych lub otrzymanych uprawnień odbywa się przy użyciu parametru **queryType**.  
+
+ Uprawnienia zwracane przez operację obejmują:  
+ - **SelfInvoicing** – wystawianie faktur w trybie samofakturowania  
+ - **TaxRepresentative** – wykonywanie operacji przedstawiciela podatkowego  
+ - **RRInvoicing** – wystawianie faktur VAT RR  
+ - **PefInvoicing** – wystawianie faktur PEF  
+
+ Odpowiedź może być filtrowana na podstawie następujących parametrów:  
+ - **authorizingIdentifier** – identyfikator podmiotu uprawniającego (stosowane przy queryType = Received)  
+ - **authorizedIdentifier** – identyfikator podmiotu uprawnionego (stosowane przy queryType = Granted)  
+ - **permissionTypes** – lista rodzajów wyszukiwanych uprawnień  
+
+#### Stronicowanie wyników
+Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w ścieżce.
+- Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
+- Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
+- W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
+
+ > Więcej informacji:
+ > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-podmiotowych-do-obs%C5%82ugi-faktur)
 
 Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
 
@@ -1093,10 +1282,29 @@ if ($response->queryEntityAuthorizationPermissionsResponse !== null) {
 
 ## getEuEntityGrants
 
-Zwraca listę uprawnień administratorów lub reprezentantów podmiotów unijnych uprawnionych do samofakturowania.
+ Metoda pozwala na odczytanie uprawnień administratorów lub reprezentantów podmiotów unijnych:  
+ - Jeżeli kontekstem logowania jest NIP, możliwe jest odczytanie uprawnień administratorów podmiotów unijnych powiązanych z podmiotem bieżącego kontekstu, czyli takich, dla których pierwszy człon kontekstu złożonego jest równy NIP-owi kontekstu logowania.  
+ - Jeżeli kontekst logowania jest złożony (NIP-VAT UE), możliwe jest pobranie wszystkich uprawnień administratorów i reprezentantów podmiotu w bieżącym kontekście złożonym.  
 
-> Więcej informacji:
-> - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-lub-reprezentant%C3%B3w-podmiot%C3%B3w-unijnych-uprawnionych-do-samofakturowania)
+ Uprawnienia zwracane przez operację obejmują:  
+ - **VatUeManage** – zarządzanie uprawnieniami w ramach podmiotu unijnego  
+ - **InvoiceWrite** – wystawianie faktur  
+ - **InvoiceRead** – przeglądanie faktur  
+ - **Introspection** – przeglądanie historii sesji  
+
+ Odpowiedź może być filtrowana na podstawie następujących parametrów:  
+ - **vatUeIdentifier** – identyfikator podmiotu unijnego  
+ - **authorizedFingerprintIdentifier** – odcisk palca certyfikatu uprawnionej osoby lub podmiotu  
+ - **permissionTypes** – lista rodzajów wyszukiwanych uprawnień  
+
+#### Stronicowanie wyników
+Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w ścieżce.
+- Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
+- Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
+- W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
+
+ > Więcej informacji:
+ > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-lub-reprezentant%C3%B3w-podmiot%C3%B3w-unijnych-uprawnionych-do-samofakturowania)
 
 Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `VatUeManage`.
 

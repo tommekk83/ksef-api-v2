@@ -40,7 +40,6 @@ $sdk = Apiv2\Client::builder()
     ->build();
 
 $request = new Operations\GetSessionListRequest(
-    pageSize: 350600,
     sessionType: Components\SessionType::Online,
 );
 

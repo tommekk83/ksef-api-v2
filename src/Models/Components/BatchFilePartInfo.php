@@ -28,7 +28,7 @@ class BatchFilePartInfo
     public string $fileName;
 
     /**
-     * Rozmiar części pliku paczki w bajtach. Maksymalna dozwolona wartość to 100MiB (104 857 600 bajtów).
+     * Rozmiar zaszyfrowanej części pliku paczki w bajtach.
      *
      * @var int $fileSize
      */
@@ -36,7 +36,7 @@ class BatchFilePartInfo
     public int $fileSize;
 
     /**
-     * Skrót SHA256 części pliku paczki, zakodowany w formacie Base64.
+     * Skrót SHA256 zaszyfrowanej części pliku paczki, zakodowany w formacie Base64.
      *
      * @var string $fileHash
      */

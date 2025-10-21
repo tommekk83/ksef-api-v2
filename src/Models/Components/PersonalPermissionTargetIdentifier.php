@@ -10,12 +10,13 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 
 
 /**
- * PersonalPermissionTargetIdentifier - Identyfikator podmiotu docelowego (dla uprawnień pośrednich).
+ * PersonalPermissionTargetIdentifier - Identyfikator podmiotu docelowego dla uprawnień selektywnych nadanych pośrednio.
  *
  * | Type | Value |
  * | --- | --- |
  * | Nip | 10 cyfrowy numer NIP |
- * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
+ * | AllPartners | Identyfikator oznaczający, że wyszukiwanie dotyczy uprawnień generalnych nadanych w sposób pośredni |
+ * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
  */
 class PersonalPermissionTargetIdentifier
 {

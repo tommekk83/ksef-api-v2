@@ -41,7 +41,7 @@ class GrantToSubunitsRequest
     public GrantToSubunitsContextIdentifier $contextIdentifier;
 
     /**
-     * Opis nadawanych uprawnień.
+     * Opis uprawnienia
      *
      * @var string $description
      */

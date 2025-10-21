@@ -29,7 +29,7 @@ class ExportDateRange
     public Components\InvoiceQueryDateType $dateType;
 
     /**
-     * Data początkowa zakresu.
+     * Data początkowa zakresu(UTC).
      *
      * @var \DateTime $from
      */
@@ -37,7 +37,7 @@ class ExportDateRange
     public \DateTime $from;
 
     /**
-     * Data końcowa zakresu. Jeśli nie zostanie podana, przyjmowana jest bieżąca data i czas w UTC.
+     * Data końcowa zakresu(UTC). Jeśli nie zostanie podana, przyjmowana jest bieżąca data i czas w UTC.
      *
      * @var ?\DateTime $to
      */

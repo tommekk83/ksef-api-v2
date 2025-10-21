@@ -13,10 +13,10 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 class OpenOnlineSessionEncryption
 {
     /**
-     * Klucz symetryczny zaszyfrowany algorytmem RSA (Padding: OAEP z SHA-256), zakodowany w formacie Base64.
+     * Klucz symetryczny o długości 32 bajtów, zaszyfrowany algorytmem RSA (Padding: OAEP z SHA-256), zakodowany w formacie Base64.
      *
      *
-     * [Klucz publiczny RSA](/public-keys/publicKey.pem)
+     * [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
      *
      * @var string $encryptedSymmetricKey
      */
@@ -24,7 +24,7 @@ class OpenOnlineSessionEncryption
     public string $encryptedSymmetricKey;
 
     /**
-     * Wektor inicjalizujący (IV) używany do szyfrowania symetrycznego, zakodowany w formacie Base64.
+     * Wektor inicjalizujący (IV) o długości 16 bajtów, używany do szyfrowania symetrycznego, zakodowany w formacie Base64.
      *
      * @var string $initializationVector
      */

@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class PersonalPermissionsQueryRequest
 {
     /**
-     * Identyfikator kontekstu uprawnienia (dla uprawnień nadanych podmiotom do obsługi faktur).
+     * Identyfikator kontekstu podmiotu, który nadał uprawnienia do obsługi faktur.
      *
      * | Type | Value |
      * | --- | --- |
@@ -26,12 +26,13 @@ class PersonalPermissionsQueryRequest
     public ?PersonalPermissionsQueryRequestContextIdentifier $contextIdentifier = null;
 
     /**
-     * Identyfikator podmiotu docelowego (dla uprawnień pośrednich).
+     * Identyfikator podmiotu docelowego dla uprawnień selektywnych nadanych pośrednio.
      *
      * | Type | Value |
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
-     * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
+     * | AllPartners | Identyfikator oznaczający, że wyszukiwanie dotyczy uprawnień generalnych nadanych w sposób pośredni |
+     * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
      *
      * @var ?PersonalPermissionsQueryRequestTargetIdentifier $targetIdentifier
      */
@@ -41,7 +42,7 @@ class PersonalPermissionsQueryRequest
     public ?PersonalPermissionsQueryRequestTargetIdentifier $targetIdentifier = null;
 
     /**
-     * Możliwe uprawnienia do filtrowania.
+     * Lista rodzajów wyszukiwanych uprawnień.
      *
      * @var ?array<PersonalPermissionType> $permissionTypes
      */
@@ -56,7 +57,7 @@ class PersonalPermissionsQueryRequest
      * | Type | Value |
      * | --- | --- |
      * | Active | Uprawnienia aktywne |
-     * | Inactive | Uprawnienia nieaktywne, nadane w sposób pośredni |
+     * | Inactive | Uprawnienia nieaktywne |
      *
      * @var ?PersonalPermissionsQueryRequestPermissionState $permissionState
      */

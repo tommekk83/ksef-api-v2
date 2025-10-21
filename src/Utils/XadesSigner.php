@@ -2,11 +2,11 @@
 
 namespace Intermedia\Ksef\Apiv2\Utils;
 
+use Brick\Math\BigInteger;
 use DateTimeImmutable;
 use DOMDocument;
 use DOMException;
 use Exception;
-use InvalidArgumentException;
 use OpenSSLAsymmetricKey;
 
 class XadesSigner
@@ -271,7 +271,11 @@ class XadesSigner
      */
     private function getSerialNumber(): string
     {
-        return $this->hexdecBig($this->info['serialNumberHex']);
+        $hex = strtolower($this->info['serialNumberHex']);
+        if (str_starts_with($hex, "0x")) {
+            $hex = substr($hex, 2);
+        }
+        return BigInteger::fromBase($hex, 16)->toBase(10);
     }
 
     /**
@@ -284,30 +288,5 @@ class XadesSigner
             $issuer[] = $key . '=' . $value;
         }
         return implode(', ', array_reverse($issuer));
-    }
-
-    /**
-     * @param string $hex
-     * @return string
-     */
-    private function hexdecBig(string $hex): string
-    {
-        $hex = strtolower($hex);
-        if (str_starts_with($hex, "0x")) {
-            $hex = substr($hex, 2);
-        }
-
-        $dec = '0';
-        $len = strlen($hex);
-        for ($i = 0; $i < $len; $i++) {
-            $current = strpos('0123456789abcdef', $hex[$i]);
-            if ($current === false) {
-                throw new InvalidArgumentException("Invalid hex string: $hex");
-            }
-            $dec = bcmul($dec, '16');
-            $dec = bcadd($dec, (string)$current);
-        }
-
-        return $dec;
     }
 }

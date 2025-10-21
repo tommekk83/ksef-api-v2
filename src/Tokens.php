@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2;
 
 use Intermedia\Ksef\Apiv2\Hooks\HookContext;
-use Intermedia\Ksef\Apiv2\Models\Components;
 use Intermedia\Ksef\Apiv2\Models\Operations;
 use Intermedia\Ksef\Apiv2\Utils\Options;
 use Speakeasy\Serializer\DeserializationContext;
@@ -52,11 +51,11 @@ class Tokens
      *
      * Token może być generowany tylko w kontekście NIP lub identyfikatora wewnętrznego. Jest zwracany tylko raz. Zaczyna być aktywny w momencie gdy jego status zmieni się na `Active`.
      *
-     * @param  ?Components\GenerateTokenRequest  $request
+     * @param  ?Operations\GenerateTokenRequest  $request
      * @return Operations\GenerateTokenResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
      */
-    public function generate(?Components\GenerateTokenRequest $request = null, ?Options $options = null): Operations\GenerateTokenResponse
+    public function generate(?Operations\GenerateTokenRequest $request = null, ?Options $options = null): Operations\GenerateTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
         $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens');

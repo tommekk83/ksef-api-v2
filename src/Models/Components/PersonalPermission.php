@@ -20,7 +20,7 @@ class PersonalPermission
     public string $id;
 
     /**
-     * Uprawnienie.
+     * Rodzaj uprawnienia.
      *
      * @var PersonalPermissionScope $permissionScope
      */
@@ -54,7 +54,7 @@ class PersonalPermission
     public \DateTime $startDate;
 
     /**
-     * Informacja o możliwości dalszego nadawania uprawnienia w sposób pośredni.
+     * Flaga określająca, czy uprawnienie ma być możliwe do dalszego przekazywania.
      *
      * @var bool $canDelegate
      */
@@ -62,7 +62,7 @@ class PersonalPermission
     public bool $canDelegate;
 
     /**
-     * Identyfikator kontekstu uprawnienia (dla uprawnień nadanych podmiotom do obsługi faktur).
+     * Identyfikator kontekstu podmiotu, który nadał uprawnienia do obsługi faktur.
      *
      * | Type | Value |
      * | --- | --- |
@@ -76,7 +76,7 @@ class PersonalPermission
     public ?PersonalPermissionContextIdentifier $contextIdentifier = null;
 
     /**
-     * Identyfikator podmiotu uprawnionego, jeśli inny niż podmiot uwierzytelnienia.
+     * Identyfikator podmiotu uprawnionego, jeżeli jest inny niż identyfikator uwierzytelnionego klienta API.
      *
      * | Type | Value |
      * | --- | --- |
@@ -90,12 +90,13 @@ class PersonalPermission
     public ?PersonalPermissionAuthorizedIdentifier $authorizedIdentifier = null;
 
     /**
-     * Identyfikator podmiotu docelowego (dla uprawnień pośrednich).
+     * Identyfikator podmiotu docelowego dla uprawnień selektywnych nadanych pośrednio.
      *
      * | Type | Value |
      * | --- | --- |
      * | Nip | 10 cyfrowy numer NIP |
-     * | AllPartners | Identyfikator oznaczający, że uprawnienie nadane w sposób pośredni jest typu generalnego |
+     * | AllPartners | Identyfikator oznaczający, że wyszukiwanie dotyczy uprawnień generalnych nadanych w sposób pośredni |
+     * | InternalId | Dwuczłonowy identyfikator składający się z numeru NIP i 5 cyfr: `{nip}-{5_cyfr}` |
      *
      * @var ?PersonalPermissionTargetIdentifier $targetIdentifier
      */

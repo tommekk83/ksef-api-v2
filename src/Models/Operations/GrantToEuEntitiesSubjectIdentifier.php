@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
 /**
- * GrantToEuEntitiesSubjectIdentifier - Identyfikator podmiotu.
+ * GrantToEuEntitiesSubjectIdentifier - Identyfikator podmiotu uprawnianego.
  *
  * | Type | Value |
  * | --- | --- |

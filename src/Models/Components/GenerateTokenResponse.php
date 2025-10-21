@@ -14,27 +14,25 @@ class GenerateTokenResponse
     /**
      * Numer referencyjny tokena KSeF. Za jego pomocą można sprawdzić jego status lub go unieważnić.
      *
-     * @var ?string $referenceNumber
+     * @var string $referenceNumber
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('referenceNumber')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $referenceNumber = null;
+    public string $referenceNumber;
 
     /**
      * Token KSeF.
      *
-     * @var ?string $token
+     * @var string $token
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('token')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $token = null;
+    public string $token;
 
     /**
-     * @param  ?string  $referenceNumber
-     * @param  ?string  $token
+     * @param  string  $referenceNumber
+     * @param  string  $token
      * @phpstan-pure
      */
-    public function __construct(?string $referenceNumber = null, ?string $token = null)
+    public function __construct(string $referenceNumber, string $token)
     {
         $this->referenceNumber = $referenceNumber;
         $this->token = $token;

@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class QueryInvoicesMetadataResponse
 {
     /**
-     * Określa, czy dostępna jest kolejna strona wyników.
+     * Określa, czy istnieją kolejne wyniki zapytania.
      *
      * @var bool $hasMore
      */
@@ -20,7 +20,7 @@ class QueryInvoicesMetadataResponse
     public bool $hasMore;
 
     /**
-     * Określa, czy wynik został obcięty z powodu przekroczenia limitu liczby faktur (10 000).
+     * Określa, czy osiągnięto maksymalny dopuszczalny zakres wyników zapytania (10 000).
      *
      * @var bool $isTruncated
      */

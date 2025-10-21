@@ -25,7 +25,7 @@ class GrantRightsRequest
     public GrantRightsSubjectIdentifier $subjectIdentifier;
 
     /**
-     * Identyfikator zlożony z podmiotu polskiego i podmiotu unijnego.
+     * Identyfikator kontekstu złożonego.
      *
      * | Type | Value |
      * | --- | --- |
@@ -38,7 +38,7 @@ class GrantRightsRequest
     public GrantRightsContextIdentifier $contextIdentifier;
 
     /**
-     * Opis nadawanych uprawnień.
+     * Opis uprawnienia
      *
      * @var string $description
      */
@@ -46,7 +46,9 @@ class GrantRightsRequest
     public string $description;
 
     /**
-     * Nazwa podmiotu unijnego.
+     * Nazwa i adres podmiotu unijnego w formacie: 
+     *
+     * `{euSubjectName}, {euSubjectAddress}`
      *
      * @var string $euEntityName
      */

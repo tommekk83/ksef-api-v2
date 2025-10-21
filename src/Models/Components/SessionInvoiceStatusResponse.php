@@ -20,6 +20,22 @@ class SessionInvoiceStatusResponse
     public int $ordinalNumber;
 
     /**
+     * Numer referencyjny faktury.
+     *
+     * @var string $referenceNumber
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('referenceNumber')]
+    public string $referenceNumber;
+
+    /**
+     * Skrót SHA256 faktury, zakodowany w formacie Base64.
+     *
+     * @var string $invoiceHash
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceHash')]
+    public string $invoiceHash;
+
+    /**
      * Data przyjęcia faktury w systemie KSeF (do dalszego przetwarzania).
      *
      * @var \DateTime $invoicingDate
@@ -70,24 +86,6 @@ class SessionInvoiceStatusResponse
     public ?string $ksefNumber = null;
 
     /**
-     * Numer referencyjny faktury.
-     *
-     * @var ?string $referenceNumber
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('referenceNumber')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $referenceNumber = null;
-
-    /**
-     * Skrót SHA256 faktury, zakodowany w formacie Base64.
-     *
-     * @var ?string $invoiceHash
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceHash')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $invoiceHash = null;
-
-    /**
      * Nazwa pliku faktury (zwracana dla faktur wysyłanych wsadowo).
      *
      * @var ?string $invoiceFileName
@@ -106,7 +104,7 @@ class SessionInvoiceStatusResponse
     public ?\DateTime $acquisitionDate = null;
 
     /**
-     * Data trwałego zapisu faktury w repozytorium systemu KSeF.
+     * Data trwałego zapisu faktury w repozytorium KSeF. Wartość uzupełniana asynchronicznie w momencie trwałego zapisu; zawsze późniejsza niż <b>acquisitionDate</b>. Podczas sprawdzania statusu może być jeszcze niedostępna.
      *
      * @var ?\DateTime $permanentStorageDate
      */
@@ -135,12 +133,12 @@ class SessionInvoiceStatusResponse
 
     /**
      * @param  int  $ordinalNumber
+     * @param  string  $referenceNumber
+     * @param  string  $invoiceHash
      * @param  \DateTime  $invoicingDate
      * @param  StatusInfo  $status
      * @param  ?string  $invoiceNumber
      * @param  ?string  $ksefNumber
-     * @param  ?string  $referenceNumber
-     * @param  ?string  $invoiceHash
      * @param  ?string  $invoiceFileName
      * @param  ?\DateTime  $acquisitionDate
      * @param  ?\DateTime  $permanentStorageDate
@@ -148,15 +146,15 @@ class SessionInvoiceStatusResponse
      * @param  ?SessionInvoiceStatusResponseInvoicingMode  $invoicingMode
      * @phpstan-pure
      */
-    public function __construct(int $ordinalNumber, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $referenceNumber = null, ?string $invoiceHash = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null, ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode = null)
+    public function __construct(int $ordinalNumber, string $referenceNumber, string $invoiceHash, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null, ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode = null)
     {
         $this->ordinalNumber = $ordinalNumber;
+        $this->referenceNumber = $referenceNumber;
+        $this->invoiceHash = $invoiceHash;
         $this->invoicingDate = $invoicingDate;
         $this->status = $status;
         $this->invoiceNumber = $invoiceNumber;
         $this->ksefNumber = $ksefNumber;
-        $this->referenceNumber = $referenceNumber;
-        $this->invoiceHash = $invoiceHash;
         $this->invoiceFileName = $invoiceFileName;
         $this->acquisitionDate = $acquisitionDate;
         $this->permanentStorageDate = $permanentStorageDate;

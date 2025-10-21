@@ -13,4 +13,3 @@
 | `SubunitManage`         | SubunitManage           |
 | `EnforcementOperations` | EnforcementOperations   |
 | `VatUeManage`           | VatUeManage             |
-| `Owner`                 | Owner                   |

@@ -44,7 +44,7 @@ class InvoicePackagePart
     public string $url;
 
     /**
-     * Rozmiar części paczki w bajtach. Maksymalny rozmiar części to 50MiB (52 428 800 bajtów).
+     * Rozmiar części paczki w bajtach.
      *
      * @var int $partSize
      */

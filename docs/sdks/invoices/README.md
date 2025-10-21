@@ -62,7 +62,16 @@ if ($response->res !== null) {
 
 ## getList
 
-Zwraca listę metadanych faktur spełniające podane kryteria wyszukiwania. Wyniki sortowane są rosnąco według typu daty przekazanej w `DateRange`. Do realizacji pobierania przyrostowego należy stosować typ `PermanentStorage`. Maksymalnie można pobrać faktury w zakresie do 10 000 rekordów
+Zwraca metadane faktur spełniających filtry.
+
+Limit techniczny: ≤ 10 000 rekordów na zestaw filtrów, po jego osiągnięciu <b>isTruncated = true</b> i należy ponownie ustawić <b>dateRange</b>, używając ostatniej daty z wyników (tj. ustawić from/to - w zależności od kierunku sortowania, od daty ostatniego zwróconego rekordu) oraz wyzerować <b>pageOffset</b>.
+
+`Do scenariusza przyrostowego należy używać daty PermanentStorage oraz kolejność sortowania Asc`.
+
+<b>Scenariusz pobierania przyrostowego (skrót):</b>
+* Gdy <b>hasMore = false</b>, należy zakończyć,
+* Gdy <b>hasMore = true</b> i <b>isTruncated = false</b>, należy zwiększyć <b>pageOffset</b>,
+* Gdy <b>hasMore = true</b> i <b>isTruncated = true</b>, należy zawęzić <b>dateRange</b> (ustawić from od daty ostatniego rekordu), wyzerować <b>pageOffset</b> i kontynuować
 
 Wymagane uprawnienia: `InvoiceRead`.
 
@@ -110,6 +119,7 @@ $requestBody = new Operations\GetInvoicesListRequestBody(
 );
 
 $response = $sdk->invoices->getList(
+    sortOrder: Operations\SortOrder::Asc,
     pageOffset: 0,
     pageSize: 10,
     requestBody: $requestBody
@@ -123,11 +133,12 @@ if ($response->queryInvoicesMetadataResponse !== null) {
 
 ### Parameters
 
-| Parameter                                                                                       | Type                                                                                            | Required                                                                                        | Description                                                                                     |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `pageOffset`                                                                                    | *?int*                                                                                          | :heavy_minus_sign:                                                                              | Indeks pierwszej strony wyników (0 = pierwsza strona).                                          |
-| `pageSize`                                                                                      | *?int*                                                                                          | :heavy_minus_sign:                                                                              | Rozmiar strony wyników.                                                                         |
-| `requestBody`                                                                                   | [?Operations\GetInvoicesListRequestBody](../../Models/Operations/GetInvoicesListRequestBody.md) | :heavy_minus_sign:                                                                              | Zestaw filtrów dla wyszukiwania metadanych.                                                     |
+| Parameter                                                                                                                     | Type                                                                                                                          | Required                                                                                                                      | Description                                                                                                                   |
+| ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `sortOrder`                                                                                                                   | [?Operations\SortOrder](../../Models/Operations/SortOrder.md)                                                                 | :heavy_minus_sign:                                                                                                            | Kolejność sortowania wyników.<br/>\| Wartość \| Opis \|<br/>\| --- \| --- \|<br/>\| Asc \| Sortowanie rosnąco. \|<br/>\| Desc \| Sortowanie malejąco. \|<br/> |
+| `pageOffset`                                                                                                                  | *?int*                                                                                                                        | :heavy_minus_sign:                                                                                                            | Indeks pierwszej strony wyników (0 = pierwsza strona).                                                                        |
+| `pageSize`                                                                                                                    | *?int*                                                                                                                        | :heavy_minus_sign:                                                                                                            | Rozmiar strony wyników.                                                                                                       |
+| `requestBody`                                                                                                                 | [?Operations\GetInvoicesListRequestBody](../../Models/Operations/GetInvoicesListRequestBody.md)                               | :heavy_minus_sign:                                                                                                            | Zestaw filtrów dla wyszukiwania metadanych.                                                                                   |
 
 ### Response
 
@@ -143,7 +154,26 @@ if ($response->queryInvoicesMetadataResponse !== null) {
 ## export
 
 Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
-Wymagane jest przekazanie informacji o szyfrowaniu w polu `Encryption`, które służą do zabezpieczenia przygotowanej paczki z fakturami.
+Wymagane jest przekazanie informacji o szyfrowaniu w polu <b>Encryption</b>, które służą do zabezpieczenia przygotowanej paczki z fakturami.
+
+System pobiera faktury rosnąco według daty określonej w filtrze (Invoicing, Issue, PermanentStorage) i dodaje je do paczki aż do osiągnięcia jednego z poniższych limitów:
+* Limit liczby faktur: 10 000 sztuk
+* Limit rozmiaru danych(skompresowanych): 1GB
+
+Paczka eksportu może zawierać dodatkowy plik z metadanymi faktur w formacie JSON (`_metadata.json`). Zawartość pliku to
+obiekt z tablicą <b>invoices</b>, gdzie każdy element jest obiektem typu <b>InvoiceMetadata</b>
+(taki jak zwracany przez endpoint `POST /invoices/query/metadata`).
+
+<b>Plik z metadanymi(_metadata.json) nie jest wliczany do limitów algorytmu budowania paczki</b>. 
+
+<b>Tryb preview (włączany nagłówkiem):</b> aby dołączyć plik metadanych w wersji zapoznawczej,
+dodaj do nagłówka żądania: `X-KSeF-Feature: include-metadata`.
+W tym trybie do paczki zostanie dodany plik o nazwie `_metadata.json`.
+
+<b>Domyślne zachowanie od 2025-10-27:</b> od tego dnia paczka eksportu <u>zawsze</u> będzie zawierać plik
+`_metadata.json` z metadanymi, a nagłówek `X-KSeF-Feature` nie będzie wymagany.
+
+`Do realizacji pobierania przyrostowego należy stosować filtrowanie po dacie PermanentStorage`.
 
 Wymagane uprawnienia: `InvoiceRead`.
 
@@ -156,6 +186,9 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use Intermedia\Ksef\Apiv2;
+use Intermedia\Ksef\Apiv2\Models\Components;
+use Intermedia\Ksef\Apiv2\Models\Operations;
+use Intermedia\Ksef\Apiv2\Utils;
 
 $sdk = Apiv2\Client::builder()
     ->setSecurity(
@@ -163,7 +196,20 @@ $sdk = Apiv2\Client::builder()
     )
     ->build();
 
-
+$request = new Operations\ExportRequest(
+    encryption: new Operations\ExportEncryption(
+        encryptedSymmetricKey: 'Rk1Qb1VhVjMyQ3NxQ1h1WlVtZUdHcDJSZ0pTbE5IbWQ=',
+        initializationVector: 'c29tZUluaXRWZWN0b3I=',
+    ),
+    filters: new Operations\Filters(
+        subjectType: Components\InvoiceQuerySubjectType::Subject1,
+        dateRange: new Operations\ExportDateRange(
+            dateType: Components\InvoiceQueryDateType::Issue,
+            from: Utils\Utils::parseDateTime('2025-08-28T09:22:13.388+00:00'),
+            to: Utils\Utils::parseDateTime('2025-09-28T09:22:13.388+00:00'),
+        ),
+    ),
+);
 
 $response = $sdk->invoices->export(
     request: $request
@@ -193,12 +239,17 @@ if ($response->exportInvoicesResponse !== null) {
 
 ## getExportStatus
 
+Wyniki sortowane są rosnąco według typu daty przekazanej w <b>DateRange</b> przy inicjalizacji. 
+
+Paczka faktur jest dzielona na części o maksymalnym rozmiarze 50 MB. Każda część jest zaszyfrowana algorytmem AES-256-CBC z dopełnieniem PKCS#7, przy użyciu klucza symetrycznego przekazanego podczas inicjowania eksportu. 
+
+W przypadku ucięcia wyniku eksportu z powodu przekroczenia limitów, zwracana jest flaga <b>IsTruncated = true</b> oraz odpowiednia data, którą należy wykorzystać do wykonania kolejnego eksportu, aż do momentu, gdy flaga <b>IsTruncated = false</b>.
 
 Wymagane uprawnienia: `InvoiceRead`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getExportStatus" method="get" path="/api/v2/invoices/exports/{operationReferenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getExportStatus" method="get" path="/api/v2/invoices/exports/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -215,7 +266,7 @@ $sdk = Apiv2\Client::builder()
 
 
 $response = $sdk->invoices->getExportStatus(
-    operationReferenceNumber: '<value>'
+    referenceNumber: '<value>'
 );
 
 if ($response->invoiceExportStatusResponse !== null) {
@@ -225,9 +276,9 @@ if ($response->invoiceExportStatusResponse !== null) {
 
 ### Parameters
 
-| Parameter                    | Type                         | Required                     | Description                  |
-| ---------------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
-| `operationReferenceNumber`   | *string*                     | :heavy_check_mark:           | Numer referencyjny operacji. |
+| Parameter                                           | Type                                                | Required                                            | Description                                         |
+| --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
+| `referenceNumber`                                   | *string*                                            | :heavy_check_mark:                                  | Numer referencyjny operacji eksportu paczki faktur. |
 
 ### Response
 

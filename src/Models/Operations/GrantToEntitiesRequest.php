@@ -34,7 +34,7 @@ class GrantToEntitiesRequest
     public array $permissions;
 
     /**
-     * Opis nadawanych uprawnień.
+     * Opis uprawnienia
      *
      * @var string $description
      */

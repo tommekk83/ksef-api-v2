@@ -15,7 +15,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
  * | Type | Value |
  * | --- | --- |
  * | Active | Uprawnienia aktywne |
- * | Inactive | Uprawnienia nieaktywne, nadane w sposób pośredni |
+ * | Inactive | Uprawnienia nieaktywne |
  */
 enum PersonalPermissionsQueryRequestPermissionState: string
 {

@@ -1,6 +1,6 @@
 # GrantToEuEntitiesSubjectIdentifier
 
-Identyfikator podmiotu.
+Identyfikator podmiotu uprawnianego.
 | Type | Value |
 | --- | --- |
 | Fingerprint | Odcisk palca certyfikatu |

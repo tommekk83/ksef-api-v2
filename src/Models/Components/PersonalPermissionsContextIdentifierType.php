@@ -12,4 +12,5 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 enum PersonalPermissionsContextIdentifierType: string
 {
     case Nip = 'Nip';
+    case InternalId = 'InternalId';
 }
