@@ -39,7 +39,7 @@ $request = new Operations\GenerateTokenRequest(
         Components\TokenPermissionType::InvoiceRead,
         Components\TokenPermissionType::InvoiceWrite,
     ],
-    description: 'alongside apropos smoothly that since ouch that',
+    description: 'Wystawianie i przeglądanie faktur.',
 );
 
 $response = $sdk->tokens->generate(
@@ -70,7 +70,12 @@ if ($response->generateTokenResponse !== null) {
 
 ## getList
 
-Pobranie listy wygenerowanych tokenów
+
+**Sortowanie:**
+
+- dateCreated (Desc)
+
+
 
 ### Example Usage
 
@@ -150,9 +155,9 @@ if ($response->tokenStatusResponse !== null) {
 
 ### Parameters
 
-| Parameter                  | Type                       | Required                   | Description                |
-| -------------------------- | -------------------------- | -------------------------- | -------------------------- |
-| `referenceNumber`          | *string*                   | :heavy_check_mark:         | Numer referencyjny tokena. |
+| Parameter                       | Type                            | Required                        | Description                     |
+| ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
+| `referenceNumber`               | *string*                        | :heavy_check_mark:              | Numer referencyjny tokena KSeF. |
 
 ### Response
 
@@ -198,9 +203,9 @@ if ($response->statusCode === 200) {
 
 ### Parameters
 
-| Parameter                                    | Type                                         | Required                                     | Description                                  |
-| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
-| `referenceNumber`                            | *string*                                     | :heavy_check_mark:                           | Numer referencyjny tokena do unieważeniania. |
+| Parameter                       | Type                            | Required                        | Description                     |
+| ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
+| `referenceNumber`               | *string*                        | :heavy_check_mark:              | Numer referencyjny tokena KSeF. |
 
 ### Response
 

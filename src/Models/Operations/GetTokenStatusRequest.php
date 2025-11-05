@@ -12,7 +12,7 @@ use Intermedia\Ksef\Apiv2\Utils\SpeakeasyMetadata;
 class GetTokenStatusRequest
 {
     /**
-     * Numer referencyjny tokena.
+     * Numer referencyjny tokena KSeF.
      *
      * @var string $referenceNumber
      */

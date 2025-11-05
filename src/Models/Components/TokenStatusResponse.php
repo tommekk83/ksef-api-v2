@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class TokenStatusResponse
 {
     /**
-     * Numer referencyjny tokena.
+     * Numer referencyjny tokena KSeF.
      *
      * @var string $referenceNumber
      */

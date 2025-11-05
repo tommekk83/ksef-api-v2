@@ -19,6 +19,7 @@ class InvoiceExportStatusResponse
      * | --- | --- | --- |
      * | 100 | Eksport faktur w toku | - |
      * | 200 | Eksport faktur zakończony sukcesem | - |
+     * | 210 | Eksport faktur wygasł i nie jest już dostępny do pobrania | - |
      * | 415 | Błąd odszyfrowania dostarczonego klucza  | - |
      * | 500 | Nieznany błąd ({statusCode}) | - |
      *
@@ -29,13 +30,24 @@ class InvoiceExportStatusResponse
     public StatusInfo $status;
 
     /**
-     * Data zakończenia przetwarzania żądania.
+     * Data zakończenia przetwarzania żądania eksportu faktur.
      *
      * @var ?\DateTime $completedDate
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('completedDate')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
     public ?\DateTime $completedDate = null;
+
+    /**
+     * Data wygaśnięcia paczki faktur przygotowanej do pobrania.
+     *
+     * Po upływie tej daty paczka nie będzie już dostępna do pobrania.
+     *
+     * @var ?\DateTime $packageExpirationDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('packageExpirationDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?\DateTime $packageExpirationDate = null;
 
     /**
      * Dane paczki faktur przygotowanej do pobrania.
@@ -50,13 +62,15 @@ class InvoiceExportStatusResponse
     /**
      * @param  StatusInfo  $status
      * @param  ?\DateTime  $completedDate
+     * @param  ?\DateTime  $packageExpirationDate
      * @param  ?Package  $package
      * @phpstan-pure
      */
-    public function __construct(StatusInfo $status, ?\DateTime $completedDate = null, ?Package $package = null)
+    public function __construct(StatusInfo $status, ?\DateTime $completedDate = null, ?\DateTime $packageExpirationDate = null, ?Package $package = null)
     {
         $this->status = $status;
         $this->completedDate = $completedDate;
+        $this->packageExpirationDate = $packageExpirationDate;
         $this->package = $package;
     }
 }

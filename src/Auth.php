@@ -371,6 +371,12 @@ class Auth
      *
      * Zwraca listę aktywnych sesji uwierzytelnienia.
      *
+     * **Sortowanie:**
+     *
+     * - startDate (Desc)
+     *
+     *
+     *
      * @param  ?string  $xContinuationToken
      * @param  ?int  $pageSize
      * @return Operations\GetCurrentSessionsResponse

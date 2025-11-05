@@ -11,6 +11,12 @@
 
 Zwraca listę dostawców usług Peppol zarejestrowanych w systemie.
 
+**Sortowanie:**
+
+- dateCreated (Desc)
+
+
+
 ### Example Usage
 
 <!-- UsageSnippet language="php" operationID="listPeppolProviders" method="get" path="/api/v2/peppol/query" -->

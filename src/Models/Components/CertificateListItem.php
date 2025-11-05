@@ -93,6 +93,14 @@ class CertificateListItem
     public \DateTime $validTo;
 
     /**
+     * Data złożenia wniosku certyfikacyjnego.
+     *
+     * @var \DateTime $requestDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('requestDate')]
+    public \DateTime $requestDate;
+
+    /**
      * Data ostatniego użycia certyfikatu.
      *
      * @var ?\DateTime $lastUseDate
@@ -110,10 +118,11 @@ class CertificateListItem
      * @param  SubjectIdentifier  $subjectIdentifier
      * @param  \DateTime  $validFrom
      * @param  \DateTime  $validTo
+     * @param  \DateTime  $requestDate
      * @param  ?\DateTime  $lastUseDate
      * @phpstan-pure
      */
-    public function __construct(string $certificateSerialNumber, string $name, KsefCertificateType $type, string $commonName, CertificateListItemStatus $status, SubjectIdentifier $subjectIdentifier, \DateTime $validFrom, \DateTime $validTo, ?\DateTime $lastUseDate = null)
+    public function __construct(string $certificateSerialNumber, string $name, KsefCertificateType $type, string $commonName, CertificateListItemStatus $status, SubjectIdentifier $subjectIdentifier, \DateTime $validFrom, \DateTime $validTo, \DateTime $requestDate, ?\DateTime $lastUseDate = null)
     {
         $this->certificateSerialNumber = $certificateSerialNumber;
         $this->name = $name;
@@ -123,6 +132,7 @@ class CertificateListItem
         $this->subjectIdentifier = $subjectIdentifier;
         $this->validFrom = $validFrom;
         $this->validTo = $validTo;
+        $this->requestDate = $requestDate;
         $this->lastUseDate = $lastUseDate;
     }
 }

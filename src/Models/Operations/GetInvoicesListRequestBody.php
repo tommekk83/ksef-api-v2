@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
-/** GetInvoicesListRequestBody - Zestaw filtrów dla wyszukiwania metadanych. */
+/** GetInvoicesListRequestBody - Kryteria filtrowania. */
 class GetInvoicesListRequestBody
 {
     /**
@@ -40,7 +40,7 @@ class GetInvoicesListRequestBody
     public GetInvoicesListDateRange $dateRange;
 
     /**
-     * Numer KSeF faktury.
+     * Numer KSeF faktury (exact match).
      *
      * @var ?string $ksefNumber
      */
@@ -49,7 +49,7 @@ class GetInvoicesListRequestBody
     public ?string $ksefNumber = null;
 
     /**
-     * Numer faktury nadany przez wystawcę.
+     * Numer faktury nadany przez wystawcę (exact match).
      *
      * @var ?string $invoiceNumber
      */
@@ -68,7 +68,7 @@ class GetInvoicesListRequestBody
     public ?GetInvoicesListAmount $amount = null;
 
     /**
-     * Nip sprzedawcy.
+     * Nip sprzedawcy (exact match).
      *
      * @var ?string $sellerNip
      */

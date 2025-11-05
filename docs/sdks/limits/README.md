@@ -7,6 +7,7 @@
 
 * [getContext](#getcontext) - Pobranie limitów dla bieżącego kontekstu
 * [getSubject](#getsubject) - Pobranie limitów dla bieżącego podmiotu
+* [getApiRate](#getapirate) - Pobranie aktualnie obowiązujących limitów API
 
 ## getContext
 
@@ -84,6 +85,48 @@ if ($response->effectiveSubjectLimits !== null) {
 ### Response
 
 **[?Operations\GetSubjectLimitsResponse](../../Models/Operations/GetSubjectLimitsResponse.md)**
+
+### Errors
+
+| Error Type               | Status Code              | Content Type             |
+| ------------------------ | ------------------------ | ------------------------ |
+| Errors\ExceptionResponse | 400                      | application/json         |
+| Errors\APIException      | 4XX, 5XX                 | \*/\*                    |
+
+## getApiRate
+
+Zwraca wartości aktualnie obowiązujących limitów ilości żądań przesyłanych do API.
+
+### Example Usage
+
+<!-- UsageSnippet language="php" operationID="getApiRate" method="get" path="/api/v2/rate-limits" -->
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->limits->getApiRate(
+
+);
+
+if ($response->effectiveApiRateLimits !== null) {
+    // handle response
+}
+```
+
+### Response
+
+**[?Operations\GetApiRateResponse](../../Models/Operations/GetApiRateResponse.md)**
 
 ### Errors
 

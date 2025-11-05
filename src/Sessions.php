@@ -52,7 +52,7 @@ class Sessions
      *
      * Zamyka sesję wsadową, rozpoczyna procesowanie paczki faktur i generowanie UPO dla prawidłowych faktur oraz zbiorczego UPO dla sesji.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @return Operations\CloseBatchSessionResponse
@@ -121,7 +121,7 @@ class Sessions
      *
      * Zamyka sesję interaktywną i rozpoczyna generowanie zbiorczego UPO dla sesji.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @return Operations\CloseOnlineSessionResponse
@@ -190,7 +190,14 @@ class Sessions
      *
      * Zwraca listę sesji spełniających podane kryteria wyszukiwania.
      *
-     * Wymagane uprawnienia:
+     *
+     *
+     * **Sortowanie:**
+     *
+     * - dateCreated (Desc)
+     *
+     *
+     * **Wymagane uprawnienia**:
      * - `Introspection` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
      * - `InvoiceWrite` – pozwala pobrać wyłącznie sesje utworzone przez podmiot uwierzytelniający, czyli podmiot inicjujący uwierzytelnienie.
      *
@@ -274,7 +281,7 @@ class Sessions
      *
      * Sprawdza bieżący status sesji o podanym numerze referencyjnym.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @return Operations\GetSessionStatusResponse
@@ -352,7 +359,7 @@ class Sessions
      *
      * Zwraca XML zawierający zbiorcze UPO dla sesji.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  string  $upoReferenceNumber
@@ -433,7 +440,7 @@ class Sessions
      * > - [Przygotwanie paczki faktur](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-wsadowa.md)
      * > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
      *
-     * Wymagane uprawnienia: `InvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`.
      *
      * @param  ?Operations\OpenBatchSessionRequest  $request
      * @return Operations\OpenBatchSessionResponse
@@ -516,7 +523,7 @@ class Sessions
      * > - [Otwarcie sesji interaktywnej](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#1-otwarcie-sesji)
      * > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
      *
      * @param  ?Operations\OpenOnlineSessionRequest  $request
      * @return Operations\OpenOnlineSessionResponse

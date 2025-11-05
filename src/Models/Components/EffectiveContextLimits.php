@@ -14,29 +14,29 @@ class EffectiveContextLimits
     /**
      * Limity dla sesji interaktywnych.
      *
-     * @var OnlineSession $onlineSession
+     * @var OnlineSessionContextLimits $onlineSessionContextLimits
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('onlineSession')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\OnlineSession')]
-    public OnlineSession $onlineSession;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\OnlineSessionContextLimits')]
+    public OnlineSessionContextLimits $onlineSessionContextLimits;
 
     /**
      * Limity dla sesji wsadowych.
      *
-     * @var BatchSession $batchSession
+     * @var BatchSessionContextLimits $batchSessionContextLimits
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('batchSession')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\BatchSession')]
-    public BatchSession $batchSession;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\BatchSessionContextLimits')]
+    public BatchSessionContextLimits $batchSessionContextLimits;
 
     /**
-     * @param  OnlineSession  $onlineSession
-     * @param  BatchSession  $batchSession
+     * @param  OnlineSessionContextLimits  $onlineSessionContextLimits
+     * @param  BatchSessionContextLimits  $batchSessionContextLimits
      * @phpstan-pure
      */
-    public function __construct(OnlineSession $onlineSession, BatchSession $batchSession)
+    public function __construct(OnlineSessionContextLimits $onlineSessionContextLimits, BatchSessionContextLimits $batchSessionContextLimits)
     {
-        $this->onlineSession = $onlineSession;
-        $this->batchSession = $batchSession;
+        $this->onlineSessionContextLimits = $onlineSessionContextLimits;
+        $this->batchSessionContextLimits = $batchSessionContextLimits;
     }
 }

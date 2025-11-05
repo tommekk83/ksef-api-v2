@@ -12,7 +12,7 @@ use Intermedia\Ksef\Apiv2\Utils\SpeakeasyMetadata;
 class GetOperationStatusRequest
 {
     /**
-     * Numer referencyjny operacji
+     * Numer referencyjny operacji nadania lub odbierania uprawnień.
      *
      * @var string $referenceNumber
      */

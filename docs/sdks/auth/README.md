@@ -19,6 +19,12 @@
 
 Zwraca listę aktywnych sesji uwierzytelnienia.
 
+**Sortowanie:**
+
+- startDate (Desc)
+
+
+
 ### Example Usage
 
 <!-- UsageSnippet language="php" operationID="getCurrentSessions" method="get" path="/api/v2/auth/sessions" -->

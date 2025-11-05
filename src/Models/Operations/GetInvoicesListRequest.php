@@ -12,7 +12,7 @@ use Intermedia\Ksef\Apiv2\Utils\SpeakeasyMetadata;
 class GetInvoicesListRequest
 {
     /**
-     * Zestaw filtrów dla wyszukiwania metadanych.
+     * Kryteria filtrowania.
      *
      * @var ?GetInvoicesListRequestBody $requestBody
      */

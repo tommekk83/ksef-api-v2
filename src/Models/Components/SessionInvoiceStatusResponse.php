@@ -113,13 +113,25 @@ class SessionInvoiceStatusResponse
     public ?\DateTime $permanentStorageDate = null;
 
     /**
-     * Adres do pobrania UPO.
+     * Adres do pobrania UPO. Link generowany jest przy każdym odpytaniu o status. 
+     *
+     * Dostęp odbywa się metodą `HTTP GET` i <b>nie należy</b> wysyłać tokenu dostępowego. 
+     * Link nie podlega limitom API i wygasa po określonym czasie w `UpoDownloadUrlExpirationDate`.
      *
      * @var ?string $upoDownloadUrl
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('upoDownloadUrl')]
     #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
     public ?string $upoDownloadUrl = null;
+
+    /**
+     * Data i godzina wygaśnięcia adresu. Po tej dacie link `UpoDownloadUrl` nie będzie już aktywny.
+     *
+     * @var ?\DateTime $upoDownloadUrlExpirationDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('upoDownloadUrlExpirationDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?\DateTime $upoDownloadUrlExpirationDate = null;
 
     /**
      * Tryb fakturowania (online/offline).
@@ -143,10 +155,11 @@ class SessionInvoiceStatusResponse
      * @param  ?\DateTime  $acquisitionDate
      * @param  ?\DateTime  $permanentStorageDate
      * @param  ?string  $upoDownloadUrl
+     * @param  ?\DateTime  $upoDownloadUrlExpirationDate
      * @param  ?SessionInvoiceStatusResponseInvoicingMode  $invoicingMode
      * @phpstan-pure
      */
-    public function __construct(int $ordinalNumber, string $referenceNumber, string $invoiceHash, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null, ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode = null)
+    public function __construct(int $ordinalNumber, string $referenceNumber, string $invoiceHash, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null, ?\DateTime $upoDownloadUrlExpirationDate = null, ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode = null)
     {
         $this->ordinalNumber = $ordinalNumber;
         $this->referenceNumber = $referenceNumber;
@@ -159,6 +172,7 @@ class SessionInvoiceStatusResponse
         $this->acquisitionDate = $acquisitionDate;
         $this->permanentStorageDate = $permanentStorageDate;
         $this->upoDownloadUrl = $upoDownloadUrl;
+        $this->upoDownloadUrlExpirationDate = $upoDownloadUrlExpirationDate;
         $this->invoicingMode = $invoicingMode;
     }
 }

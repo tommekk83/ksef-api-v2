@@ -46,7 +46,7 @@ lub **CourtBailiff** (komornik sądowy).
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadawanie-uprawnie%C5%84-osobom-fizycznym-do-pracy-w-ksef)
 
-Wymagane uprawnienia: `CredentialsManage`.
+**Wymagane uprawnienia**: `CredentialsManage`.
 
 ### Example Usage
 
@@ -119,7 +119,7 @@ Dla każdego uprawnienia może być ustawiona flaga **canDelegate**, mówiąca o
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-podmiotom-uprawnie%C5%84-do-obs%C5%82ugi-faktur)
 
-Wymagane uprawnienia: `CredentialsManage`.
+**Wymagane uprawnienia**: `CredentialsManage`.
 
 ### Example Usage
 
@@ -190,7 +190,7 @@ Metoda pozwala na nadanie jednego z uprawnień podmiotowych do obsługi podmiotu
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-podmiotowych)
 
-Wymagane uprawnienia: `CredentialsManage`.
+**Wymagane uprawnienia**: `CredentialsManage`.
 
 ### Example Usage
 
@@ -263,7 +263,7 @@ Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-w-spos%C3%B3b-po%C5%9Bredni)
 
-Wymagane uprawnienia: `CredentialsManage`.
+**Wymagane uprawnienia**: `CredentialsManage`.
 
 ### Example Usage
 
@@ -344,7 +344,7 @@ Metoda automatycznie nadaje powyższe uprawnienie, bez konieczności podawania g
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-podrz%C4%99dnego)
 
-Wymagane uprawnienia: `SubunitManage`.
+**Wymagane uprawnienia**: `SubunitManage`.
 
 ### Example Usage
 
@@ -424,7 +424,7 @@ Metoda automatycznie nadaje wszystkie powyższe uprawnienia, bez konieczności i
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-unijnego)
 
-Wymagane uprawnienia: `CredentialsManage`.
+**Wymagane uprawnienia**: `CredentialsManage`.
 
 ### Example Usage
 
@@ -500,7 +500,7 @@ Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-reprezentanta-podmiotu-unijnego)
 
-Wymagane uprawnienia: `VatUeManage`.
+**Wymagane uprawnienia**: `VatUeManage`.
 
 ### Example Usage
 
@@ -567,7 +567,7 @@ identyfikatora uprawnienia, które ma zostać odebrane.
 > Więcej informacji:
 > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84)
 
-Wymagane uprawnienia: `CredentialsManage`, `VatUeManage`, `SubunitManage`.
+**Wymagane uprawnienia**: `CredentialsManage`, `VatUeManage`, `SubunitManage`.
 
 ### Example Usage
 
@@ -622,7 +622,7 @@ identyfikatora uprawnienia, które ma zostać odebrane.
 > Więcej informacji:
 > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84-podmiotowych)
 
-Wymagane uprawnienia: `CredentialsManage`.
+**Wymagane uprawnienia**: `CredentialsManage`.
 
 ### Example Usage
 
@@ -701,9 +701,9 @@ if ($response->permissionsOperationStatusResponse !== null) {
 
 ### Parameters
 
-| Parameter                   | Type                        | Required                    | Description                 |
-| --------------------------- | --------------------------- | --------------------------- | --------------------------- |
-| `referenceNumber`           | *string*                    | :heavy_check_mark:          | Numer referencyjny operacji |
+| Parameter                                                     | Type                                                          | Required                                                      | Description                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| `referenceNumber`                                             | *string*                                                      | :heavy_check_mark:                                            | Numer referencyjny operacji nadania lub odbierania uprawnień. |
 
 ### Response
 
@@ -720,7 +720,7 @@ if ($response->permissionsOperationStatusResponse !== null) {
 
 Sprawdzenie czy obecny kontekst posiada zgodę na wystawianie faktur z załącznikiem.
 
-Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`.
 
 ### Example Usage
 
@@ -794,6 +794,12 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 
  > Więcej informacji:
  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-w%C5%82asnych-uprawnie%C5%84)
+
+**Sortowanie:**
+
+- startDate (Desc)
+
+
 
 ### Example Usage
 
@@ -895,7 +901,13 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
  > Więcej informacji:
  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-do-pracy-w-ksef-nadanych-osobom-fizycznym-lub-podmiotom)
 
-Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+**Sortowanie:**
+
+- startDate (Desc)
+
+
+
+**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
 
 ### Example Usage
 
@@ -981,7 +993,13 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
  > Więcej informacji:
  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-jednostek-i-podmiot%C3%B3w-podrz%C4%99dnych)
 
-Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
+**Sortowanie:**
+
+- startDate (Desc)
+
+
+
+**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
 
 ### Example Usage
 
@@ -1059,7 +1077,13 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
  > Więcej informacji:
  > - [Pobieranie listy ról](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-r%C3%B3l-podmiotu)
 
-Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+**Sortowanie:**
+
+- startDate (Desc)
+
+
+
+**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`.
 
 ### Example Usage
 
@@ -1131,7 +1155,13 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
  > Więcej informacji:
  > - [Pobieranie listy podmiotów podrzędnych](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-podmiot%C3%B3w-podrz%C4%99dnych)
 
-Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
+**Sortowanie:**
+
+- startDate (Desc)
+
+
+
+**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
 
 ### Example Usage
 
@@ -1216,7 +1246,13 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
  > Więcej informacji:
  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-podmiotowych-do-obs%C5%82ugi-faktur)
 
-Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+**Sortowanie:**
+
+- startDate (Desc)
+
+
+
+**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`.
 
 ### Example Usage
 
@@ -1306,7 +1342,13 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
  > Więcej informacji:
  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-lub-reprezentant%C3%B3w-podmiot%C3%B3w-unijnych-uprawnionych-do-samofakturowania)
 
-Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `VatUeManage`.
+**Sortowanie:**
+
+- startDate (Desc)
+
+
+
+**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `VatUeManage`.
 
 ### Example Usage
 

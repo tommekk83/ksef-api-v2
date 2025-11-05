@@ -49,27 +49,27 @@ class Invoices
      *
      * Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
      * Wymagane jest przekazanie informacji o szyfrowaniu w polu <b>Encryption</b>, które służą do zabezpieczenia przygotowanej paczki z fakturami.
+     * Maksymalnie można uruchomić 10 równoczesnych eksportów w zalogowanym kontekście.
      *
      * System pobiera faktury rosnąco według daty określonej w filtrze (Invoicing, Issue, PermanentStorage) i dodaje je do paczki aż do osiągnięcia jednego z poniższych limitów:
      * * Limit liczby faktur: 10 000 sztuk
      * * Limit rozmiaru danych(skompresowanych): 1GB
      *
-     * Paczka eksportu może zawierać dodatkowy plik z metadanymi faktur w formacie JSON (`_metadata.json`). Zawartość pliku to
+     * Paczka eksportu zawiera dodatkowy plik z metadanymi faktur w formacie JSON (`_metadata.json`). Zawartość pliku to
      * obiekt z tablicą <b>invoices</b>, gdzie każdy element jest obiektem typu <b>InvoiceMetadata</b>
      * (taki jak zwracany przez endpoint `POST /invoices/query/metadata`).
      *
      * <b>Plik z metadanymi(_metadata.json) nie jest wliczany do limitów algorytmu budowania paczki</b>. 
      *
-     * <b>Tryb preview (włączany nagłówkiem):</b> aby dołączyć plik metadanych w wersji zapoznawczej,
-     * dodaj do nagłówka żądania: `X-KSeF-Feature: include-metadata`.
-     * W tym trybie do paczki zostanie dodany plik o nazwie `_metadata.json`.
-     *
-     * <b>Domyślne zachowanie od 2025-10-27:</b> od tego dnia paczka eksportu <u>zawsze</u> będzie zawierać plik
-     * `_metadata.json` z metadanymi, a nagłówek `X-KSeF-Feature` nie będzie wymagany.
-     *
      * `Do realizacji pobierania przyrostowego należy stosować filtrowanie po dacie PermanentStorage`.
      *
-     * Wymagane uprawnienia: `InvoiceRead`.
+     * **Sortowanie:**
+     *
+     * - permanentStorageDate | invoicingDate | issueDate (Asc) - pole wybierane na podstawie filtrów
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `InvoiceRead`.
      *
      * @param  ?Operations\ExportRequest  $request
      * @return Operations\ExportResponse
@@ -148,7 +148,7 @@ class Invoices
      *
      * Zwraca fakturę o podanym numerze KSeF.
      *
-     * Wymagane uprawnienia: `InvoiceRead`.
+     * **Wymagane uprawnienia**: `InvoiceRead`.
      *
      * @param  string  $ksefNumber
      * @return Operations\GetByKsefNumberResponse
@@ -221,13 +221,17 @@ class Invoices
     /**
      * Pobranie statusu eksportu paczki faktur
      *
-     * Wyniki sortowane są rosnąco według typu daty przekazanej w <b>DateRange</b> przy inicjalizacji. 
-     *
      * Paczka faktur jest dzielona na części o maksymalnym rozmiarze 50 MB. Każda część jest zaszyfrowana algorytmem AES-256-CBC z dopełnieniem PKCS#7, przy użyciu klucza symetrycznego przekazanego podczas inicjowania eksportu. 
      *
      * W przypadku ucięcia wyniku eksportu z powodu przekroczenia limitów, zwracana jest flaga <b>IsTruncated = true</b> oraz odpowiednia data, którą należy wykorzystać do wykonania kolejnego eksportu, aż do momentu, gdy flaga <b>IsTruncated = false</b>.
      *
-     * Wymagane uprawnienia: `InvoiceRead`.
+     * **Sortowanie:**
+     *
+     * - permanentStorageDate | invoicingDate | issueDate (Asc) - pole wybierane na podstawie filtrów
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `InvoiceRead`.
      *
      * @param  string  $referenceNumber
      * @return Operations\GetExportStatusResponse
@@ -314,7 +318,13 @@ class Invoices
      * * Gdy <b>hasMore = true</b> i <b>isTruncated = false</b>, należy zwiększyć <b>pageOffset</b>,
      * * Gdy <b>hasMore = true</b> i <b>isTruncated = true</b>, należy zawęzić <b>dateRange</b> (ustawić from od daty ostatniego rekordu), wyzerować <b>pageOffset</b> i kontynuować
      *
-     * Wymagane uprawnienia: `InvoiceRead`.
+     * **Sortowanie:**
+     *
+     * - permanentStorageDate | invoicingDate | issueDate (Asc | Desc) - pole wybierane na podstawie filtrów
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `InvoiceRead`.
      *
      * @param  ?Operations\GetInvoicesListRequestBody  $requestBody
      * @param  ?Operations\SortOrder  $sortOrder

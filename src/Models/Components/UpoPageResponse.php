@@ -20,7 +20,10 @@ class UpoPageResponse
     public string $referenceNumber;
 
     /**
-     * Adres do pobrania strony UPO.
+     * Adres do pobrania strony UPO. Link generowany jest przy każdym odpytaniu o status. 
+     *
+     * Dostęp odbywa się metodą `HTTP GET` i <b>nie należy</b> wysyłać tokenu dostępowego. 
+     * Link nie podlega limitom API i wygasa po określonym czasie w `DownloadUrlExpirationDate`.
      *
      * @var string $downloadUrl
      */
@@ -28,13 +31,23 @@ class UpoPageResponse
     public string $downloadUrl;
 
     /**
+     * Data i godzina wygaśnięcia adresu. Po tej dacie link `DownloadUrl` nie będzie już aktywny.
+     *
+     * @var \DateTime $downloadUrlExpirationDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('downloadUrlExpirationDate')]
+    public \DateTime $downloadUrlExpirationDate;
+
+    /**
      * @param  string  $referenceNumber
      * @param  string  $downloadUrl
+     * @param  \DateTime  $downloadUrlExpirationDate
      * @phpstan-pure
      */
-    public function __construct(string $referenceNumber, string $downloadUrl)
+    public function __construct(string $referenceNumber, string $downloadUrl, \DateTime $downloadUrlExpirationDate)
     {
         $this->referenceNumber = $referenceNumber;
         $this->downloadUrl = $downloadUrl;
+        $this->downloadUrlExpirationDate = $downloadUrlExpirationDate;
     }
 }

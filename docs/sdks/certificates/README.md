@@ -338,6 +338,12 @@ if ($response->statusCode === 200) {
 Zwraca listę certyfikatów spełniających podane kryteria wyszukiwania.
 W przypadku braku podania kryteriów wyszukiwania zwrócona zostanie nieprzefiltrowana lista.
 
+**Sortowanie:**
+
+- requestDate (Desc)
+
+
+
 ### Example Usage
 
 <!-- UsageSnippet language="php" operationID="getCertificatesList" method="post" path="/api/v2/certificates/query" -->

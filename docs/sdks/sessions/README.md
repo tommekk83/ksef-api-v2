@@ -17,7 +17,14 @@
 
 Zwraca listę sesji spełniających podane kryteria wyszukiwania.
 
-Wymagane uprawnienia:
+
+
+**Sortowanie:**
+
+- dateCreated (Desc)
+
+
+**Wymagane uprawnienia**:
 - `Introspection` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
 - `InvoiceWrite` – pozwala pobrać wyłącznie sesje utworzone przez podmiot uwierzytelniający, czyli podmiot inicjujący uwierzytelnienie.
 
@@ -73,7 +80,7 @@ if ($response->sessionsQueryResponse !== null) {
 
 Sprawdza bieżący status sesji o podanym numerze referencyjnym.
 
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -123,7 +130,7 @@ if ($response->sessionStatusResponse !== null) {
 
 Zwraca XML zawierający zbiorcze UPO dla sesji.
 
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -180,7 +187,7 @@ Otwiera sesję do wysyłki pojedynczych faktur. Należy przekazać schemat wysy�
 > - [Otwarcie sesji interaktywnej](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#1-otwarcie-sesji)
 > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
 
-Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -241,7 +248,7 @@ if ($response->openOnlineSessionResponse !== null) {
 
 Zamyka sesję interaktywną i rozpoczyna generowanie zbiorczego UPO dla sesji.
 
-Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -295,7 +302,7 @@ Otwiera sesję do wysyłki wsadowej faktur. Należy przekazać schemat wysyłany
 > - [Przygotwanie paczki faktur](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-wsadowa.md)
 > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
 
-Wymagane uprawnienia: `InvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`.
 
 ### Example Usage
 
@@ -369,7 +376,7 @@ if ($response->openBatchSessionResponse !== null) {
 
 Zamyka sesję wsadową, rozpoczyna procesowanie paczki faktur i generowanie UPO dla prawidłowych faktur oraz zbiorczego UPO dla sesji.
 
-Wymagane uprawnienia: `InvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`.
 
 ### Example Usage
 

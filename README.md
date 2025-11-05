@@ -12,7 +12,7 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
 <!-- Start Summary [summary] -->
 ## Summary
 
-KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc5.4-tr-20251015.4+8acd97600a19f8ffde92e22c6a7b401787af5b91)<br>
+KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc5.6-tr-20251104.1+61498d3e9bc34e5a957e187cec891cffd849d62e)<br>
 **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
 **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
 **Rozszerzona dokumentacja API:** [ksef-docs](https://github.com/CIRFMF/ksef-docs/tree/main)
@@ -172,6 +172,7 @@ if ($response->authenticationListResponse !== null) {
 
 * [getContext](docs/sdks/limits/README.md#getcontext) - Pobranie limitów dla bieżącego kontekstu
 * [getSubject](docs/sdks/limits/README.md#getsubject) - Pobranie limitów dla bieżącego podmiotu
+* [getApiRate](docs/sdks/limits/README.md#getapirate) - Pobranie aktualnie obowiązujących limitów API
 
 ### [peppol](docs/sdks/peppol/README.md)
 

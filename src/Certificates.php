@@ -51,6 +51,12 @@ class Certificates
      * Zwraca listę certyfikatów spełniających podane kryteria wyszukiwania.
      * W przypadku braku podania kryteriów wyszukiwania zwrócona zostanie nieprzefiltrowana lista.
      *
+     * **Sortowanie:**
+     *
+     * - requestDate (Desc)
+     *
+     *
+     *
      * @param  ?Components\QueryCertificatesRequest  $queryCertificatesRequest
      * @param  ?int  $pageSize
      * @param  ?int  $pageOffset

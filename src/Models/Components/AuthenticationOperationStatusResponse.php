@@ -20,7 +20,7 @@ class AuthenticationOperationStatusResponse
     public \DateTime $startDate;
 
     /**
-     * Użyta metoda uwierzytelnienia.
+     * Metoda uwierzytelnienia.
      *
      * | Wartość | Opis |
      * | --- | --- |

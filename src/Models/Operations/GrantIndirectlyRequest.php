@@ -44,7 +44,7 @@ class GrantIndirectlyRequest
     public string $description;
 
     /**
-     * Identyfikator kontekstu klienta.
+     * Identyfikator kontekstu klienta. Nie przekazanie identyfikatora oznacza, że uprawnienie nadane w sposób pośredni jest typu generalnego.
      *
      * | Type | Value |
      * | --- | --- |

@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class AuthenticationInitResponse
 {
     /**
-     * Numer referencyjny operacji uwierzytelnienia.
+     * Numer referencyjny sesji uwierzytelnienia.
      *
      * @var string $referenceNumber
      */

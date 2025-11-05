@@ -49,6 +49,12 @@ class Peppol
      *
      * Zwraca listę dostawców usług Peppol zarejestrowanych w systemie.
      *
+     * **Sortowanie:**
+     *
+     * - dateCreated (Desc)
+     *
+     *
+     *
      * @param  ?int  $pageOffset
      * @param  ?int  $pageSize
      * @return Operations\ListPeppolProvidersResponse

@@ -50,7 +50,7 @@ class Permissions
      *
      * Sprawdzenie czy obecny kontekst posiada zgodę na wystawianie faktur z załącznikiem.
      *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+     * **Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`.
      *
      * @return Operations\CheckAttachmentStatusResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
@@ -148,7 +148,13 @@ class Permissions
      *  > Więcej informacji:
      *  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-podmiotowych-do-obs%C5%82ugi-faktur)
      *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+     * **Sortowanie:**
+     *
+     * - startDate (Desc)
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`.
      *
      * @param  ?Operations\GetAuthorizationsGrantsRequestBody  $requestBody
      * @param  ?int  $pageOffset
@@ -254,7 +260,13 @@ class Permissions
      *  > Więcej informacji:
      *  > - [Pobieranie listy ról](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-r%C3%B3l-podmiotu)
      *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+     * **Sortowanie:**
+     *
+     * - startDate (Desc)
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`.
      *
      * @param  ?int  $pageOffset
      * @param  ?int  $pageSize
@@ -359,7 +371,13 @@ class Permissions
      *  > Więcej informacji:
      *  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-lub-reprezentant%C3%B3w-podmiot%C3%B3w-unijnych-uprawnionych-do-samofakturowania)
      *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `VatUeManage`.
+     * **Sortowanie:**
+     *
+     * - startDate (Desc)
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `VatUeManage`.
      *
      * @param  ?Components\EuEntityPermissionsQueryRequest  $euEntityPermissionsQueryRequest
      * @param  ?int  $pageOffset
@@ -561,7 +579,13 @@ class Permissions
      *  > Więcej informacji:
      *  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-do-pracy-w-ksef-nadanych-osobom-fizycznym-lub-podmiotom)
      *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`.
+     * **Sortowanie:**
+     *
+     * - startDate (Desc)
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
      *
      * @param  ?Operations\GetPersonGrantsRequestBody  $requestBody
      * @param  ?int  $pageOffset
@@ -681,6 +705,12 @@ class Permissions
      *  > Więcej informacji:
      *  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-w%C5%82asnych-uprawnie%C5%84)
      *
+     * **Sortowanie:**
+     *
+     * - startDate (Desc)
+     *
+     *
+     *
      * @param  ?Components\PersonalPermissionsQueryRequest  $personalPermissionsQueryRequest
      * @param  ?int  $pageOffset
      * @param  ?int  $pageSize
@@ -787,7 +817,13 @@ class Permissions
      *  > Więcej informacji:
      *  > - [Pobieranie listy podmiotów podrzędnych](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-podmiot%C3%B3w-podrz%C4%99dnych)
      *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
+     * **Sortowanie:**
+     *
+     * - startDate (Desc)
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
      *
      * @param  ?Components\SubordinateEntityRolesQueryRequest  $subordinateEntityRolesQueryRequest
      * @param  ?int  $pageOffset
@@ -893,7 +929,13 @@ class Permissions
      *  > Więcej informacji:
      *  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-jednostek-i-podmiot%C3%B3w-podrz%C4%99dnych)
      *
-     * Wymagane uprawnienia: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
+     * **Sortowanie:**
+     *
+     * - startDate (Desc)
+     *
+     *
+     *
+     * **Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `SubunitManage`.
      *
      * @param  ?Components\SubunitPermissionsQueryRequest  $subunitPermissionsQueryRequest
      * @param  ?int  $pageOffset
@@ -985,7 +1027,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-podmiotowych)
      *
-     * Wymagane uprawnienia: `CredentialsManage`.
+     * **Wymagane uprawnienia**: `CredentialsManage`.
      *
      * @param  ?Operations\GrantAuthorizationsRequest  $request
      * @return Operations\GrantAuthorizationsResponse
@@ -1078,7 +1120,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-w-spos%C3%B3b-po%C5%9Bredni)
      *
-     * Wymagane uprawnienia: `CredentialsManage`.
+     * **Wymagane uprawnienia**: `CredentialsManage`.
      *
      * @param  ?Operations\GrantIndirectlyRequest  $request
      * @return Operations\GrantIndirectlyResponse
@@ -1174,7 +1216,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-unijnego)
      *
-     * Wymagane uprawnienia: `CredentialsManage`.
+     * **Wymagane uprawnienia**: `CredentialsManage`.
      *
      * @param  ?Operations\GrantRightsRequest  $request
      * @return Operations\GrantRightsResponse
@@ -1262,7 +1304,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-podmiotom-uprawnie%C5%84-do-obs%C5%82ugi-faktur)
      *
-     * Wymagane uprawnienia: `CredentialsManage`.
+     * **Wymagane uprawnienia**: `CredentialsManage`.
      *
      * @param  ?Operations\GrantToEntitiesRequest  $request
      * @return Operations\GrantToEntitiesResponse
@@ -1354,7 +1396,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-reprezentanta-podmiotu-unijnego)
      *
-     * Wymagane uprawnienia: `VatUeManage`.
+     * **Wymagane uprawnienia**: `VatUeManage`.
      *
      * @param  ?Operations\GrantToEuEntitiesRequest  $request
      * @return Operations\GrantToEuEntitiesResponse
@@ -1451,7 +1493,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadawanie-uprawnie%C5%84-osobom-fizycznym-do-pracy-w-ksef)
      *
-     * Wymagane uprawnienia: `CredentialsManage`.
+     * **Wymagane uprawnienia**: `CredentialsManage`.
      *
      * @param  ?Operations\GrantToPersonsRequest  $request
      * @return Operations\GrantToPersonsResponse
@@ -1545,7 +1587,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-podrz%C4%99dnego)
      *
-     * Wymagane uprawnienia: `SubunitManage`.
+     * **Wymagane uprawnienia**: `SubunitManage`.
      *
      * @param  ?Operations\GrantToSubunitsRequest  $request
      * @return Operations\GrantToSubunitsResponse
@@ -1629,7 +1671,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84-podmiotowych)
      *
-     * Wymagane uprawnienia: `CredentialsManage`.
+     * **Wymagane uprawnienia**: `CredentialsManage`.
      *
      * @param  string  $permissionId
      * @return Operations\RevokeAuthorizationsResponse
@@ -1712,7 +1754,7 @@ class Permissions
      * > Więcej informacji:
      * > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84)
      *
-     * Wymagane uprawnienia: `CredentialsManage`, `VatUeManage`, `SubunitManage`.
+     * **Wymagane uprawnienia**: `CredentialsManage`, `VatUeManage`, `SubunitManage`.
      *
      * @param  string  $permissionId
      * @return Operations\RevokePermissionsResponse

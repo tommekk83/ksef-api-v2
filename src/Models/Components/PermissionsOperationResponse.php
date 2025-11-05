@@ -12,16 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class PermissionsOperationResponse
 {
     /**
-     * Numer referencyjny asynchronicznej operacji nadawania lub odbierania uprawnień.
-     *
-     * @var string $operationReferenceNumber
-     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('operationReferenceNumber')]
-    public string $operationReferenceNumber;
-
-    /**
-     * Numer referencyjny asynchronicznej operacji nadawania lub odbierania uprawnień.
+     * Numer referencyjny operacji nadania lub odbierania uprawnień.
      *
      * @var string $referenceNumber
      */
@@ -29,13 +20,11 @@ class PermissionsOperationResponse
     public string $referenceNumber;
 
     /**
-     * @param  string  $operationReferenceNumber
      * @param  string  $referenceNumber
      * @phpstan-pure
      */
-    public function __construct(string $operationReferenceNumber, string $referenceNumber)
+    public function __construct(string $referenceNumber)
     {
-        $this->operationReferenceNumber = $operationReferenceNumber;
         $this->referenceNumber = $referenceNumber;
     }
 }

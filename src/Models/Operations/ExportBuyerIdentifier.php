@@ -30,7 +30,7 @@ class ExportBuyerIdentifier
     public Components\BuyerIdentifierType $type;
 
     /**
-     * Wartość identyfikatora nabywcy.
+     * Wartość identyfikatora nabywcy (exact match).
      *
      * @var ?string $value
      */

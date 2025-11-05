@@ -20,7 +20,7 @@ class AuthenticationListItem
     public \DateTime $startDate;
 
     /**
-     * Użyta metoda uwierzytelnienia.
+     * Metoda uwierzytelnienia.
      *
      * | Wartość | Opis |
      * | --- | --- |
@@ -67,7 +67,7 @@ class AuthenticationListItem
     public StatusInfo $status;
 
     /**
-     * Numer referencyjny operacji uwierzytelnienia.
+     * Numer referencyjny sesji uwierzytelnienia.
      *
      * @var string $referenceNumber
      */

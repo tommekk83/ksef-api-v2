@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class GenerateTokenResponse
 {
     /**
-     * Numer referencyjny tokena KSeF. Za jego pomocą można sprawdzić jego status lub go unieważnić.
+     * Numer referencyjny tokena KSeF.
      *
      * @var string $referenceNumber
      */

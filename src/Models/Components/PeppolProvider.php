@@ -14,29 +14,37 @@ class PeppolProvider
     /**
      * Identyfikator dostawcy usług Peppol.
      *
-     * @var ?string $id
+     * @var string $id
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('id')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $id = null;
+    public string $id;
 
     /**
      * Nazwa dostawcy usług Peppol.
      *
-     * @var ?string $name
+     * @var string $name
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('name')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $name = null;
+    public string $name;
 
     /**
-     * @param  ?string  $id
-     * @param  ?string  $name
+     * Data rejestracji dostawcy usług Peppol w systemie.
+     *
+     * @var \DateTime $dateCreated
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('dateCreated')]
+    public \DateTime $dateCreated;
+
+    /**
+     * @param  string  $id
+     * @param  string  $name
+     * @param  \DateTime  $dateCreated
      * @phpstan-pure
      */
-    public function __construct(?string $id = null, ?string $name = null)
+    public function __construct(string $id, string $name, \DateTime $dateCreated)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->dateCreated = $dateCreated;
     }
 }

@@ -16,7 +16,7 @@
 
 Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
 
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -70,7 +70,7 @@ if ($response->sessionInvoicesResponse !== null) {
 
 Zwraca fakturę przesłaną w sesji wraz ze statusem.
 
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -123,7 +123,7 @@ if ($response->sessionInvoiceStatusResponse !== null) {
 
 Zwraca listę niepoprawnie przetworzonych faktur przesłanych w sesji wraz z ich statusami.
 
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -177,7 +177,7 @@ if ($response->sessionInvoicesResponse !== null) {
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -230,7 +230,7 @@ if ($response->res !== null) {
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
-Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -286,7 +286,7 @@ Przyjmuje zaszyfrowaną fakturę oraz jej metadane i rozpoczyna jej przetwarzani
 > Więcej informacji:
 > - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
 
-Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
 

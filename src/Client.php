@@ -11,7 +11,7 @@ namespace Intermedia\Ksef\Apiv2;
 
 
 /**
- * Client - KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc5.4-tr-20251015.4+8acd97600a19f8ffde92e22c6a7b401787af5b91)<br>
+ * Client - KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc5.6-tr-20251104.1+61498d3e9bc34e5a957e187cec891cffd849d62e)<br>
  *
  * **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
  * **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>

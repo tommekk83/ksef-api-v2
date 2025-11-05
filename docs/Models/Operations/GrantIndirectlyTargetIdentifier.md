@@ -1,6 +1,6 @@
 # GrantIndirectlyTargetIdentifier
 
-Identyfikator kontekstu klienta.
+Identyfikator kontekstu klienta. Nie przekazanie identyfikatora oznacza, że uprawnienie nadane w sposób pośredni jest typu generalnego.
 | Type | Value |
 | --- | --- |
 | Nip | 10 cyfrowy numer NIP |

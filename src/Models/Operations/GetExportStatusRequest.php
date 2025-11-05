@@ -12,7 +12,7 @@ use Intermedia\Ksef\Apiv2\Utils\SpeakeasyMetadata;
 class GetExportStatusRequest
 {
     /**
-     * Numer referencyjny operacji eksportu paczki faktur.
+     * Numer referencyjny eksportu faktur.
      *
      * @var string $referenceNumber
      */

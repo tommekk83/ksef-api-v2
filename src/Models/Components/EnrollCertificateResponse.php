@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class EnrollCertificateResponse
 {
     /**
-     * Numer referencyjny operacji przetwarzania wniosku certyfikacyjnego.
+     * Numer referencyjny wniosku certyfikacyjnego.
      *
      * @var string $referenceNumber
      */

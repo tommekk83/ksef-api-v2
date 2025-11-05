@@ -49,7 +49,7 @@ class SessionsInvoices
      *
      * Zwraca listę niepoprawnie przetworzonych faktur przesłanych w sesji wraz z ich statusami.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  ?string  $xContinuationToken
@@ -138,7 +138,7 @@ class SessionsInvoices
      *
      * Zwraca fakturę przesłaną w sesji wraz ze statusem.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  string  $invoiceReferenceNumber
@@ -218,7 +218,7 @@ class SessionsInvoices
      *
      * Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  string  $invoiceReferenceNumber
@@ -295,7 +295,7 @@ class SessionsInvoices
      *
      * Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  ?string  $xContinuationToken
@@ -384,7 +384,7 @@ class SessionsInvoices
      *
      * Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  string  $ksefNumber
@@ -464,7 +464,7 @@ class SessionsInvoices
      * > Więcej informacji:
      * > - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
      *
-     * Wymagane uprawnienia: `InvoiceWrite`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
      *
      * @param  string  $referenceNumber
      * @param  ?Operations\SendOnlineRequestBody  $requestBody

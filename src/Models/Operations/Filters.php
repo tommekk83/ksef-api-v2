@@ -40,7 +40,7 @@ class Filters
     public ExportDateRange $dateRange;
 
     /**
-     * Numer KSeF faktury.
+     * Numer KSeF faktury (exact match).
      *
      * @var ?string $ksefNumber
      */
@@ -49,7 +49,7 @@ class Filters
     public ?string $ksefNumber = null;
 
     /**
-     * Numer faktury nadany przez wystawcę.
+     * Numer faktury nadany przez wystawcę (exact match).
      *
      * @var ?string $invoiceNumber
      */
@@ -68,7 +68,7 @@ class Filters
     public ?ExportAmount $amount = null;
 
     /**
-     * Nip sprzedawcy.
+     * Nip sprzedawcy (exact match).
      *
      * @var ?string $sellerNip
      */

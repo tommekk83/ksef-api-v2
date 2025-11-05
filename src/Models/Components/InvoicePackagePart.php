@@ -36,7 +36,10 @@ class InvoicePackagePart
     public string $method;
 
     /**
-     * Adres URL, pod który należy wysłać żądanie pobrania.
+     * Adres URL, pod który należy wysłać żądanie pobrania części paczki.
+     *
+     * Link jest generowany dynamicznie w momencie odpytania o status operacji eksportu.
+     * Nie podlega limitom API i nie wymaga przesyłania tokenu dostępowego przy pobraniu.
      *
      * @var string $url
      */
@@ -76,7 +79,9 @@ class InvoicePackagePart
     public string $encryptedPartHash;
 
     /**
-     * Moment wygaśnięcia linku do pobrania części.
+     * Data i godzina wygaśnięcia linku umożliwiającego pobranie części paczki.
+     *
+     * Po upływie tego momentu link przestaje być aktywny.
      *
      * @var \DateTime $expirationDate
      */

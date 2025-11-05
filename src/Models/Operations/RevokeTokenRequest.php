@@ -12,7 +12,7 @@ use Intermedia\Ksef\Apiv2\Utils\SpeakeasyMetadata;
 class RevokeTokenRequest
 {
     /**
-     * Numer referencyjny tokena do unieważeniania.
+     * Numer referencyjny tokena KSeF.
      *
      * @var string $referenceNumber
      */

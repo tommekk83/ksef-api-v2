@@ -10,7 +10,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
 /**
- * GrantIndirectlyTargetIdentifier - Identyfikator kontekstu klienta.
+ * GrantIndirectlyTargetIdentifier - Identyfikator kontekstu klienta. Nie przekazanie identyfikatora oznacza, że uprawnienie nadane w sposób pośredni jest typu generalnego.
  *
  * | Type | Value |
  * | --- | --- |

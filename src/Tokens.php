@@ -126,6 +126,13 @@ class Tokens
     /**
      * Pobranie listy wygenerowanych tokenów
      *
+     *
+     * **Sortowanie:**
+     *
+     * - dateCreated (Desc)
+     *
+     *
+     *
      * @param  ?Operations\GetTokenListRequest  $request
      * @return Operations\GetTokenListResponse
      * @throws \Intermedia\Ksef\Apiv2\Models\Errors\APIException
