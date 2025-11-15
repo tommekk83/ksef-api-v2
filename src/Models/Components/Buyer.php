@@ -15,6 +15,13 @@ class Buyer
     /**
      * Identyfikator nabywcy.
      *
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | VatUe | Identyfikator VAT UE podmiotu unijnego |
+     * | Other | Inny identyfikator|
+     * | None  | Brak identyfikatora nabywcy |
+     *
      * @var Identifier $identifier
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('identifier')]

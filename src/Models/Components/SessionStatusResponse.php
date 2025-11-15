@@ -26,7 +26,8 @@ class SessionStatusResponse
      * | 420 | Przekroczony limit faktur w sesji | - |
      * | 430 | Błąd dekompresji pierwotnego archiwum | - |
      * | 435 | Błąd odszyfrowania zaszyfrowanych części archiwum | - |
-     * | 440 | Sesja anulowana, przekroczono czas wysyłki | - |
+     * | 440 | Sesja anulowana | Przekroczono czas wysyłki |
+     * | 440 | Sesja anulowana | Nie przesłano faktur |
      * | 445 | Błąd weryfikacji, brak poprawnych faktur | - |
      * | 500 | Nieznany błąd ({statusCode}) | - |
      *
@@ -37,7 +38,7 @@ class SessionStatusResponse
      * | 170 | Sesja interaktywna zamknięta | - |
      * | 200 | Sesja interaktywna przetworzona pomyślnie | - |
      * | 415 | Błąd odszyfrowania dostarczonego klucza | - |
-     * | 440 | Sesja anulowana, nie przesłano faktur | - |
+     * | 440 | Sesja anulowana | Nie przesłano faktur |
      * | 445 | Błąd weryfikacji, brak poprawnych faktur | - |
      * | * | description missing | - |
      *

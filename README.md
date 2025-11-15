@@ -12,7 +12,7 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
 <!-- Start Summary [summary] -->
 ## Summary
 
-KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc5.6-tr-20251104.1+61498d3e9bc34e5a957e187cec891cffd849d62e)<br>
+KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc5.7-tr-20251115.1+12de7e512c6dede0af882fee4f7e52fc04590ab4)<br>
 **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
 **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
 **Rozszerzona dokumentacja API:** [ksef-docs](https://github.com/CIRFMF/ksef-docs/tree/main)

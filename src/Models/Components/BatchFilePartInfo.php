@@ -20,14 +20,6 @@ class BatchFilePartInfo
     public int $ordinalNumber;
 
     /**
-     * Nazwa części pliku paczki.
-     *
-     * @var string $fileName
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('fileName')]
-    public string $fileName;
-
-    /**
      * Rozmiar zaszyfrowanej części pliku paczki w bajtach.
      *
      * @var int $fileSize
@@ -44,17 +36,27 @@ class BatchFilePartInfo
     public string $fileHash;
 
     /**
+     * Nazwa części pliku paczki.
+     *
+     * @var ?string $fileName
+     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('fileName')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?string $fileName = null;
+
+    /**
      * @param  int  $ordinalNumber
-     * @param  string  $fileName
      * @param  int  $fileSize
      * @param  string  $fileHash
+     * @param  ?string  $fileName
      * @phpstan-pure
      */
-    public function __construct(int $ordinalNumber, string $fileName, int $fileSize, string $fileHash)
+    public function __construct(int $ordinalNumber, int $fileSize, string $fileHash, ?string $fileName = null)
     {
         $this->ordinalNumber = $ordinalNumber;
-        $this->fileName = $fileName;
         $this->fileSize = $fileSize;
         $this->fileHash = $fileHash;
+        $this->fileName = $fileName;
     }
 }

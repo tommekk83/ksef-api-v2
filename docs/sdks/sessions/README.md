@@ -334,7 +334,6 @@ $request = new Operations\OpenBatchSessionRequest(
         fileParts: [
             new Components\BatchFilePartInfo(
                 ordinalNumber: 1,
-                fileName: '92cca5be-7f37-4d36-98bb-1f5369841038.zip.aes',
                 fileSize: 16048,
                 fileHash: '23ZyDAN0H/+yhC/En2xbNfF0tajAWSfejDaXD7fc2AE=',
             ),

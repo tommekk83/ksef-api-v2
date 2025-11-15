@@ -25,6 +25,7 @@ class PermissionsOperationStatusResponse
      * | 440 | Operacja niedozwolona dla wskazanych powiązań identyfikatorów | - |
      * | 450 | Operacja niedozwolona dla wskazanego identyfikatora lub jego typu | - |
      * | 500 | Nieznany błąd | - |
+     * | 550 | Operacja została anulowana przez system | Przetwarzanie zostało przerwane z przyczyn wewnętrznych systemu. Spróbuj ponownie później. |
      *
      * @var StatusInfo $status
      */

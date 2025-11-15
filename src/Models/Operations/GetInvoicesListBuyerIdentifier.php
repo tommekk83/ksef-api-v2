@@ -9,7 +9,16 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
 use Intermedia\Ksef\Apiv2\Models\Components;
-/** GetInvoicesListBuyerIdentifier - Identyfikator nabywcy. */
+/**
+ * GetInvoicesListBuyerIdentifier - Identyfikator nabywcy.
+ *
+ * | Type | Value |
+ * | --- | --- |
+ * | Nip | 10 cyfrowy numer NIP |
+ * | VatUe | Identyfikator VAT UE podmiotu unijnego. |
+ * | Other | Inny identyfikator|
+ * | None  | Brak identyfikatora nabywcy |
+ */
 class GetInvoicesListBuyerIdentifier
 {
     /**
@@ -18,9 +27,9 @@ class GetInvoicesListBuyerIdentifier
      * | Wartość | Opis |
      * | --- | --- |
      * | None | Brak identyfikatora nabywcy |
-     * | Other | Inny |
-     * | Nip | NIP |
-     * | VatUe | VAT UE |
+     * | Other | Inny identyfikator |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | VatUe | Identyfikator VAT UE podmiotu unijnego |
      *
      *
      * @var Components\BuyerIdentifierType $type

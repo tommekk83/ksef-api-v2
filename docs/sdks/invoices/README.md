@@ -163,7 +163,7 @@ Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawi
 Wymagane jest przekazanie informacji o szyfrowaniu w polu <b>Encryption</b>, które służą do zabezpieczenia przygotowanej paczki z fakturami.
 Maksymalnie można uruchomić 10 równoczesnych eksportów w zalogowanym kontekście.
 
-System pobiera faktury rosnąco według daty określonej w filtrze (Invoicing, Issue, PermanentStorage) i dodaje je do paczki aż do osiągnięcia jednego z poniższych limitów:
+System pobiera faktury rosnąco według daty określonej w filtrze (Invoicing, Issue, PermanentStorage) i dodaje faktury(nazwa pliku: <b>{ksefNumber}.xml</b>) do paczki aż do osiągnięcia jednego z poniższych limitów:
 * Limit liczby faktur: 10 000 sztuk
 * Limit rozmiaru danych(skompresowanych): 1GB
 

@@ -3,9 +3,9 @@
 | Wartość | Opis |
 | --- | --- |
 | None | Brak identyfikatora nabywcy |
-| Other | Inny |
-| Nip | NIP |
-| VatUe | VAT UE |
+| Other | Inny identyfikator |
+| Nip | 10 cyfrowy numer NIP |
+| VatUe | Identyfikator VAT UE podmiotu unijnego |
 
 
 

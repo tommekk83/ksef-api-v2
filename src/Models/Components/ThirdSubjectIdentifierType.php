@@ -13,9 +13,9 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
  * | Wartość | Opis |
  *
  * | --- | --- |
- * | Nip | Nip |
- * | InternalId | Identyfikator wewnętrzny |
- * | VatUe | VAT UE |
+ * | Nip | 10 cyfrowy numer NIP |
+ * | InternalId | Identyfikator wewnętrzny, składający się z numeru NIP i 5 cyfr. |
+ * | VatUe | Identyfikator VAT UE podmiotu unijnego |
  * | Other | Inny identyfikator |
  * | None | Brak identyfikatora podmiotu trzeciego |
  *

@@ -29,6 +29,7 @@ class CertificateEnrollmentStatusResponse
      * | 400 | Wniosek odrzucony | Klucz publiczny został już certyfikowany przez inny podmiot. |
      * | 400 | Wniosek odrzucony | Osiągnięto dopuszczalny limit posiadanych certyfikatów. |
      * | 500 | Nieznany błąd | - |
+     * | 550 | Operacja została anulowana przez system | Przetwarzanie zostało przerwane z przyczyn wewnętrznych systemu. Spróbuj ponownie |
      *
      * @var StatusInfo $status
      */

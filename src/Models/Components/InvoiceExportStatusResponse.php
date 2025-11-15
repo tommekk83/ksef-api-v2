@@ -22,6 +22,7 @@ class InvoiceExportStatusResponse
      * | 210 | Eksport faktur wygasł i nie jest już dostępny do pobrania | - |
      * | 415 | Błąd odszyfrowania dostarczonego klucza  | - |
      * | 500 | Nieznany błąd ({statusCode}) | - |
+     * | 550 | Operacja została anulowana przez system | Przetwarzanie zostało przerwane z przyczyn wewnętrznych systemu. Spróbuj ponownie |
      *
      * @var StatusInfo $status
      */

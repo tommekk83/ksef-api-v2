@@ -18,8 +18,8 @@ class GetInvoicesListRequestBody
      * Określa kontekst, w jakim przeszukiwane są dane.
      * | Wartość | Opis |
      * | --- | --- |
-     * | Subject1 | Podmiot 1 |
-     * | Subject2 | Podmiot 2 |
+     * | Subject1 | Podmiot 1 - sprzedawca |
+     * | Subject2 | Podmiot 2 - nabywca |
      * | Subject3 | Podmiot 3 |
      * | SubjectAuthorized | Podmiot upoważniony |
      *
@@ -78,6 +78,13 @@ class GetInvoicesListRequestBody
 
     /**
      * Identyfikator nabywcy.
+     *
+     * | Type | Value |
+     * | --- | --- |
+     * | Nip | 10 cyfrowy numer NIP |
+     * | VatUe | Identyfikator VAT UE podmiotu unijnego. |
+     * | Other | Inny identyfikator|
+     * | None  | Brak identyfikatora nabywcy |
      *
      * @var ?GetInvoicesListBuyerIdentifier $buyerIdentifier
      */
