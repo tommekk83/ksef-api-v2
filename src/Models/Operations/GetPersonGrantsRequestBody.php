@@ -17,7 +17,7 @@ class GetPersonGrantsRequestBody
      * | Type | Value |
      * | --- | --- |
      * | PermissionsInCurrentContext | Lista uprawnień obowiązujących w bieżącym kontekście |
-     * | PermissionsGrantedInCurrentContext | Lista uprawmoeń nadanych w bieżącym kontekście |
+     * | PermissionsGrantedInCurrentContext | Lista uprawnień nadanych w bieżącym kontekście |
      *
      * @var Components\PersonPermissionsQueryType $queryType
      */

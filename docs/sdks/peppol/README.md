@@ -1,5 +1,4 @@
 # Peppol
-(*peppol*)
 
 ## Overview
 

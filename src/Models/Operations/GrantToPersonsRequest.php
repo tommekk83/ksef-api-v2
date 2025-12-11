@@ -44,15 +44,27 @@ class GrantToPersonsRequest
     public string $description;
 
     /**
+     * Dane podmiotu, któremu nadawane są uprawnienia.
+     *
+     * @var ?GrantToPersonsSubjectDetails $subjectDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\GrantToPersonsSubjectDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?GrantToPersonsSubjectDetails $subjectDetails = null;
+
+    /**
      * @param  GrantToPersonsSubjectIdentifier  $subjectIdentifier
      * @param  array<Components\PersonPermissionType>  $permissions
      * @param  string  $description
+     * @param  ?GrantToPersonsSubjectDetails  $subjectDetails
      * @phpstan-pure
      */
-    public function __construct(GrantToPersonsSubjectIdentifier $subjectIdentifier, array $permissions, string $description)
+    public function __construct(GrantToPersonsSubjectIdentifier $subjectIdentifier, array $permissions, string $description, ?GrantToPersonsSubjectDetails $subjectDetails = null)
     {
         $this->subjectIdentifier = $subjectIdentifier;
         $this->permissions = $permissions;
         $this->description = $description;
+        $this->subjectDetails = $subjectDetails;
     }
 }

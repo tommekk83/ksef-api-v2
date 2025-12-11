@@ -12,7 +12,7 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
 <!-- Start Summary [summary] -->
 ## Summary
 
-KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc5.7-tr-20251115.1+12de7e512c6dede0af882fee4f7e52fc04590ab4)<br>
+KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc6.0-tr-20251203.4+73f8444dcd24023ccb66120a159a5f89e203ac4a)<br>
 **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
 **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
 **Rozszerzona dokumentacja API:** [ksef-docs](https://github.com/CIRFMF/ksef-docs/tree/main)
@@ -139,7 +139,7 @@ if ($response->authenticationListResponse !== null) {
 <details open>
 <summary>Available methods</summary>
 
-### [auth](docs/sdks/auth/README.md)
+### [Auth](docs/sdks/auth/README.md)
 
 * [getCurrentSessions](docs/sdks/auth/README.md#getcurrentsessions) - Pobranie listy aktywnych sesji
 * [revokeCurrentSession](docs/sdks/auth/README.md#revokecurrentsession) - Unieważnienie aktualnej sesji uwierzytelnienia
@@ -151,7 +151,7 @@ if ($response->authenticationListResponse !== null) {
 * [redeemToken](docs/sdks/auth/README.md#redeemtoken) - Pobranie tokenów dostępowych
 * [refreshToken](docs/sdks/auth/README.md#refreshtoken) - Odświeżenie tokena dostępowego
 
-### [certificates](docs/sdks/certificates/README.md)
+### [Certificates](docs/sdks/certificates/README.md)
 
 * [getLimits](docs/sdks/certificates/README.md#getlimits) - Pobranie danych o limitach certyfikatów
 * [getEnrollmentData](docs/sdks/certificates/README.md#getenrollmentdata) - Pobranie danych do wniosku certyfikacyjnego
@@ -161,24 +161,24 @@ if ($response->authenticationListResponse !== null) {
 * [revoke](docs/sdks/certificates/README.md#revoke) - Unieważnienie certyfikatu
 * [getList](docs/sdks/certificates/README.md#getlist) - Pobranie listy metadanych certyfikatów
 
-### [invoices](docs/sdks/invoices/README.md)
+### [Invoices](docs/sdks/invoices/README.md)
 
 * [getByKsefNumber](docs/sdks/invoices/README.md#getbyksefnumber) - Pobranie faktury po numerze KSeF
 * [getList](docs/sdks/invoices/README.md#getlist) - Pobranie listy metadanych faktur
 * [export](docs/sdks/invoices/README.md#export) - Eksport paczki faktur
 * [getExportStatus](docs/sdks/invoices/README.md#getexportstatus) - Pobranie statusu eksportu paczki faktur
 
-### [limits](docs/sdks/limits/README.md)
+### [Limits](docs/sdks/limits/README.md)
 
 * [getContext](docs/sdks/limits/README.md#getcontext) - Pobranie limitów dla bieżącego kontekstu
 * [getSubject](docs/sdks/limits/README.md#getsubject) - Pobranie limitów dla bieżącego podmiotu
 * [getApiRate](docs/sdks/limits/README.md#getapirate) - Pobranie aktualnie obowiązujących limitów API
 
-### [peppol](docs/sdks/peppol/README.md)
+### [Peppol](docs/sdks/peppol/README.md)
 
 * [listProviders](docs/sdks/peppol/README.md#listproviders) - Pobranie listy dostawców usług Peppol
 
-### [permissions](docs/sdks/permissions/README.md)
+### [Permissions](docs/sdks/permissions/README.md)
 
 * [grantToPersons](docs/sdks/permissions/README.md#granttopersons) - Nadanie osobom fizycznym uprawnień do pracy w KSeF
 * [grantToEntities](docs/sdks/permissions/README.md#granttoentities) - Nadanie podmiotom uprawnień do obsługi faktur
@@ -199,11 +199,11 @@ if ($response->authenticationListResponse !== null) {
 * [getAuthorizationsGrants](docs/sdks/permissions/README.md#getauthorizationsgrants) - Pobranie listy uprawnień podmiotowych do obsługi faktur
 * [getEuEntityGrants](docs/sdks/permissions/README.md#geteuentitygrants) - Pobranie listy uprawnień administratorów lub reprezentantów podmiotów unijnych uprawnionych do samofakturowania
 
-### [security](docs/sdks/security/README.md)
+### [Security](docs/sdks/security/README.md)
 
 * [getPublicKeyCertificates](docs/sdks/security/README.md#getpublickeycertificates) - Pobranie certyfikatów
 
-### [sessions](docs/sdks/sessions/README.md)
+### [Sessions](docs/sdks/sessions/README.md)
 
 * [getList](docs/sdks/sessions/README.md#getlist) - Pobranie listy sesji
 * [getStatus](docs/sdks/sessions/README.md#getstatus) - Pobranie statusu sesji
@@ -213,7 +213,7 @@ if ($response->authenticationListResponse !== null) {
 * [openBatch](docs/sdks/sessions/README.md#openbatch) - Otwarcie sesji wsadowej
 * [closeBatch](docs/sdks/sessions/README.md#closebatch) - Zamknięcie sesji wsadowej
 
-#### [sessions->invoices](docs/sdks/sessionsinvoices/README.md)
+#### [Sessions.Invoices](docs/sdks/sessionsinvoices/README.md)
 
 * [getList](docs/sdks/sessionsinvoices/README.md#getlist) - Pobranie faktur sesji
 * [getStatus](docs/sdks/sessionsinvoices/README.md#getstatus) - Pobranie statusu faktury z sesji
@@ -222,7 +222,7 @@ if ($response->authenticationListResponse !== null) {
 * [getUpo](docs/sdks/sessionsinvoices/README.md#getupo) - Pobranie UPO faktury z sesji na podstawie numeru referencyjnego faktury
 * [sendOnline](docs/sdks/sessionsinvoices/README.md#sendonline) - Wysłanie faktury
 
-### [tokens](docs/sdks/tokens/README.md)
+### [Tokens](docs/sdks/tokens/README.md)
 
 * [generate](docs/sdks/tokens/README.md#generate) - Wygenerowanie nowego tokena
 * [getList](docs/sdks/tokens/README.md#getlist) - Pobranie listy wygenerowanych tokenów

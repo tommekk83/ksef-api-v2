@@ -42,15 +42,27 @@ class GrantToEuEntitiesRequest
     public string $description;
 
     /**
+     * Dane podmiotu, któremu nadawane są uprawnienia.
+     *
+     * @var ?GrantToEuEntitiesSubjectDetails $subjectDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\GrantToEuEntitiesSubjectDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?GrantToEuEntitiesSubjectDetails $subjectDetails = null;
+
+    /**
      * @param  GrantToEuEntitiesSubjectIdentifier  $subjectIdentifier
      * @param  array<Components\EuEntityPermissionType>  $permissions
      * @param  string  $description
+     * @param  ?GrantToEuEntitiesSubjectDetails  $subjectDetails
      * @phpstan-pure
      */
-    public function __construct(GrantToEuEntitiesSubjectIdentifier $subjectIdentifier, array $permissions, string $description)
+    public function __construct(GrantToEuEntitiesSubjectIdentifier $subjectIdentifier, array $permissions, string $description, ?GrantToEuEntitiesSubjectDetails $subjectDetails = null)
     {
         $this->subjectIdentifier = $subjectIdentifier;
         $this->permissions = $permissions;
         $this->description = $description;
+        $this->subjectDetails = $subjectDetails;
     }
 }

@@ -46,15 +46,31 @@ class GetInvoicesListDateRange
     public ?\DateTime $to = null;
 
     /**
+     * Określa, czy system ma ograniczyć filtrowanie (zakres dateRange.to) do wartości `PermanentStorageHwmDate`.
+     *
+     *
+     * * Dotyczy wyłącznie zapytań z `dateType = PermanentStorage`,  
+     * * Gdy `true`, system ogranicza filtrowanie tak, aby wartość `dateRange.to` nie przekraczała wartości `PermanentStorageHwmDate`,  
+     * * Gdy `null` lub `false`, filtrowanie może wykraczać poza `PermanentStorageHwmDate`.
+     *
+     * @var ?bool $restrictToPermanentStorageHwmDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('restrictToPermanentStorageHwmDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?bool $restrictToPermanentStorageHwmDate = null;
+
+    /**
      * @param  Components\InvoiceQueryDateType  $dateType
      * @param  \DateTime  $from
      * @param  ?\DateTime  $to
+     * @param  ?bool  $restrictToPermanentStorageHwmDate
      * @phpstan-pure
      */
-    public function __construct(Components\InvoiceQueryDateType $dateType, \DateTime $from, ?\DateTime $to = null)
+    public function __construct(Components\InvoiceQueryDateType $dateType, \DateTime $from, ?\DateTime $to = null, ?bool $restrictToPermanentStorageHwmDate = null)
     {
         $this->dateType = $dateType;
         $this->from = $from;
         $this->to = $to;
+        $this->restrictToPermanentStorageHwmDate = $restrictToPermanentStorageHwmDate;
     }
 }

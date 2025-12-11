@@ -50,7 +50,7 @@ class Invoices
      * Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
      * Wymagane jest przekazanie informacji o szyfrowaniu w polu <b>Encryption</b>, które służą do zabezpieczenia przygotowanej paczki z fakturami.
      * Maksymalnie można uruchomić 10 równoczesnych eksportów w zalogowanym kontekście.
-     *
+     *             
      * System pobiera faktury rosnąco według daty określonej w filtrze (Invoicing, Issue, PermanentStorage) i dodaje faktury(nazwa pliku: <b>{ksefNumber}.xml</b>) do paczki aż do osiągnięcia jednego z poniższych limitów:
      * * Limit liczby faktur: 10 000 sztuk
      * * Limit rozmiaru danych(skompresowanych): 1GB
@@ -101,7 +101,7 @@ class Invoices
         $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
 
         $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '429', '4XX', '5XX'])) {
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
@@ -134,7 +134,7 @@ class Invoices
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '429', '4XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
@@ -179,7 +179,7 @@ class Invoices
         $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
 
         $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '429', '4XX', '5XX'])) {
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
@@ -209,7 +209,7 @@ class Invoices
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '429', '4XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
@@ -312,7 +312,7 @@ class Invoices
      * Limit techniczny: ≤ 10 000 rekordów na zestaw filtrów, po jego osiągnięciu <b>isTruncated = true</b> i należy ponownie ustawić <b>dateRange</b>, używając ostatniej daty z wyników (tj. ustawić from/to - w zależności od kierunku sortowania, od daty ostatniego zwróconego rekordu) oraz wyzerować <b>pageOffset</b>.
      *
      * `Do scenariusza przyrostowego należy używać daty PermanentStorage oraz kolejność sortowania Asc`.
-     *
+     *             
      * <b>Scenariusz pobierania przyrostowego (skrót):</b>
      * * Gdy <b>hasMore = false</b>, należy zakończyć,
      * * Gdy <b>hasMore = true</b> i <b>isTruncated = false</b>, należy zwiększyć <b>pageOffset</b>,
@@ -368,7 +368,7 @@ class Invoices
         $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
 
         $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '429', '4XX', '5XX'])) {
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
@@ -401,7 +401,7 @@ class Invoices
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '429', '4XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);

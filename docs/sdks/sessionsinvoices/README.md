@@ -1,5 +1,4 @@
-# SessionsInvoices
-(*sessions->invoices*)
+# Sessions.Invoices
 
 ## Overview
 

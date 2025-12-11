@@ -106,6 +106,26 @@ class PersonalPermission
     public ?PersonalPermissionTargetIdentifier $targetIdentifier = null;
 
     /**
+     * Dane osoby, której dotyczy uprawnienie.
+     *
+     * @var ?PersonalPermissionSubjectPersonDetails $subjectPersonDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectPersonDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonalPermissionSubjectPersonDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?PersonalPermissionSubjectPersonDetails $subjectPersonDetails = null;
+
+    /**
+     * Dane podmiotu, którego dotyczy uprawnienie.
+     *
+     * @var ?PersonalPermissionSubjectEntityDetails $subjectEntityDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectEntityDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\PersonalPermissionSubjectEntityDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?PersonalPermissionSubjectEntityDetails $subjectEntityDetails = null;
+
+    /**
      * @param  string  $id
      * @param  PersonalPermissionScope  $permissionScope
      * @param  string  $description
@@ -115,9 +135,11 @@ class PersonalPermission
      * @param  ?PersonalPermissionContextIdentifier  $contextIdentifier
      * @param  ?PersonalPermissionAuthorizedIdentifier  $authorizedIdentifier
      * @param  ?PersonalPermissionTargetIdentifier  $targetIdentifier
+     * @param  ?PersonalPermissionSubjectPersonDetails  $subjectPersonDetails
+     * @param  ?PersonalPermissionSubjectEntityDetails  $subjectEntityDetails
      * @phpstan-pure
      */
-    public function __construct(string $id, PersonalPermissionScope $permissionScope, string $description, PermissionState $permissionState, \DateTime $startDate, bool $canDelegate, ?PersonalPermissionContextIdentifier $contextIdentifier = null, ?PersonalPermissionAuthorizedIdentifier $authorizedIdentifier = null, ?PersonalPermissionTargetIdentifier $targetIdentifier = null)
+    public function __construct(string $id, PersonalPermissionScope $permissionScope, string $description, PermissionState $permissionState, \DateTime $startDate, bool $canDelegate, ?PersonalPermissionContextIdentifier $contextIdentifier = null, ?PersonalPermissionAuthorizedIdentifier $authorizedIdentifier = null, ?PersonalPermissionTargetIdentifier $targetIdentifier = null, ?PersonalPermissionSubjectPersonDetails $subjectPersonDetails = null, ?PersonalPermissionSubjectEntityDetails $subjectEntityDetails = null)
     {
         $this->id = $id;
         $this->permissionScope = $permissionScope;
@@ -128,5 +150,7 @@ class PersonalPermission
         $this->contextIdentifier = $contextIdentifier;
         $this->authorizedIdentifier = $authorizedIdentifier;
         $this->targetIdentifier = $targetIdentifier;
+        $this->subjectPersonDetails = $subjectPersonDetails;
+        $this->subjectEntityDetails = $subjectEntityDetails;
     }
 }

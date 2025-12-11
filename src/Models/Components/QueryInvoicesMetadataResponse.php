@@ -37,15 +37,37 @@ class QueryInvoicesMetadataResponse
     public array $invoices;
 
     /**
+     * Dotyczy wyłącznie zapytań filtrowanych po typie daty <b>PermanentStorage</b>.
+     *
+     * Jeśli zapytanie dotyczyło najnowszego okresu, wartość ta może być wartością nieznacznie skorygowaną względem górnej granicy podanej w warunkach zapytania.
+     * Dla okresów starszych, będzie to zgodne z warunkami zapytania. 
+     *
+     * Wartość jest stała dla wszystkich stron tego samego zapytania
+     * i nie zależy od paginacji ani sortowania.
+     *
+     * System gwarantuje, że dane poniżej tej wartości są spójne i kompletne.
+     * Ponowne zapytania obejmujące zakresem dane poniżej tego kroczącego znacznika czasu nie zwrócą w przyszłości innych wyników (np.dodatkowych faktur). 
+     *
+     * Dla dateType = Issue lub Invoicing – null.
+     *
+     * @var ?\DateTime $permanentStorageHwmDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('permanentStorageHwmDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?\DateTime $permanentStorageHwmDate = null;
+
+    /**
      * @param  bool  $hasMore
      * @param  bool  $isTruncated
      * @param  array<InvoiceMetadata>  $invoices
+     * @param  ?\DateTime  $permanentStorageHwmDate
      * @phpstan-pure
      */
-    public function __construct(bool $hasMore, bool $isTruncated, array $invoices)
+    public function __construct(bool $hasMore, bool $isTruncated, array $invoices, ?\DateTime $permanentStorageHwmDate = null)
     {
         $this->hasMore = $hasMore;
         $this->isTruncated = $isTruncated;
         $this->invoices = $invoices;
+        $this->permanentStorageHwmDate = $permanentStorageHwmDate;
     }
 }

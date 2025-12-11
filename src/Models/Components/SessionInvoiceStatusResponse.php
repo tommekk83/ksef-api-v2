@@ -47,26 +47,26 @@ class SessionInvoiceStatusResponse
      * Status faktury.
      *
      *
-     * | Code | Description | Details |
-     * | --- | --- | --- |
-     * | 100 | Faktura przyjęta do dalszego przetwarzania | - |
-     * | 150 | Trwa przetwarzanie | - |
-     * | 200 | Sukces | - |
-     * | 405 | Przetwarzanie anulowane z powodu błędu sesji | - |
-     * | 410 | Nieprawidłowy zakres uprawnień | - |
-     * | 415 | Brak możliwości wysyłania faktury z załącznikiem | - |
-     * | 430 | Błąd weryfikacji pliku faktury | - |
-     * | 435 | Błąd odszyfrowania pliku | - |
-     * | 440 | Duplikat faktury | - |
-     * | 450 | Błąd weryfikacji semantyki dokumentu faktury | - |
-     * | 500 | Nieznany błąd ({statusCode}) | - |
-     * | 550 | Operacja została anulowana przez system | Przetwarzanie zostało przerwane z przyczyn wewnętrznych systemu. Spróbuj ponownie |
+     * | Code | Description | Details | Extensions |
+     * | --- | --- | --- | ---|
+     * | 100 | Faktura przyjęta do dalszego przetwarzania | - | - |
+     * | 150 | Trwa przetwarzanie | - | - |
+     * | 200 | Sukces | - | - |
+     * | 405 | Przetwarzanie anulowane z powodu błędu sesji | - | - |
+     * | 410 | Nieprawidłowy zakres uprawnień | - |  - |
+     * | 415 | Brak możliwości wysyłania faktury z załącznikiem | - | - |
+     * | 430 | Błąd weryfikacji pliku faktury | - | -  |
+     * | 435 | Błąd odszyfrowania pliku | - | - |
+     * | 440 | Duplikat faktury | - | 'originalSessionReferenceNumber', 'originalKsefNumber'|
+     * | 450 | Błąd weryfikacji semantyki dokumentu faktury | - | - |
+     * | 500 | Nieznany błąd ({statusCode}) | - | - |
+     * | 550 | Operacja została anulowana przez system | Przetwarzanie zostało przerwane z przyczyn wewnętrznych systemu. Spróbuj ponownie |- |
      *
-     * @var StatusInfo $status
+     * @var InvoiceStatusInfo $status
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('status')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\StatusInfo')]
-    public StatusInfo $status;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\InvoiceStatusInfo')]
+    public InvoiceStatusInfo $status;
 
     /**
      * Numer faktury.
@@ -149,7 +149,7 @@ class SessionInvoiceStatusResponse
      * @param  string  $referenceNumber
      * @param  string  $invoiceHash
      * @param  \DateTime  $invoicingDate
-     * @param  StatusInfo  $status
+     * @param  InvoiceStatusInfo  $status
      * @param  ?string  $invoiceNumber
      * @param  ?string  $ksefNumber
      * @param  ?string  $invoiceFileName
@@ -160,7 +160,7 @@ class SessionInvoiceStatusResponse
      * @param  ?SessionInvoiceStatusResponseInvoicingMode  $invoicingMode
      * @phpstan-pure
      */
-    public function __construct(int $ordinalNumber, string $referenceNumber, string $invoiceHash, \DateTime $invoicingDate, StatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null, ?\DateTime $upoDownloadUrlExpirationDate = null, ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode = null)
+    public function __construct(int $ordinalNumber, string $referenceNumber, string $invoiceHash, \DateTime $invoicingDate, InvoiceStatusInfo $status, ?string $invoiceNumber = null, ?string $ksefNumber = null, ?string $invoiceFileName = null, ?\DateTime $acquisitionDate = null, ?\DateTime $permanentStorageDate = null, ?string $upoDownloadUrl = null, ?\DateTime $upoDownloadUrlExpirationDate = null, ?SessionInvoiceStatusResponseInvoicingMode $invoicingMode = null)
     {
         $this->ordinalNumber = $ordinalNumber;
         $this->referenceNumber = $referenceNumber;

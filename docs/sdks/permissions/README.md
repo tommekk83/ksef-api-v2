@@ -1,5 +1,4 @@
 # Permissions
-(*permissions*)
 
 ## Overview
 
@@ -28,7 +27,7 @@
 
 Metoda pozwala na nadanie osobie wskazanej w żądaniu uprawnień do pracy w KSeF  
 w kontekście bieżącym.
-
+            
 W żądaniu określane są nadawane uprawnienia ze zbioru:  
 - **InvoiceWrite** – wystawianie faktur,  
 - **InvoiceRead** – przeglądanie faktur,  
@@ -37,7 +36,7 @@ W żądaniu określane są nadawane uprawnienia ze zbioru:
 - **Introspection** – przeglądanie historii sesji i generowanie UPO,  
 - **SubunitManage** – zarządzanie jednostkami podrzędnymi,  
 - **EnforcementOperations** – wykonywanie operacji egzekucyjnych.
-
+            
 Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.  
 Uprawnienie **EnforcementOperations** może być nadane wyłącznie wtedy,  
 gdy podmiot kontekstu ma rolę **EnforcementAuthority** (organ egzekucyjny)  
@@ -112,7 +111,7 @@ Metoda pozwala na nadanie podmiotowi wskazanemu w żądaniu uprawnień do obsłu
 W żądaniu określane są nadawane uprawnienia ze zbioru:  
 - **InvoiceWrite** – wystawianie faktur  
 - **InvoiceRead** – przeglądanie faktur  
-
+            
 Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.  
 Dla każdego uprawnienia może być ustawiona flaga **canDelegate**, mówiąca o możliwości jego dalszego przekazywania poprzez nadawanie w sposób pośredni.
 
@@ -251,13 +250,13 @@ Metoda pozwala na nadanie w sposób pośredni osobie wskazanej w żądaniu upraw
 Może to być jedna z możliwości:  
 - nadanie uprawnień generalnych – do obsługi wszystkich klientów  
 - nadanie uprawnień selektywnych – do obsługi wskazanego klienta  
-
+            
 Uprawnienie selektywne może być nadane wyłącznie wtedy, gdy klient nadał wcześniej podmiotowi bieżącego kontekstu dowolne uprawnienie z prawem do jego dalszego przekazywania (patrz [POST /api/v2/permissions/entities/grants](/docs/v2/index.html#tag/Nadawanie-uprawnien/paths/~1api~1v2~1permissions~1entities~1grants/post)).  
-
+            
 W żądaniu określane są nadawane uprawnienia ze zbioru:  
 - **InvoiceWrite** – wystawianie faktur  
 - **InvoiceRead** – przeglądanie faktur  
-
+            
 Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.
 
 > Więcej informacji:
@@ -332,15 +331,15 @@ Metoda pozwala na nadanie wskazanemu w żądaniu podmiotowi lub osobie fizycznej
   - **LocalGovernmentUnit** 
   - **VatGroupUnit**  
 - wskazanego lub utworzonego identyfikatora wewnętrznego  
-
+            
 Wraz z utworzeniem administratora jednostki podrzędnej tworzony jest identyfikator wewnętrzny składający się z numeru NIP podmiotu kontekstu logowania oraz 5 cyfr unikalnie identyfikujących jednostkę wewnętrzną.  
 W żądaniu podaje się również nazwę tej jednostki.  
-
+            
 Uprawnienia administratora jednostki podrzędnej obejmują:  
 - **CredentialsManage** – zarządzanie uprawnieniami  
-
+            
 Metoda automatycznie nadaje powyższe uprawnienie, bez konieczności podawania go w żądaniu.
-
+            
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-podrz%C4%99dnego)
 
@@ -408,19 +407,19 @@ if ($response->permissionsOperationResponse !== null) {
 Metoda pozwala na nadanie wskazanemu w żądaniu podmiotowi lub osobie fizycznej uprawnień administratora w kontekście złożonym z identyfikatora NIP podmiotu kontekstu bieżącego oraz numeru VAT UE podmiotu unijnego wskazanego w żądaniu.  
 Wraz z utworzeniem administratora podmiotu unijnego tworzony jest kontekst złożony składający się z numeru NIP podmiotu kontekstu logowania oraz wskazanego numeru identyfikacyjnego VAT UE podmiotu unijnego.  
 W żądaniu podaje się również nazwę i adres podmiotu unijnego.  
-
+            
 Jedynym sposobem identyfikacji uprawnianego jest odcisk palca certyfikatu kwalifikowanego:  
 - certyfikat podpisu elektronicznego dla osób fizycznych  
 - certyfikat pieczęci elektronicznej dla podmiotów  
-
+            
 Uprawnienia administratora podmiotu unijnego obejmują:  
 - **VatEuManage** – zarządzanie uprawnieniami w ramach podmiotu unijnego  
 - **InvoiceWrite** – wystawianie faktur  
 - **InvoiceRead** – przeglądanie faktur  
 - **Introspection** – przeglądanie historii sesji  
-
+            
 Metoda automatycznie nadaje wszystkie powyższe uprawnienia, bez konieczności ich wskazywania w żądaniu.
-
+            
 > Więcej informacji:
 > - [Nadawanie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#nadanie-uprawnie%C5%84-administratora-podmiotu-unijnego)
 
@@ -486,15 +485,15 @@ if ($response->permissionsOperationResponse !== null) {
 ## grantToEuEntities
 
 Metoda pozwala na nadanie wskazanemu w żądaniu podmiotowi lub osobie fizycznej uprawnień do wystawiania i/lub przeglądania faktur w kontekście złożonym kontekstu bieżącego.  
-
+            
 Jedynym sposobem identyfikacji uprawnianego jest odcisk palca certyfikatu kwalifikowanego:  
 - certyfikat podpisu elektronicznego dla osób fizycznych  
 - certyfikat pieczęci elektronicznej dla podmiotów  
-
+            
 W żądaniu określane są nadawane uprawnienia ze zbioru:  
 - **InvoiceWrite** – wystawianie faktur  
 - **InvoiceRead** – przeglądanie faktur  
-
+            
 Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.
 
 > Więcej informacji:
@@ -618,7 +617,7 @@ if ($response->permissionsOperationResponse !== null) {
 Metoda pozwala na odebranie uprawnienia podmiotowego o wskazanym identyfikatorze.  
 Wymagane jest wcześniejsze odczytanie uprawnień w celu uzyskania  
 identyfikatora uprawnienia, które ma zostać odebrane.
-
+            
 > Więcej informacji:
 > - [Odbieranie uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#odebranie-uprawnie%C5%84-podmiotowych)
 
@@ -1073,7 +1072,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 - Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
 - Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
 - W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
-
+ 
  > Więcej informacji:
  > - [Pobieranie listy ról](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-r%C3%B3l-podmiotu)
 
@@ -1151,7 +1150,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 - Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
 - Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
 - W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
-
+  
  > Więcej informacji:
  > - [Pobieranie listy podmiotów podrzędnych](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-podmiot%C3%B3w-podrz%C4%99dnych)
 
@@ -1252,7 +1251,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 
 
 
-**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`.
+**Wymagane uprawnienia**: `CredentialsManage`, `CredentialsRead`, `PefInvoiceWrite`.
 
 ### Example Usage
 
@@ -1338,7 +1337,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 - Przy pierwszym wywołaniu należy ustawić parametr `pageOffset = 0`.  
 - Jeżeli dostępna jest kolejna strona wyników, w odpowiedzi pojawi się flaga **`hasMore`**.  
 - W takim przypadku można wywołać zapytanie ponownie z kolejnym numerem strony.
-
+ 
  > Więcej informacji:
  > - [Pobieranie listy uprawnień](https://github.com/CIRFMF/ksef-docs/blob/main/uprawnienia.md#pobranie-listy-uprawnie%C5%84-administrator%C3%B3w-lub-reprezentant%C3%B3w-podmiot%C3%B3w-unijnych-uprawnionych-do-samofakturowania)
 

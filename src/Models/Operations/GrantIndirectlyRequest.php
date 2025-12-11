@@ -60,17 +60,29 @@ class GrantIndirectlyRequest
     public ?GrantIndirectlyTargetIdentifier $targetIdentifier = null;
 
     /**
+     * Dane podmiotu, któremu nadawane są uprawnienia.
+     *
+     * @var ?GrantIndirectlySubjectDetails $subjectDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\GrantIndirectlySubjectDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?GrantIndirectlySubjectDetails $subjectDetails = null;
+
+    /**
      * @param  GrantIndirectlySubjectIdentifier  $subjectIdentifier
      * @param  array<Components\IndirectPermissionType>  $permissions
      * @param  string  $description
      * @param  ?GrantIndirectlyTargetIdentifier  $targetIdentifier
+     * @param  ?GrantIndirectlySubjectDetails  $subjectDetails
      * @phpstan-pure
      */
-    public function __construct(GrantIndirectlySubjectIdentifier $subjectIdentifier, array $permissions, string $description, ?GrantIndirectlyTargetIdentifier $targetIdentifier = null)
+    public function __construct(GrantIndirectlySubjectIdentifier $subjectIdentifier, array $permissions, string $description, ?GrantIndirectlyTargetIdentifier $targetIdentifier = null, ?GrantIndirectlySubjectDetails $subjectDetails = null)
     {
         $this->subjectIdentifier = $subjectIdentifier;
         $this->permissions = $permissions;
         $this->description = $description;
         $this->targetIdentifier = $targetIdentifier;
+        $this->subjectDetails = $subjectDetails;
     }
 }

@@ -21,6 +21,7 @@ class InvoiceExportStatusResponse
      * | 200 | Eksport faktur zakończony sukcesem | - |
      * | 210 | Eksport faktur wygasł i nie jest już dostępny do pobrania | - |
      * | 415 | Błąd odszyfrowania dostarczonego klucza  | - |
+     * | 420 | Zakres filtrowania wykracza poza dostępny zakres danych | Parametr dateRange.from jest późniejszy niż PermanentStorageHwmDate przy włączonym restrictToPermanentStorageHwmDate. |
      * | 500 | Nieznany błąd ({statusCode}) | - |
      * | 550 | Operacja została anulowana przez system | Przetwarzanie zostało przerwane z przyczyn wewnętrznych systemu. Spróbuj ponownie |
      *

@@ -79,6 +79,23 @@ class Package
     public ?\DateTime $lastPermanentStorageDate = null;
 
     /**
+     * Dotyczy wyłącznie zapytań filtrowanych po typie daty <b>PermanentStorage</b>.
+     *
+     * Jeśli zapytanie dotyczyło najnowszego okresu, wartość ta może być wartością nieznacznie skorygowaną względem górnej granicy podanej w warunkach zapytania.
+     * Dla okresów starszych, będzie to zgodne z warunkami zapytania. 
+     *
+     * System gwarantuje, że dane poniżej tej wartości są spójne i kompletne.
+     * Ponowne zapytania obejmujące zakresem dane poniżej tego kroczącego znacznika czasu nie zwrócą w przyszłości innych wyników (np.dodatkowych faktur). 
+     *
+     * Dla dateType = Issue lub Invoicing – null.
+     *
+     * @var ?\DateTime $permanentStorageHwmDate
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('permanentStorageHwmDate')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?\DateTime $permanentStorageHwmDate = null;
+
+    /**
      * @param  int  $invoiceCount
      * @param  int  $size
      * @param  array<InvoicePackagePart>  $parts
@@ -86,9 +103,10 @@ class Package
      * @param  ?LocalDate  $lastIssueDate
      * @param  ?\DateTime  $lastInvoicingDate
      * @param  ?\DateTime  $lastPermanentStorageDate
+     * @param  ?\DateTime  $permanentStorageHwmDate
      * @phpstan-pure
      */
-    public function __construct(int $invoiceCount, int $size, array $parts, bool $isTruncated, ?LocalDate $lastIssueDate = null, ?\DateTime $lastInvoicingDate = null, ?\DateTime $lastPermanentStorageDate = null)
+    public function __construct(int $invoiceCount, int $size, array $parts, bool $isTruncated, ?LocalDate $lastIssueDate = null, ?\DateTime $lastInvoicingDate = null, ?\DateTime $lastPermanentStorageDate = null, ?\DateTime $permanentStorageHwmDate = null)
     {
         $this->invoiceCount = $invoiceCount;
         $this->size = $size;
@@ -97,5 +115,6 @@ class Package
         $this->lastIssueDate = $lastIssueDate;
         $this->lastInvoicingDate = $lastInvoicingDate;
         $this->lastPermanentStorageDate = $lastPermanentStorageDate;
+        $this->permanentStorageHwmDate = $permanentStorageHwmDate;
     }
 }

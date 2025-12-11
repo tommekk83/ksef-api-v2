@@ -18,8 +18,7 @@ class OpenBatchSessionRequest
      * Obsługiwane schematy:
      * | SystemCode | SchemaVersion | Value |
      * | --- | --- | --- |
-     * | FA (2) | 1-0E | FA |
-     * | FA (3) | 1-0E | FA |
+     * | [FA (3)](https://github.com/CIRFMF/ksef-docs/blob/main/faktury/schemy/FA/schemat_FA(3)_v1-0E.xsd) | 1-0E | FA |
      *
      *
      * @var OpenBatchSessionFormCode $formCode

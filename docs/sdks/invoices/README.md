@@ -1,5 +1,4 @@
 # Invoices
-(*invoices*)
 
 ## Overview
 
@@ -67,7 +66,7 @@ Zwraca metadane faktur spełniających filtry.
 Limit techniczny: ≤ 10 000 rekordów na zestaw filtrów, po jego osiągnięciu <b>isTruncated = true</b> i należy ponownie ustawić <b>dateRange</b>, używając ostatniej daty z wyników (tj. ustawić from/to - w zależności od kierunku sortowania, od daty ostatniego zwróconego rekordu) oraz wyzerować <b>pageOffset</b>.
 
 `Do scenariusza przyrostowego należy używać daty PermanentStorage oraz kolejność sortowania Asc`.
-
+            
 <b>Scenariusz pobierania przyrostowego (skrót):</b>
 * Gdy <b>hasMore = false</b>, należy zakończyć,
 * Gdy <b>hasMore = true</b> i <b>isTruncated = false</b>, należy zwiększyć <b>pageOffset</b>,
@@ -105,7 +104,7 @@ $requestBody = new Operations\GetInvoicesListRequestBody(
     dateRange: new Operations\GetInvoicesListDateRange(
         dateType: Components\InvoiceQueryDateType::PermanentStorage,
         from: Utils\Utils::parseDateTime('2025-08-28T09:22:13.388+00:00'),
-        to: Utils\Utils::parseDateTime('2025-09-28T09:22:13.388+00:00'),
+        to: Utils\Utils::parseDateTime('2025-09-28T09:24:13.388+00:00'),
     ),
     amount: new Operations\GetInvoicesListAmount(
         type: Components\AmountType::Brutto,
@@ -162,7 +161,7 @@ if ($response->queryInvoicesMetadataResponse !== null) {
 Rozpoczyna asynchroniczny proces wyszukiwania faktur w systemie KSeF na podstawie przekazanych filtrów oraz przygotowania ich w formie zaszyfrowanej paczki.
 Wymagane jest przekazanie informacji o szyfrowaniu w polu <b>Encryption</b>, które służą do zabezpieczenia przygotowanej paczki z fakturami.
 Maksymalnie można uruchomić 10 równoczesnych eksportów w zalogowanym kontekście.
-
+            
 System pobiera faktury rosnąco według daty określonej w filtrze (Invoicing, Issue, PermanentStorage) i dodaje faktury(nazwa pliku: <b>{ksefNumber}.xml</b>) do paczki aż do osiągnięcia jednego z poniższych limitów:
 * Limit liczby faktur: 10 000 sztuk
 * Limit rozmiaru danych(skompresowanych): 1GB
@@ -204,15 +203,16 @@ $sdk = Apiv2\Client::builder()
 
 $request = new Operations\ExportRequest(
     encryption: new Operations\ExportEncryption(
-        encryptedSymmetricKey: 'Rk1Qb1VhVjMyQ3NxQ1h1WlVtZUdHcDJSZ0pTbE5IbWQ=',
+        encryptedSymmetricKey: 'bdUVjqLj+y2q6aBUuLxxXYAMqeDuIBRTyr+hB96DaWKaGzuVHw9p+Nk9vhzgF/Q5cavK2k6eCh6SdsrWI0s9mFFj4A4UJtsyD8Dn3esLfUZ5A1juuG3q3SBi/XOC/+9W+0T/KdwdE393mbiUNyx1K/0bw31vKJL0COeJIDP7usAMDl42/H1TNvkjk+8iZ80V0qW7D+RZdz+tdiY1xV0f2mfgwJ46V0CpZ+sB9UAssRj+eVffavJ0TOg2b5JaBxE8MCAvrF6rO5K4KBjUmoy7PP7g1qIbm8xI2GO0KnfPOO5OWj8rsotRwBgu7x19Ine3qYUvuvCZlXRGGZ5NHIzWPM4O74+gNalaMgFCsmv8mMhETSU4SfAGmJr9edxPjQSbgD5i2X4eDRDMwvyaAa7CP1b2oICju+0L7Fywd2ZtUcr6El++eTVoi8HYsTArntET++gULT7XXjmb8e3O0nxrYiYsE9GMJ7HBGv3NOoJ1NTm3a7U6+c0ZJiBVLvn6xXw10LQX243xH+ehsKo6djQJKYtqcNPaXtCwM1c9RrsOx/wRXyWCtTffqLiaR0LbYvfMJAcEWceG+RaeAx4p37OiQqdJypd6LAv9/0ECWK8Bip8yyoA+0EYiAJb9YuDz2YlQX9Mx9E9FzFIAsgEQ2w723HZYWgPywLb+dlsum4lTZKQ=',
         initializationVector: 'c29tZUluaXRWZWN0b3I=',
     ),
     filters: new Operations\Filters(
         subjectType: Components\InvoiceQuerySubjectType::Subject1,
         dateRange: new Operations\ExportDateRange(
-            dateType: Components\InvoiceQueryDateType::Issue,
+            dateType: Components\InvoiceQueryDateType::PermanentStorage,
             from: Utils\Utils::parseDateTime('2025-08-28T09:22:13.388+00:00'),
             to: Utils\Utils::parseDateTime('2025-09-28T09:22:13.388+00:00'),
+            restrictToPermanentStorageHwmDate: true,
         ),
     ),
 );

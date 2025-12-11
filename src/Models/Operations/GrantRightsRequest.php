@@ -56,17 +56,41 @@ class GrantRightsRequest
     public string $euEntityName;
 
     /**
+     * Dane podmiotu, któremu nadawane są uprawnienia.
+     *
+     * @var ?GrantRightsSubjectDetails $subjectDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\GrantRightsSubjectDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?GrantRightsSubjectDetails $subjectDetails = null;
+
+    /**
+     * Dane podmiotu unijnego, którego dotyczy nadawane uprawnienie.
+     *
+     * @var ?EuEntityDetails $euEntityDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('euEntityDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\EuEntityDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?EuEntityDetails $euEntityDetails = null;
+
+    /**
      * @param  GrantRightsSubjectIdentifier  $subjectIdentifier
      * @param  GrantRightsContextIdentifier  $contextIdentifier
      * @param  string  $description
      * @param  string  $euEntityName
+     * @param  ?GrantRightsSubjectDetails  $subjectDetails
+     * @param  ?EuEntityDetails  $euEntityDetails
      * @phpstan-pure
      */
-    public function __construct(GrantRightsSubjectIdentifier $subjectIdentifier, GrantRightsContextIdentifier $contextIdentifier, string $description, string $euEntityName)
+    public function __construct(GrantRightsSubjectIdentifier $subjectIdentifier, GrantRightsContextIdentifier $contextIdentifier, string $description, string $euEntityName, ?GrantRightsSubjectDetails $subjectDetails = null, ?EuEntityDetails $euEntityDetails = null)
     {
         $this->subjectIdentifier = $subjectIdentifier;
         $this->contextIdentifier = $contextIdentifier;
         $this->description = $description;
         $this->euEntityName = $euEntityName;
+        $this->subjectDetails = $subjectDetails;
+        $this->euEntityDetails = $euEntityDetails;
     }
 }

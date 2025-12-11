@@ -26,10 +26,10 @@ class GetInvoicesListBuyerIdentifier
      *
      * | Wartość | Opis |
      * | --- | --- |
-     * | None | Brak identyfikatora nabywcy |
-     * | Other | Inny identyfikator |
      * | Nip | 10 cyfrowy numer NIP |
      * | VatUe | Identyfikator VAT UE podmiotu unijnego |
+     * | Other | Inny identyfikator |
+     * | None | Brak identyfikatora nabywcy |
      *
      *
      * @var Components\BuyerIdentifierType $type

@@ -58,17 +58,29 @@ class GrantToSubunitsRequest
     public ?string $subunitName = null;
 
     /**
+     * Dane podmiotu, któremu nadawane są uprawnienia.
+     *
+     * @var ?GrantToSubunitsSubjectDetails $subjectDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\GrantToSubunitsSubjectDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?GrantToSubunitsSubjectDetails $subjectDetails = null;
+
+    /**
      * @param  GrantToSubunitsSubjectIdentifier  $subjectIdentifier
      * @param  GrantToSubunitsContextIdentifier  $contextIdentifier
      * @param  string  $description
      * @param  ?string  $subunitName
+     * @param  ?GrantToSubunitsSubjectDetails  $subjectDetails
      * @phpstan-pure
      */
-    public function __construct(GrantToSubunitsSubjectIdentifier $subjectIdentifier, GrantToSubunitsContextIdentifier $contextIdentifier, string $description, ?string $subunitName = null)
+    public function __construct(GrantToSubunitsSubjectIdentifier $subjectIdentifier, GrantToSubunitsContextIdentifier $contextIdentifier, string $description, ?string $subunitName = null, ?GrantToSubunitsSubjectDetails $subjectDetails = null)
     {
         $this->subjectIdentifier = $subjectIdentifier;
         $this->contextIdentifier = $contextIdentifier;
         $this->description = $description;
         $this->subunitName = $subunitName;
+        $this->subjectDetails = $subjectDetails;
     }
 }

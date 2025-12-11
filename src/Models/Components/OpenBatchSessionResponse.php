@@ -33,7 +33,7 @@ class OpenBatchSessionResponse
      * * dołączyć treść części pliku w korpusie żądania.
      *
      * `Uwaga: nie należy dodawać do nagłówków token dostępu (accessToken).`
-     *
+     *  
      * Każdą część przesyła się oddzielnym żądaniem HTTP.Zwracane kody odpowiedzi:
      *  * <b>201</b> – poprawne przyjęcie pliku,
      *  * <b>400</b> – błędne dane,

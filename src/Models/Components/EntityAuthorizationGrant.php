@@ -88,6 +88,16 @@ class EntityAuthorizationGrant
     public ?EntityAuthorizationGrantAuthorIdentifier $authorIdentifier = null;
 
     /**
+     * Dane podmiotu, którego dotyczy uprawnienie.
+     *
+     * @var ?EntityAuthorizationGrantSubjectEntityDetails $subjectEntityDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectEntityDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EntityAuthorizationGrantSubjectEntityDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?EntityAuthorizationGrantSubjectEntityDetails $subjectEntityDetails = null;
+
+    /**
      * @param  string  $id
      * @param  AuthorizedEntityIdentifier  $authorizedEntityIdentifier
      * @param  AuthorizingEntityIdentifier  $authorizingEntityIdentifier
@@ -95,9 +105,10 @@ class EntityAuthorizationGrant
      * @param  string  $description
      * @param  \DateTime  $startDate
      * @param  ?EntityAuthorizationGrantAuthorIdentifier  $authorIdentifier
+     * @param  ?EntityAuthorizationGrantSubjectEntityDetails  $subjectEntityDetails
      * @phpstan-pure
      */
-    public function __construct(string $id, AuthorizedEntityIdentifier $authorizedEntityIdentifier, AuthorizingEntityIdentifier $authorizingEntityIdentifier, InvoicePermissionType $authorizationScope, string $description, \DateTime $startDate, ?EntityAuthorizationGrantAuthorIdentifier $authorIdentifier = null)
+    public function __construct(string $id, AuthorizedEntityIdentifier $authorizedEntityIdentifier, AuthorizingEntityIdentifier $authorizingEntityIdentifier, InvoicePermissionType $authorizationScope, string $description, \DateTime $startDate, ?EntityAuthorizationGrantAuthorIdentifier $authorIdentifier = null, ?EntityAuthorizationGrantSubjectEntityDetails $subjectEntityDetails = null)
     {
         $this->id = $id;
         $this->authorizedEntityIdentifier = $authorizedEntityIdentifier;
@@ -106,5 +117,6 @@ class EntityAuthorizationGrant
         $this->description = $description;
         $this->startDate = $startDate;
         $this->authorIdentifier = $authorIdentifier;
+        $this->subjectEntityDetails = $subjectEntityDetails;
     }
 }

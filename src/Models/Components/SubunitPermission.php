@@ -89,6 +89,16 @@ class SubunitPermission
     public \DateTime $startDate;
 
     /**
+     * Dane osoby, której dotyczy uprawnienie.
+     *
+     * @var ?SubunitPermissionSubjectPersonDetails $subjectPersonDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectPersonDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionSubjectPersonDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?SubunitPermissionSubjectPersonDetails $subjectPersonDetails = null;
+
+    /**
      * Nazwa jednostki podrzędnej.
      *
      * @var ?string $subunitName
@@ -105,10 +115,11 @@ class SubunitPermission
      * @param  SubunitPermissionScope  $permissionScope
      * @param  string  $description
      * @param  \DateTime  $startDate
+     * @param  ?SubunitPermissionSubjectPersonDetails  $subjectPersonDetails
      * @param  ?string  $subunitName
      * @phpstan-pure
      */
-    public function __construct(string $id, SubunitPermissionAuthorizedIdentifier $authorizedIdentifier, SubunitPermissionSubunitIdentifier $subunitIdentifier, SubunitPermissionAuthorIdentifier $authorIdentifier, SubunitPermissionScope $permissionScope, string $description, \DateTime $startDate, ?string $subunitName = null)
+    public function __construct(string $id, SubunitPermissionAuthorizedIdentifier $authorizedIdentifier, SubunitPermissionSubunitIdentifier $subunitIdentifier, SubunitPermissionAuthorIdentifier $authorIdentifier, SubunitPermissionScope $permissionScope, string $description, \DateTime $startDate, ?SubunitPermissionSubjectPersonDetails $subjectPersonDetails = null, ?string $subunitName = null)
     {
         $this->id = $id;
         $this->authorizedIdentifier = $authorizedIdentifier;
@@ -117,6 +128,7 @@ class SubunitPermission
         $this->permissionScope = $permissionScope;
         $this->description = $description;
         $this->startDate = $startDate;
+        $this->subjectPersonDetails = $subjectPersonDetails;
         $this->subunitName = $subunitName;
     }
 }

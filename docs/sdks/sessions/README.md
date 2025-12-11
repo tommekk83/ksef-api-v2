@@ -1,5 +1,4 @@
 # Sessions
-(*sessions*)
 
 ## Overview
 
@@ -187,6 +186,9 @@ Otwiera sesję do wysyłki pojedynczych faktur. Należy przekazać schemat wysy�
 > - [Otwarcie sesji interaktywnej](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#1-otwarcie-sesji)
 > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
 
+Aby generować dokumenty UPO w wersji v4-3 w ramach sesji, należy przy jej otwarciu przesłać nagłówek <b>X-KSeF-Feature: upo-v4-3</b>.
+Od 22 grudnia 2025 wersja UPO v4-3 będzie generowana domyślnie.
+
 **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
 
 ### Example Usage
@@ -301,6 +303,9 @@ Otwiera sesję do wysyłki wsadowej faktur. Należy przekazać schemat wysyłany
 > Więcej informacji:
 > - [Przygotwanie paczki faktur](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-wsadowa.md)
 > - [Klucz publiczny Ministersta Finansów](/docs/v2/index.html#tag/Certyfikaty-klucza-publicznego)
+
+Aby generować dokumenty UPO w wersji v4-3 w ramach sesji, należy przy jej otwarciu przesłać nagłówek <b>X-KSeF-Feature: upo-v4-3</b>.
+Od 22 grudnia 2025 wersja UPO v4-3 będzie generowana domyślnie.
 
 **Wymagane uprawnienia**: `InvoiceWrite`.
 

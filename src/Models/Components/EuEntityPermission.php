@@ -84,6 +84,36 @@ class EuEntityPermission
     public \DateTime $startDate;
 
     /**
+     * Dane osoby, której dotyczy uprawnienie.
+     *
+     * @var ?EuEntityPermissionSubjectPersonDetails $subjectPersonDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectPersonDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EuEntityPermissionSubjectPersonDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?EuEntityPermissionSubjectPersonDetails $subjectPersonDetails = null;
+
+    /**
+     * Dane podmiotu, którego dotyczy uprawnienie.
+     *
+     * @var ?EuEntityPermissionSubjectEntityDetails $subjectEntityDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('subjectEntityDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EuEntityPermissionSubjectEntityDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?EuEntityPermissionSubjectEntityDetails $subjectEntityDetails = null;
+
+    /**
+     * Dane podmiotu unijnego, którego dotyczy uprawnienie.
+     *
+     * @var ?EuEntityDetails $euEntityDetails
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('euEntityDetails')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\EuEntityDetails|null')]
+    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
+    public ?EuEntityDetails $euEntityDetails = null;
+
+    /**
      * @param  string  $id
      * @param  EuEntityPermissionAuthorIdentifier  $authorIdentifier
      * @param  string  $vatUeIdentifier
@@ -92,9 +122,12 @@ class EuEntityPermission
      * @param  EuEntityPermissionsQueryPermissionType  $permissionScope
      * @param  string  $description
      * @param  \DateTime  $startDate
+     * @param  ?EuEntityPermissionSubjectPersonDetails  $subjectPersonDetails
+     * @param  ?EuEntityPermissionSubjectEntityDetails  $subjectEntityDetails
+     * @param  ?EuEntityDetails  $euEntityDetails
      * @phpstan-pure
      */
-    public function __construct(string $id, EuEntityPermissionAuthorIdentifier $authorIdentifier, string $vatUeIdentifier, string $euEntityName, string $authorizedFingerprintIdentifier, EuEntityPermissionsQueryPermissionType $permissionScope, string $description, \DateTime $startDate)
+    public function __construct(string $id, EuEntityPermissionAuthorIdentifier $authorIdentifier, string $vatUeIdentifier, string $euEntityName, string $authorizedFingerprintIdentifier, EuEntityPermissionsQueryPermissionType $permissionScope, string $description, \DateTime $startDate, ?EuEntityPermissionSubjectPersonDetails $subjectPersonDetails = null, ?EuEntityPermissionSubjectEntityDetails $subjectEntityDetails = null, ?EuEntityDetails $euEntityDetails = null)
     {
         $this->id = $id;
         $this->authorIdentifier = $authorIdentifier;
@@ -104,5 +137,8 @@ class EuEntityPermission
         $this->permissionScope = $permissionScope;
         $this->description = $description;
         $this->startDate = $startDate;
+        $this->subjectPersonDetails = $subjectPersonDetails;
+        $this->subjectEntityDetails = $subjectEntityDetails;
+        $this->euEntityDetails = $euEntityDetails;
     }
 }
