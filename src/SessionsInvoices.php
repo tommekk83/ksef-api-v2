@@ -49,7 +49,7 @@ class SessionsInvoices
      *
      * Zwraca listę niepoprawnie przetworzonych faktur przesłanych w sesji wraz z ich statusami.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @param  ?string  $xContinuationToken
@@ -65,7 +65,7 @@ class SessionsInvoices
             pageSize: $pageSize,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/invoices/failed', Operations\GetFailedInvoicesRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/{referenceNumber}/invoices/failed', Operations\GetFailedInvoicesRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
@@ -138,7 +138,7 @@ class SessionsInvoices
      *
      * Zwraca fakturę przesłaną w sesji wraz ze statusem.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @param  string  $invoiceReferenceNumber
@@ -152,7 +152,7 @@ class SessionsInvoices
             invoiceReferenceNumber: $invoiceReferenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}', Operations\GetInvoiceStatusRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}', Operations\GetInvoiceStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -218,7 +218,7 @@ class SessionsInvoices
      *
      * Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @param  string  $invoiceReferenceNumber
@@ -232,7 +232,7 @@ class SessionsInvoices
             invoiceReferenceNumber: $invoiceReferenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo', Operations\GetInvoiceUpoRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo', Operations\GetInvoiceUpoRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/xml';
@@ -295,7 +295,7 @@ class SessionsInvoices
      *
      * Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @param  ?string  $xContinuationToken
@@ -311,7 +311,7 @@ class SessionsInvoices
             pageSize: $pageSize,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/invoices', Operations\GetSessionInvoicesListRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/{referenceNumber}/invoices', Operations\GetSessionInvoicesListRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
@@ -384,7 +384,7 @@ class SessionsInvoices
      *
      * Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @param  string  $ksefNumber
@@ -398,7 +398,7 @@ class SessionsInvoices
             ksefNumber: $ksefNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo', Operations\GetUpoByKsefNumberRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo', Operations\GetUpoByKsefNumberRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/xml';
@@ -464,7 +464,7 @@ class SessionsInvoices
      * > Więcej informacji:
      * > - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @param  ?Operations\SendOnlineRequestBody  $requestBody
@@ -478,7 +478,7 @@ class SessionsInvoices
             requestBody: $requestBody,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/online/{referenceNumber}/invoices', Operations\SendOnlineRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/online/{referenceNumber}/invoices', Operations\SendOnlineRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');

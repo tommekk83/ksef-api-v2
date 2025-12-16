@@ -55,7 +55,7 @@ class Limits
     public function getApiRate(?Options $options = null): Operations\GetApiRateResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/rate-limits');
+        $url = Utils\Utils::generateUrl($baseUrl, '/rate-limits');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -127,7 +127,7 @@ class Limits
     public function getContext(?Options $options = null): Operations\GetContextLimitsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/limits/context');
+        $url = Utils\Utils::generateUrl($baseUrl, '/limits/context');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -199,7 +199,7 @@ class Limits
     public function getSubject(?Options $options = null): Operations\GetSubjectLimitsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/limits/subject');
+        $url = Utils\Utils::generateUrl($baseUrl, '/limits/subject');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';

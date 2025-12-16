@@ -24,12 +24,12 @@ Zwraca listę sesji spełniających podane kryteria wyszukiwania.
 
 
 **Wymagane uprawnienia**:
-- `Introspection` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
+- `Introspection`/`EnforcementOperations` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
 - `InvoiceWrite` – pozwala pobrać wyłącznie sesje utworzone przez podmiot uwierzytelniający, czyli podmiot inicjujący uwierzytelnienie.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getSessionList" method="get" path="/api/v2/sessions" -->
+<!-- UsageSnippet language="php" operationID="getSessionList" method="get" path="/sessions" -->
 ```php
 declare(strict_types=1);
 
@@ -79,11 +79,11 @@ if ($response->sessionsQueryResponse !== null) {
 
 Sprawdza bieżący status sesji o podanym numerze referencyjnym.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getSessionStatus" method="get" path="/api/v2/sessions/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getSessionStatus" method="get" path="/sessions/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -129,11 +129,11 @@ if ($response->sessionStatusResponse !== null) {
 
 Zwraca XML zawierający zbiorcze UPO dla sesji.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getSessionUpo" method="get" path="/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getSessionUpo" method="get" path="/sessions/{referenceNumber}/upo/{upoReferenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -189,11 +189,11 @@ Otwiera sesję do wysyłki pojedynczych faktur. Należy przekazać schemat wysy�
 Aby generować dokumenty UPO w wersji v4-3 w ramach sesji, należy przy jej otwarciu przesłać nagłówek <b>X-KSeF-Feature: upo-v4-3</b>.
 Od 22 grudnia 2025 wersja UPO v4-3 będzie generowana domyślnie.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="openOnlineSession" method="post" path="/api/v2/sessions/online" -->
+<!-- UsageSnippet language="php" operationID="openOnlineSession" method="post" path="/sessions/online" -->
 ```php
 declare(strict_types=1);
 
@@ -250,11 +250,11 @@ if ($response->openOnlineSessionResponse !== null) {
 
 Zamyka sesję interaktywną i rozpoczyna generowanie zbiorczego UPO dla sesji.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="closeOnlineSession" method="post" path="/api/v2/sessions/online/{referenceNumber}/close" -->
+<!-- UsageSnippet language="php" operationID="closeOnlineSession" method="post" path="/sessions/online/{referenceNumber}/close" -->
 ```php
 declare(strict_types=1);
 
@@ -307,11 +307,11 @@ Otwiera sesję do wysyłki wsadowej faktur. Należy przekazać schemat wysyłany
 Aby generować dokumenty UPO w wersji v4-3 w ramach sesji, należy przy jej otwarciu przesłać nagłówek <b>X-KSeF-Feature: upo-v4-3</b>.
 Od 22 grudnia 2025 wersja UPO v4-3 będzie generowana domyślnie.
 
-**Wymagane uprawnienia**: `InvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="openBatchSession" method="post" path="/api/v2/sessions/batch" -->
+<!-- UsageSnippet language="php" operationID="openBatchSession" method="post" path="/sessions/batch" -->
 ```php
 declare(strict_types=1);
 
@@ -380,11 +380,11 @@ if ($response->openBatchSessionResponse !== null) {
 
 Zamyka sesję wsadową, rozpoczyna procesowanie paczki faktur i generowanie UPO dla prawidłowych faktur oraz zbiorczego UPO dla sesji.
 
-**Wymagane uprawnienia**: `InvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="closeBatchSession" method="post" path="/api/v2/sessions/batch/{referenceNumber}/close" -->
+<!-- UsageSnippet language="php" operationID="closeBatchSession" method="post" path="/sessions/batch/{referenceNumber}/close" -->
 ```php
 declare(strict_types=1);
 

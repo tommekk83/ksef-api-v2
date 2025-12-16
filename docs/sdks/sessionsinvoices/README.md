@@ -15,11 +15,11 @@
 
 Zwraca listę faktur przesłanych w sesji wraz z ich statusami, oraz informacje na temat ilości poprawnie i niepoprawnie przetworzonych faktur.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getSessionInvoicesList" method="get" path="/api/v2/sessions/{referenceNumber}/invoices" -->
+<!-- UsageSnippet language="php" operationID="getSessionInvoicesList" method="get" path="/sessions/{referenceNumber}/invoices" -->
 ```php
 declare(strict_types=1);
 
@@ -69,11 +69,11 @@ if ($response->sessionInvoicesResponse !== null) {
 
 Zwraca fakturę przesłaną w sesji wraz ze statusem.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getInvoiceStatus" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getInvoiceStatus" method="get" path="/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -122,11 +122,11 @@ if ($response->sessionInvoiceStatusResponse !== null) {
 
 Zwraca listę niepoprawnie przetworzonych faktur przesłanych w sesji wraz z ich statusami.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getFailedInvoices" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/failed" -->
+<!-- UsageSnippet language="php" operationID="getFailedInvoices" method="get" path="/sessions/{referenceNumber}/invoices/failed" -->
 ```php
 declare(strict_types=1);
 
@@ -176,11 +176,11 @@ if ($response->sessionInvoicesResponse !== null) {
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getUpoByKsefNumber" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo" -->
+<!-- UsageSnippet language="php" operationID="getUpoByKsefNumber" method="get" path="/sessions/{referenceNumber}/invoices/ksef/{ksefNumber}/upo" -->
 ```php
 declare(strict_types=1);
 
@@ -229,11 +229,11 @@ if ($response->res !== null) {
 
 Zwraca UPO faktury przesłanego w sesji na podstawie jego numeru KSeF.
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getInvoiceUpo" method="get" path="/api/v2/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo" -->
+<!-- UsageSnippet language="php" operationID="getInvoiceUpo" method="get" path="/sessions/{referenceNumber}/invoices/{invoiceReferenceNumber}/upo" -->
 ```php
 declare(strict_types=1);
 
@@ -285,11 +285,11 @@ Przyjmuje zaszyfrowaną fakturę oraz jej metadane i rozpoczyna jej przetwarzani
 > Więcej informacji:
 > - [Wysłanie faktury](https://github.com/CIRFMF/ksef-docs/blob/main/sesja-interaktywna.md#2-wys%C5%82anie-faktury)
 
-**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
+**Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`, `EnforcementOperations`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="sendOnline" method="post" path="/api/v2/sessions/online/{referenceNumber}/invoices" -->
+<!-- UsageSnippet language="php" operationID="sendOnline" method="post" path="/sessions/online/{referenceNumber}/invoices" -->
 ```php
 declare(strict_types=1);
 

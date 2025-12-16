@@ -36,27 +36,15 @@ class BatchFilePartInfo
     public string $fileHash;
 
     /**
-     * Nazwa części pliku paczki.
-     *
-     * @var ?string $fileName
-     * @deprecated  field: This will be removed in a future release, please migrate away from it as soon as possible.
-     */
-    #[\Speakeasy\Serializer\Annotation\SerializedName('fileName')]
-    #[\Speakeasy\Serializer\Annotation\SkipWhenNull]
-    public ?string $fileName = null;
-
-    /**
      * @param  int  $ordinalNumber
      * @param  int  $fileSize
      * @param  string  $fileHash
-     * @param  ?string  $fileName
      * @phpstan-pure
      */
-    public function __construct(int $ordinalNumber, int $fileSize, string $fileHash, ?string $fileName = null)
+    public function __construct(int $ordinalNumber, int $fileSize, string $fileHash)
     {
         $this->ordinalNumber = $ordinalNumber;
         $this->fileSize = $fileSize;
         $this->fileHash = $fileHash;
-        $this->fileName = $fileName;
     }
 }

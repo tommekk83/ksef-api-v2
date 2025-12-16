@@ -60,7 +60,7 @@ class Auth
     public function withKsefToken(?Operations\AuthWithKsefTokenRequest $request = null, ?Options $options = null): Operations\AuthWithKsefTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/ksef-token');
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/ksef-token');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -147,7 +147,7 @@ class Auth
             verifyCertificateChain: $verifyCertificateChain,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/xades-signature');
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/xades-signature');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'string');
@@ -227,7 +227,7 @@ class Auth
     public function challenge(?Options $options = null): Operations\ChallengeResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/challenge');
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/challenge');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -305,7 +305,7 @@ class Auth
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/{referenceNumber}', Operations\GetAuthStatusRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/{referenceNumber}', Operations\GetAuthStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -389,7 +389,7 @@ class Auth
             pageSize: $pageSize,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions');
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/sessions');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
@@ -471,7 +471,7 @@ class Auth
     public function redeemToken(?Options $options = null): Operations\RedeemAuthTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/token/redeem');
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/token/redeem');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -545,7 +545,7 @@ class Auth
     public function refreshToken(?Options $options = null): Operations\RefreshAuthTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/token/refresh');
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/token/refresh');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -622,7 +622,7 @@ class Auth
     public function revokeCurrentSession(?Options $options = null): Operations\RevokeCurrentSessionResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions/current');
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/sessions/current');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -692,7 +692,7 @@ class Auth
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/auth/sessions/{referenceNumber}', Operations\RevokeSessionRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/auth/sessions/{referenceNumber}', Operations\RevokeSessionRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';

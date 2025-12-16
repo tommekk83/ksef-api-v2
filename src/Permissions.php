@@ -58,7 +58,7 @@ class Permissions
     public function checkAttachmentStatus(?Options $options = null): Operations\CheckAttachmentStatusResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/attachments/status');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/attachments/status');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -151,6 +151,7 @@ class Permissions
      * **Sortowanie:**
      *
      * - startDate (Desc)
+     * - id (Asc)
      *
      *
      *
@@ -170,7 +171,7 @@ class Permissions
             requestBody: $requestBody,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/authorizations/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/query/authorizations/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');
@@ -263,6 +264,7 @@ class Permissions
      * **Sortowanie:**
      *
      * - startDate (Desc)
+     * - id (Asc)
      *
      *
      *
@@ -280,7 +282,7 @@ class Permissions
             pageSize: $pageSize,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/entities/roles');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/query/entities/roles');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
@@ -374,6 +376,7 @@ class Permissions
      * **Sortowanie:**
      *
      * - startDate (Desc)
+     * - id (Asc)
      *
      *
      *
@@ -393,7 +396,7 @@ class Permissions
             euEntityPermissionsQueryRequest: $euEntityPermissionsQueryRequest,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/eu-entities/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/query/eu-entities/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'euEntityPermissionsQueryRequest', 'json');
@@ -476,7 +479,7 @@ class Permissions
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/operations/{referenceNumber}', Operations\GetOperationStatusRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/operations/{referenceNumber}', Operations\GetOperationStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -582,6 +585,7 @@ class Permissions
      * **Sortowanie:**
      *
      * - startDate (Desc)
+     * - id (Asc)
      *
      *
      *
@@ -601,7 +605,7 @@ class Permissions
             requestBody: $requestBody,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/persons/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/query/persons/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');
@@ -708,6 +712,7 @@ class Permissions
      * **Sortowanie:**
      *
      * - startDate (Desc)
+     * - id (Asc)
      *
      *
      *
@@ -725,7 +730,7 @@ class Permissions
             personalPermissionsQueryRequest: $personalPermissionsQueryRequest,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/personal/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/query/personal/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'personalPermissionsQueryRequest', 'json');
@@ -820,6 +825,7 @@ class Permissions
      * **Sortowanie:**
      *
      * - startDate (Desc)
+     * - id (Asc)
      *
      *
      *
@@ -839,7 +845,7 @@ class Permissions
             subordinateEntityRolesQueryRequest: $subordinateEntityRolesQueryRequest,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/subordinate-entities/roles');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/query/subordinate-entities/roles');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'subordinateEntityRolesQueryRequest', 'json');
@@ -932,6 +938,7 @@ class Permissions
      * **Sortowanie:**
      *
      * - startDate (Desc)
+     * - id (Asc)
      *
      *
      *
@@ -951,7 +958,7 @@ class Permissions
             subunitPermissionsQueryRequest: $subunitPermissionsQueryRequest,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/query/subunits/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/query/subunits/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'subunitPermissionsQueryRequest', 'json');
@@ -1036,7 +1043,7 @@ class Permissions
     public function grantAuthorizations(?Operations\GrantAuthorizationsRequest $request = null, ?Options $options = null): Operations\GrantAuthorizationsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/authorizations/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/authorizations/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -1129,7 +1136,7 @@ class Permissions
     public function grantIndirectly(?Operations\GrantIndirectlyRequest $request = null, ?Options $options = null): Operations\GrantIndirectlyResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/indirect/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/indirect/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -1225,7 +1232,7 @@ class Permissions
     public function grantRights(?Operations\GrantRightsRequest $request = null, ?Options $options = null): Operations\GrantRightsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/eu-entities/administration/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/eu-entities/administration/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -1313,7 +1320,7 @@ class Permissions
     public function grantToEntities(?Operations\GrantToEntitiesRequest $request = null, ?Options $options = null): Operations\GrantToEntitiesResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/entities/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/entities/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -1405,7 +1412,7 @@ class Permissions
     public function grantToEuEntities(?Operations\GrantToEuEntitiesRequest $request = null, ?Options $options = null): Operations\GrantToEuEntitiesResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/eu-entities/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/eu-entities/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -1502,7 +1509,7 @@ class Permissions
     public function grantToPersons(?Operations\GrantToPersonsRequest $request = null, ?Options $options = null): Operations\GrantToPersonsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/persons/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/persons/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -1596,7 +1603,7 @@ class Permissions
     public function grantToSubunits(?Operations\GrantToSubunitsRequest $request = null, ?Options $options = null): Operations\GrantToSubunitsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/subunits/grants');
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/subunits/grants');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -1683,7 +1690,7 @@ class Permissions
             permissionId: $permissionId,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/authorizations/grants/{permissionId}', Operations\RevokeAuthorizationsRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/authorizations/grants/{permissionId}', Operations\RevokeAuthorizationsRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -1766,7 +1773,7 @@ class Permissions
             permissionId: $permissionId,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/permissions/common/grants/{permissionId}', Operations\RevokePermissionsRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/permissions/common/grants/{permissionId}', Operations\RevokePermissionsRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';

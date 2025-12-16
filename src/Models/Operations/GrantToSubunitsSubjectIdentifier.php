@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Intermedia\Ksef\Apiv2\Models\Operations;
 
-use Intermedia\Ksef\Apiv2\Models\Components;
+
 /**
  * GrantToSubunitsSubjectIdentifier - Identyfikator podmiotu lub osoby fizycznej.
  *
@@ -23,11 +23,11 @@ class GrantToSubunitsSubjectIdentifier
     /**
      * Typ identyfikatora.
      *
-     * @var Components\SubunitPermissionsSubjectIdentifierType $type
+     * @var Type $type
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('type')]
-    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\SubunitPermissionsSubjectIdentifierType')]
-    public Components\SubunitPermissionsSubjectIdentifierType $type;
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Operations\Type')]
+    public Type $type;
 
     /**
      * Wartość identyfikatora.
@@ -38,11 +38,11 @@ class GrantToSubunitsSubjectIdentifier
     public string $value;
 
     /**
-     * @param  Components\SubunitPermissionsSubjectIdentifierType  $type
+     * @param  Type  $type
      * @param  string  $value
      * @phpstan-pure
      */
-    public function __construct(Components\SubunitPermissionsSubjectIdentifierType $type, string $value)
+    public function __construct(Type $type, string $value)
     {
         $this->type = $type;
         $this->value = $value;

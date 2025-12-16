@@ -12,7 +12,7 @@ Zwraca informacje o kluczach publicznych używanych do szyfrowania danych przesy
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getPublicKeyCertificates" method="get" path="/api/v2/security/public-key-certificates" -->
+<!-- UsageSnippet language="php" operationID="getPublicKeyCertificates" method="get" path="/security/public-key-certificates" -->
 ```php
 declare(strict_types=1);
 

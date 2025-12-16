@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace Intermedia\Ksef\Apiv2\Models\Components;
 
 
-/** InvoiceExportRateLimits - Limity dla eksportu paczki faktur. */
-class InvoiceExportRateLimits
+/** InvoiceExportStatus - Limity dla pobierana statusu eksportu paczki faktur. */
+class InvoiceExportStatus
 {
     /**
      * Limit na sekundę.

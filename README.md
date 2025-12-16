@@ -12,10 +12,14 @@ Developer-friendly & type-safe Php SDK specifically catered to leverage *interme
 <!-- Start Summary [summary] -->
 ## Summary
 
-KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc6.0-tr-20251203.4+73f8444dcd24023ccb66120a159a5f89e203ac4a)<br>
+KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc6.1-tr-20251216.1+d9947b800b5eff23af4a740d7558145da4cf4a62)<br>
 **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
 **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
 **Rozszerzona dokumentacja API:** [ksef-docs](https://github.com/CIRFMF/ksef-docs/tree/main)
+
+**Adres serwera API:**
+- Środowisko DEMO: `https://api-demo.ksef.mf.gov.pl/v2`
+- [deprecated] Środowisko DEMO: `https://ksef-demo.mf.gov.pl/api/v2`
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
@@ -290,9 +294,17 @@ try {
 <!-- Start Server Selection [server] -->
 ## Server Selection
 
-### Override Server URL Per-Client
+### Select Server by Index
 
-The default server can be overridden globally using the `setServerUrl(string $serverUrl)` builder method when initializing the SDK client instance. For example:
+You can override the default server globally using the `setServerIndex(int $serverIdx)` builder method when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the indexes associated with the available servers:
+
+| #   | Server                               | Description                  |
+| --- | ------------------------------------ | ---------------------------- |
+| 0   | `https://api-demo.ksef.mf.gov.pl/v2` | Środowisko DEMO              |
+| 1   | `https://ksef-demo.mf.gov.pl/api/v2` | [deprecated] Środowisko DEMO |
+
+#### Example
+
 ```php
 declare(strict_types=1);
 
@@ -301,7 +313,35 @@ require 'vendor/autoload.php';
 use Intermedia\Ksef\Apiv2;
 
 $sdk = Apiv2\Client::builder()
-    ->setServerURL('https://ksef-test.mf.gov.pl')
+    ->setServerIndex(0)
+    ->setSecurity(
+        '<YOUR_BEARER_TOKEN_HERE>'
+    )
+    ->build();
+
+
+
+$response = $sdk->auth->getCurrentSessions(
+    pageSize: 10
+);
+
+if ($response->authenticationListResponse !== null) {
+    // handle response
+}
+```
+
+### Override Server URL Per-Client
+
+The default server can also be overridden globally using the `setServerUrl(string $serverUrl)` builder method when initializing the SDK client instance. For example:
+```php
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Intermedia\Ksef\Apiv2;
+
+$sdk = Apiv2\Client::builder()
+    ->setServerURL('https://ksef-demo.mf.gov.pl/api/v2')
     ->setSecurity(
         '<YOUR_BEARER_TOKEN_HERE>'
     )

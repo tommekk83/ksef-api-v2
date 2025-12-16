@@ -18,7 +18,7 @@ Zwraca informacje o limitach certyfikatów oraz informacje czy użytkownik może
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getLimits" method="get" path="/api/v2/certificates/limits" -->
+<!-- UsageSnippet language="php" operationID="getLimits" method="get" path="/certificates/limits" -->
 ```php
 declare(strict_types=1);
 
@@ -67,7 +67,7 @@ Dane te są zwracane na podstawie certyfikatu użytego w procesie uwierzytelnien
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getEnrollmentData" method="get" path="/api/v2/certificates/enrollments/data" -->
+<!-- UsageSnippet language="php" operationID="getEnrollmentData" method="get" path="/certificates/enrollments/data" -->
 ```php
 declare(strict_types=1);
 
@@ -129,7 +129,7 @@ Dozwolone funkcje skrótu użyte do podpisu CSR:
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="processEnrollment" method="post" path="/api/v2/certificates/enrollments" -->
+<!-- UsageSnippet language="php" operationID="processEnrollment" method="post" path="/certificates/enrollments" -->
 ```php
 declare(strict_types=1);
 
@@ -185,7 +185,7 @@ Zwraca informacje o statusie wniosku certyfikacyjnego.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getEnrollmentStatus" method="get" path="/api/v2/certificates/enrollments/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getEnrollmentStatus" method="get" path="/certificates/enrollments/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -233,7 +233,7 @@ Zwraca certyfikaty o podanych numerach seryjnych w formacie DER zakodowanym w Ba
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="retrieveCertificates" method="post" path="/api/v2/certificates/retrieve" -->
+<!-- UsageSnippet language="php" operationID="retrieveCertificates" method="post" path="/certificates/retrieve" -->
 ```php
 declare(strict_types=1);
 
@@ -287,7 +287,7 @@ Unieważnia certyfikat o podanym numerze seryjnym.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="revokeCertificates" method="post" path="/api/v2/certificates/{certificateSerialNumber}/revoke" -->
+<!-- UsageSnippet language="php" operationID="revokeCertificates" method="post" path="/certificates/{certificateSerialNumber}/revoke" -->
 ```php
 declare(strict_types=1);
 
@@ -345,7 +345,7 @@ W przypadku braku podania kryteriów wyszukiwania zwrócona zostanie nieprzefilt
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getCertificatesList" method="post" path="/api/v2/certificates/query" -->
+<!-- UsageSnippet language="php" operationID="getCertificatesList" method="post" path="/certificates/query" -->
 ```php
 declare(strict_types=1);
 

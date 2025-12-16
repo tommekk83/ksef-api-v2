@@ -17,7 +17,7 @@ Token może być generowany tylko w kontekście NIP lub identyfikatora wewnętrz
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="generateToken" method="post" path="/api/v2/tokens" -->
+<!-- UsageSnippet language="php" operationID="generateToken" method="post" path="/tokens" -->
 ```php
 declare(strict_types=1);
 
@@ -78,7 +78,7 @@ if ($response->generateTokenResponse !== null) {
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getTokenList" method="get" path="/api/v2/tokens" -->
+<!-- UsageSnippet language="php" operationID="getTokenList" method="get" path="/tokens" -->
 ```php
 declare(strict_types=1);
 
@@ -127,7 +127,7 @@ Pobranie statusu tokena
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getTokenStatus" method="get" path="/api/v2/tokens/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getTokenStatus" method="get" path="/tokens/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -175,7 +175,7 @@ Unieważniony token nie pozwoli już na uwierzytelnienie się za jego pomocą. U
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="revokeToken" method="delete" path="/api/v2/tokens/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="revokeToken" method="delete" path="/tokens/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 

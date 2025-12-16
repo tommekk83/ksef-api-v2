@@ -55,7 +55,7 @@ class Security
     public function getPublicKeyCertificates(?Options $options = null): Operations\GetPublicKeyCertificatesResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/security/public-key-certificates');
+        $url = Utils\Utils::generateUrl($baseUrl, '/security/public-key-certificates');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';

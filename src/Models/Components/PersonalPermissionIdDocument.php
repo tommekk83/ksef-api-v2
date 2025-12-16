@@ -29,7 +29,7 @@ class PersonalPermissionIdDocument
     public string $number;
 
     /**
-     * Kraj wydania dokumentu tożsamości.
+     * Kraj wydania dokumentu tożsamości. Musi być zgodny z ISO 3166-1 alpha-2 (np. PL, DE, US) oraz zawierać dokładnie 2 wielkie litery.
      *
      * @var string $country
      */

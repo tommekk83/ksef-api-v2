@@ -52,6 +52,7 @@ class Peppol
      * **Sortowanie:**
      *
      * - dateCreated (Desc)
+     * - id (Asc)
      *
      *
      *
@@ -67,7 +68,7 @@ class Peppol
             pageSize: $pageSize,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/peppol/query');
+        $url = Utils\Utils::generateUrl($baseUrl, '/peppol/query');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 

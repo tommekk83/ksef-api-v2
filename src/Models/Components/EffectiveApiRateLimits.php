@@ -84,13 +84,22 @@ class EffectiveApiRateLimits
     public InvoiceMetadataRateLimits $invoiceMetadataRateLimits;
 
     /**
-     * Limity dla eksportu paczku faktur.
+     * Limity dla eksportu paczki faktur.
      *
      * @var InvoiceExportRateLimits $invoiceExportRateLimits
      */
     #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceExport')]
     #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\InvoiceExportRateLimits')]
     public InvoiceExportRateLimits $invoiceExportRateLimits;
+
+    /**
+     * Limity dla pobierana statusu eksportu paczki faktur.
+     *
+     * @var InvoiceExportStatus $invoiceExportStatus
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('invoiceExportStatus')]
+    #[\Speakeasy\Serializer\Annotation\Type('\Intermedia\Ksef\Apiv2\Models\Components\InvoiceExportStatus')]
+    public InvoiceExportStatus $invoiceExportStatus;
 
     /**
      * Limity dla pobierania faktur po numerze KSeF.
@@ -120,11 +129,12 @@ class EffectiveApiRateLimits
      * @param  SessionMiscRateLimits  $sessionMiscRateLimits
      * @param  InvoiceMetadataRateLimits  $invoiceMetadataRateLimits
      * @param  InvoiceExportRateLimits  $invoiceExportRateLimits
+     * @param  InvoiceExportStatus  $invoiceExportStatus
      * @param  InvoiceDownloadRateLimits  $invoiceDownloadRateLimits
      * @param  OtherRateLimits  $otherRateLimits
      * @phpstan-pure
      */
-    public function __construct(OnlineSessionRateLimits $onlineSessionRateLimits, BatchSessionRateLimits $batchSessionRateLimits, InvoiceSendRateLimits $invoiceSendRateLimits, InvoiceStatusRateLimits $invoiceStatusRateLimits, SessionListRateLimits $sessionListRateLimits, SessionInvoiceListRateLimits $sessionInvoiceListRateLimits, SessionMiscRateLimits $sessionMiscRateLimits, InvoiceMetadataRateLimits $invoiceMetadataRateLimits, InvoiceExportRateLimits $invoiceExportRateLimits, InvoiceDownloadRateLimits $invoiceDownloadRateLimits, OtherRateLimits $otherRateLimits)
+    public function __construct(OnlineSessionRateLimits $onlineSessionRateLimits, BatchSessionRateLimits $batchSessionRateLimits, InvoiceSendRateLimits $invoiceSendRateLimits, InvoiceStatusRateLimits $invoiceStatusRateLimits, SessionListRateLimits $sessionListRateLimits, SessionInvoiceListRateLimits $sessionInvoiceListRateLimits, SessionMiscRateLimits $sessionMiscRateLimits, InvoiceMetadataRateLimits $invoiceMetadataRateLimits, InvoiceExportRateLimits $invoiceExportRateLimits, InvoiceExportStatus $invoiceExportStatus, InvoiceDownloadRateLimits $invoiceDownloadRateLimits, OtherRateLimits $otherRateLimits)
     {
         $this->onlineSessionRateLimits = $onlineSessionRateLimits;
         $this->batchSessionRateLimits = $batchSessionRateLimits;
@@ -135,6 +145,7 @@ class EffectiveApiRateLimits
         $this->sessionMiscRateLimits = $sessionMiscRateLimits;
         $this->invoiceMetadataRateLimits = $invoiceMetadataRateLimits;
         $this->invoiceExportRateLimits = $invoiceExportRateLimits;
+        $this->invoiceExportStatus = $invoiceExportStatus;
         $this->invoiceDownloadRateLimits = $invoiceDownloadRateLimits;
         $this->otherRateLimits = $otherRateLimits;
     }

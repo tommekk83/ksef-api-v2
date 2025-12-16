@@ -12,7 +12,7 @@ namespace Intermedia\Ksef\Apiv2\Models\Components;
 class EuEntityPermissionsQueryRequest
 {
     /**
-     * Wartość identyfikatora (numeru identyfikacyjnego VAT) podmiotu unijnego.
+     * Wartość identyfikatora (numeru identyfikacyjnego VAT) podmiotu unijnego (exact match).
      *
      * @var ?string $vatUeIdentifier
      */
@@ -21,7 +21,7 @@ class EuEntityPermissionsQueryRequest
     public ?string $vatUeIdentifier = null;
 
     /**
-     * Odcisk palca certyfikatu kwalifikowanego uprawnionego.
+     * Odcisk palca certyfikatu kwalifikowanego uprawnionego (contains).
      *
      * @var ?string $authorizedFingerprintIdentifier
      */

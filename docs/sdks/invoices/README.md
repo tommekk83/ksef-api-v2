@@ -17,7 +17,7 @@ Zwraca fakturę o podanym numerze KSeF.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getByKsefNumber" method="get" path="/api/v2/invoices/ksef/{ksefNumber}" -->
+<!-- UsageSnippet language="php" operationID="getByKsefNumber" method="get" path="/invoices/ksef/{ksefNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -82,7 +82,7 @@ Limit techniczny: ≤ 10 000 rekordów na zestaw filtrów, po jego osiągnięciu
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getInvoicesList" method="post" path="/api/v2/invoices/query/metadata" -->
+<!-- UsageSnippet language="php" operationID="getInvoicesList" method="post" path="/invoices/query/metadata" -->
 ```php
 declare(strict_types=1);
 
@@ -184,7 +184,7 @@ obiekt z tablicą <b>invoices</b>, gdzie każdy element jest obiektem typu <b>In
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="export" method="post" path="/api/v2/invoices/exports" -->
+<!-- UsageSnippet language="php" operationID="export" method="post" path="/invoices/exports" -->
 ```php
 declare(strict_types=1);
 
@@ -259,7 +259,7 @@ W przypadku ucięcia wyniku eksportu z powodu przekroczenia limitów, zwracana j
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getExportStatus" method="get" path="/api/v2/invoices/exports/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getExportStatus" method="get" path="/invoices/exports/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 

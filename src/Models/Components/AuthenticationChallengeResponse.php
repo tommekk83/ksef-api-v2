@@ -28,13 +28,23 @@ class AuthenticationChallengeResponse
     public \DateTime $timestamp;
 
     /**
+     * Czas wygenerowania challenge-a w milisekundach od 1 stycznia 1970 roku (Unix timestamp).
+     *
+     * @var int $timestampMs
+     */
+    #[\Speakeasy\Serializer\Annotation\SerializedName('timestampMs')]
+    public int $timestampMs;
+
+    /**
      * @param  string  $challenge
      * @param  \DateTime  $timestamp
+     * @param  int  $timestampMs
      * @phpstan-pure
      */
-    public function __construct(string $challenge, \DateTime $timestamp)
+    public function __construct(string $challenge, \DateTime $timestamp, int $timestampMs)
     {
         $this->challenge = $challenge;
         $this->timestamp = $timestamp;
+        $this->timestampMs = $timestampMs;
     }
 }

@@ -58,7 +58,7 @@ class Tokens
     public function generate(?Operations\GenerateTokenRequest $request = null, ?Options $options = null): Operations\GenerateTokenResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens');
+        $url = Utils\Utils::generateUrl($baseUrl, '/tokens');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -140,7 +140,7 @@ class Tokens
     public function getList(?Operations\GetTokenListRequest $request = null, ?Options $options = null): Operations\GetTokenListResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens');
+        $url = Utils\Utils::generateUrl($baseUrl, '/tokens');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
@@ -221,7 +221,7 @@ class Tokens
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens/{referenceNumber}', Operations\GetTokenStatusRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/tokens/{referenceNumber}', Operations\GetTokenStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -297,7 +297,7 @@ class Tokens
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/tokens/{referenceNumber}', Operations\RevokeTokenRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/tokens/{referenceNumber}', Operations\RevokeTokenRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';

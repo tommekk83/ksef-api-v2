@@ -78,7 +78,7 @@ class Invoices
     public function export(?Operations\ExportRequest $request = null, ?Options $options = null): Operations\ExportResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/exports');
+        $url = Utils\Utils::generateUrl($baseUrl, '/invoices/exports');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -160,7 +160,7 @@ class Invoices
             ksefNumber: $ksefNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/ksef/{ksefNumber}', Operations\GetByKsefNumberRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/invoices/ksef/{ksefNumber}', Operations\GetByKsefNumberRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/xml';
@@ -243,7 +243,7 @@ class Invoices
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/exports/{referenceNumber}', Operations\GetExportStatusRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/invoices/exports/{referenceNumber}', Operations\GetExportStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -262,7 +262,7 @@ class Invoices
         $contentType = $httpResponse->getHeader('Content-Type')[0] ?? '';
 
         $statusCode = $httpResponse->getStatusCode();
-        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '4XX', '5XX'])) {
+        if (Utils\Utils::matchStatusCodes($statusCode, ['400', '401', '403', '429', '4XX', '5XX'])) {
             $res = $this->sdkConfiguration->hooks->afterError(new Hooks\AfterErrorContext($hookContext), $httpResponse, null);
             $httpResponse = $res;
         }
@@ -295,7 +295,7 @@ class Invoices
             } else {
                 throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('Unknown content type received', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
             }
-        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '4XX'])) {
+        } elseif (Utils\Utils::matchStatusCodes($statusCode, ['401', '403', '429', '4XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
         } elseif (Utils\Utils::matchStatusCodes($statusCode, ['5XX'])) {
             throw new \Intermedia\Ksef\Apiv2\Models\Errors\APIException('API error occurred', $statusCode, $httpResponse->getBody()->getContents(), $httpResponse);
@@ -342,7 +342,7 @@ class Invoices
             requestBody: $requestBody,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/invoices/query/metadata');
+        $url = Utils\Utils::generateUrl($baseUrl, '/invoices/query/metadata');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'requestBody', 'json');

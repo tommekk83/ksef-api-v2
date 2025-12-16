@@ -11,17 +11,24 @@ namespace Intermedia\Ksef\Apiv2;
 
 
 /**
- * Client - KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc6.0-tr-20251203.4+73f8444dcd24023ccb66120a159a5f89e203ac4a)<br>
+ * Client - KSeF API TR: **Wersja API:** 2.0.0 (build 2.0.0-rc6.1-tr-20251216.1+d9947b800b5eff23af4a740d7558145da4cf4a62)<br>
  *
  * **Klucze publiczne** Ministerstwa Finansów (dla danego środowiska): [Pobierz klucze](#tag/Certyfikaty-klucza-publicznego)<br>
  * **Historia zmian:** [Changelog](https://github.com/CIRFMF/ksef-docs/blob/main/api-changelog.md)<br>
  * **Rozszerzona dokumentacja API:** [ksef-docs](https://github.com/CIRFMF/ksef-docs/tree/main)
  *
+ * **Adres serwera API:**
+ * - Środowisko DEMO: `https://api-demo.ksef.mf.gov.pl/v2`
+ * - [deprecated] Środowisko DEMO: `https://ksef-demo.mf.gov.pl/api/v2`
+ *
  */
 class Client
 {
     public const SERVERS = [
-        'https://ksef-test.mf.gov.pl',
+        /** Środowisko DEMO */
+        'https://api-demo.ksef.mf.gov.pl/v2',
+        /** [deprecated] Środowisko DEMO */
+        'https://ksef-demo.mf.gov.pl/api/v2',
     ];
 
     public Auth $auth;

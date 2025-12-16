@@ -71,7 +71,7 @@ class Certificates
             queryCertificatesRequest: $queryCertificatesRequest,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/query');
+        $url = Utils\Utils::generateUrl($baseUrl, '/certificates/query');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'queryCertificatesRequest', 'json');
@@ -157,7 +157,7 @@ class Certificates
     public function getEnrollmentData(?Options $options = null): Operations\GetEnrollmentDataResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/enrollments/data');
+        $url = Utils\Utils::generateUrl($baseUrl, '/certificates/enrollments/data');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -233,7 +233,7 @@ class Certificates
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/enrollments/{referenceNumber}', Operations\GetEnrollmentStatusRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/certificates/enrollments/{referenceNumber}', Operations\GetEnrollmentStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -305,7 +305,7 @@ class Certificates
     public function getLimits(?Options $options = null): Operations\GetLimitsResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/limits');
+        $url = Utils\Utils::generateUrl($baseUrl, '/certificates/limits');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -398,7 +398,7 @@ class Certificates
     public function processEnrollment(?Operations\ProcessEnrollmentRequest $request = null, ?Options $options = null): Operations\ProcessEnrollmentResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/enrollments');
+        $url = Utils\Utils::generateUrl($baseUrl, '/certificates/enrollments');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -475,7 +475,7 @@ class Certificates
     public function retrieve(?Operations\RetrieveCertificatesRequest $request = null, ?Options $options = null): Operations\RetrieveCertificatesResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/retrieve');
+        $url = Utils\Utils::generateUrl($baseUrl, '/certificates/retrieve');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -557,7 +557,7 @@ class Certificates
             revokeCertificateRequest: $revokeCertificateRequest,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/certificates/{certificateSerialNumber}/revoke', Operations\RevokeCertificatesRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/certificates/{certificateSerialNumber}/revoke', Operations\RevokeCertificatesRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'revokeCertificateRequest', 'json');

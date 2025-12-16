@@ -1,6 +1,6 @@
-# InvoiceExportRateLimits
+# InvoiceExportStatus
 
-Limity dla eksportu paczki faktur.
+Limity dla pobierana statusu eksportu paczki faktur.
 
 
 ## Fields

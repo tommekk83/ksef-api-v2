@@ -49,7 +49,7 @@ lub **CourtBailiff** (komornik sądowy).
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="grantToPersons" method="post" path="/api/v2/permissions/persons/grants" -->
+<!-- UsageSnippet language="php" operationID="grantToPersons" method="post" path="/permissions/persons/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -122,7 +122,7 @@ Dla każdego uprawnienia może być ustawiona flaga **canDelegate**, mówiąca o
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="grantToEntities" method="post" path="/api/v2/permissions/entities/grants" -->
+<!-- UsageSnippet language="php" operationID="grantToEntities" method="post" path="/permissions/entities/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -193,7 +193,7 @@ Metoda pozwala na nadanie jednego z uprawnień podmiotowych do obsługi podmiotu
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="grantAuthorizations" method="post" path="/api/v2/permissions/authorizations/grants" -->
+<!-- UsageSnippet language="php" operationID="grantAuthorizations" method="post" path="/permissions/authorizations/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -266,7 +266,7 @@ Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="grantIndirectly" method="post" path="/api/v2/permissions/indirect/grants" -->
+<!-- UsageSnippet language="php" operationID="grantIndirectly" method="post" path="/permissions/indirect/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -347,7 +347,7 @@ Metoda automatycznie nadaje powyższe uprawnienie, bez konieczności podawania g
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="grantToSubunits" method="post" path="/api/v2/permissions/subunits/grants" -->
+<!-- UsageSnippet language="php" operationID="grantToSubunits" method="post" path="/permissions/subunits/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -365,7 +365,7 @@ $sdk = Apiv2\Client::builder()
 
 $request = new Operations\GrantToSubunitsRequest(
     subjectIdentifier: new Operations\GrantToSubunitsSubjectIdentifier(
-        type: Components\SubunitPermissionsSubjectIdentifierType::Pesel,
+        type: Operations\Type::Pesel,
         value: '15062788702',
     ),
     contextIdentifier: new Operations\GrantToSubunitsContextIdentifier(
@@ -427,7 +427,7 @@ Metoda automatycznie nadaje wszystkie powyższe uprawnienia, bez konieczności i
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="grantRights" method="post" path="/api/v2/permissions/eu-entities/administration/grants" -->
+<!-- UsageSnippet language="php" operationID="grantRights" method="post" path="/permissions/eu-entities/administration/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -503,7 +503,7 @@ Metoda pozwala na wybór dowolnej kombinacji powyższych uprawnień.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="grantToEuEntities" method="post" path="/api/v2/permissions/eu-entities/grants" -->
+<!-- UsageSnippet language="php" operationID="grantToEuEntities" method="post" path="/permissions/eu-entities/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -570,7 +570,7 @@ identyfikatora uprawnienia, które ma zostać odebrane.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="revokePermissions" method="delete" path="/api/v2/permissions/common/grants/{permissionId}" -->
+<!-- UsageSnippet language="php" operationID="revokePermissions" method="delete" path="/permissions/common/grants/{permissionId}" -->
 ```php
 declare(strict_types=1);
 
@@ -625,7 +625,7 @@ identyfikatora uprawnienia, które ma zostać odebrane.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="revokeAuthorizations" method="delete" path="/api/v2/permissions/authorizations/grants/{permissionId}" -->
+<!-- UsageSnippet language="php" operationID="revokeAuthorizations" method="delete" path="/permissions/authorizations/grants/{permissionId}" -->
 ```php
 declare(strict_types=1);
 
@@ -673,7 +673,7 @@ Zwraca status operacji asynchronicznej związanej z nadaniem lub odebraniem upra
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getOperationStatus" method="get" path="/api/v2/permissions/operations/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getOperationStatus" method="get" path="/permissions/operations/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -723,7 +723,7 @@ Sprawdzenie czy obecny kontekst posiada zgodę na wystawianie faktur z załączn
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="checkAttachmentStatus" method="get" path="/api/v2/permissions/attachments/status" -->
+<!-- UsageSnippet language="php" operationID="checkAttachmentStatus" method="get" path="/permissions/attachments/status" -->
 ```php
 declare(strict_types=1);
 
@@ -797,12 +797,13 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 **Sortowanie:**
 
 - startDate (Desc)
+- id (Asc)
 
 
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getPersonalGrants" method="post" path="/api/v2/permissions/query/personal/grants" -->
+<!-- UsageSnippet language="php" operationID="getPersonalGrants" method="post" path="/permissions/query/personal/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -903,6 +904,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 **Sortowanie:**
 
 - startDate (Desc)
+- id (Asc)
 
 
 
@@ -910,7 +912,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getPersonGrants" method="post" path="/api/v2/permissions/query/persons/grants" -->
+<!-- UsageSnippet language="php" operationID="getPersonGrants" method="post" path="/permissions/query/persons/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -995,6 +997,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 **Sortowanie:**
 
 - startDate (Desc)
+- id (Asc)
 
 
 
@@ -1002,7 +1005,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getSubunitsGrants" method="post" path="/api/v2/permissions/query/subunits/grants" -->
+<!-- UsageSnippet language="php" operationID="getSubunitsGrants" method="post" path="/permissions/query/subunits/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -1079,6 +1082,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 **Sortowanie:**
 
 - startDate (Desc)
+- id (Asc)
 
 
 
@@ -1086,7 +1090,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getEntityRoles" method="get" path="/api/v2/permissions/query/entities/roles" -->
+<!-- UsageSnippet language="php" operationID="getEntityRoles" method="get" path="/permissions/query/entities/roles" -->
 ```php
 declare(strict_types=1);
 
@@ -1157,6 +1161,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 **Sortowanie:**
 
 - startDate (Desc)
+- id (Asc)
 
 
 
@@ -1164,7 +1169,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getSubordinateEntitiesRoles" method="post" path="/api/v2/permissions/query/subordinate-entities/roles" -->
+<!-- UsageSnippet language="php" operationID="getSubordinateEntitiesRoles" method="post" path="/permissions/query/subordinate-entities/roles" -->
 ```php
 declare(strict_types=1);
 
@@ -1248,6 +1253,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 **Sortowanie:**
 
 - startDate (Desc)
+- id (Asc)
 
 
 
@@ -1255,7 +1261,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getAuthorizationsGrants" method="post" path="/api/v2/permissions/query/authorizations/grants" -->
+<!-- UsageSnippet language="php" operationID="getAuthorizationsGrants" method="post" path="/permissions/query/authorizations/grants" -->
 ```php
 declare(strict_types=1);
 
@@ -1344,6 +1350,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 **Sortowanie:**
 
 - startDate (Desc)
+- id (Asc)
 
 
 
@@ -1351,7 +1358,7 @@ Zapytanie zwraca **jedną stronę wyników** o numerze i rozmiarze podanym w śc
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getEuEntityGrants" method="post" path="/api/v2/permissions/query/eu-entities/grants" -->
+<!-- UsageSnippet language="php" operationID="getEuEntityGrants" method="post" path="/permissions/query/eu-entities/grants" -->
 ```php
 declare(strict_types=1);
 

@@ -14,7 +14,7 @@ Zwraca wartości aktualnie obowiązujących limitów dla bieżącego kontekstu.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getContextLimits" method="get" path="/api/v2/limits/context" -->
+<!-- UsageSnippet language="php" operationID="getContextLimits" method="get" path="/limits/context" -->
 ```php
 declare(strict_types=1);
 
@@ -56,7 +56,7 @@ Zwraca wartoście aktualnie obowiązujących limitów dla bieżącego podmiotu.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getSubjectLimits" method="get" path="/api/v2/limits/subject" -->
+<!-- UsageSnippet language="php" operationID="getSubjectLimits" method="get" path="/limits/subject" -->
 ```php
 declare(strict_types=1);
 
@@ -98,7 +98,7 @@ Zwraca wartości aktualnie obowiązujących limitów ilości żądań przesyłan
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getApiRate" method="get" path="/api/v2/rate-limits" -->
+<!-- UsageSnippet language="php" operationID="getApiRate" method="get" path="/rate-limits" -->
 ```php
 declare(strict_types=1);
 

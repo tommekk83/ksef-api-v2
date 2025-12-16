@@ -52,7 +52,7 @@ class Sessions
      *
      * Zamyka sesję wsadową, rozpoczyna procesowanie paczki faktur i generowanie UPO dla prawidłowych faktur oraz zbiorczego UPO dla sesji.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @return Operations\CloseBatchSessionResponse
@@ -64,7 +64,7 @@ class Sessions
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/batch/{referenceNumber}/close', Operations\CloseBatchSessionRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/batch/{referenceNumber}/close', Operations\CloseBatchSessionRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -121,7 +121,7 @@ class Sessions
      *
      * Zamyka sesję interaktywną i rozpoczyna generowanie zbiorczego UPO dla sesji.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @return Operations\CloseOnlineSessionResponse
@@ -133,7 +133,7 @@ class Sessions
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/online/{referenceNumber}/close', Operations\CloseOnlineSessionRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/online/{referenceNumber}/close', Operations\CloseOnlineSessionRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -198,7 +198,7 @@ class Sessions
      *
      *
      * **Wymagane uprawnienia**:
-     * - `Introspection` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
+     * - `Introspection`/`EnforcementOperations` – pozwala pobrać wszystkie sesje w bieżącym kontekście uwierzytelnienia `(ContextIdentifier)`.
      * - `InvoiceWrite` – pozwala pobrać wyłącznie sesje utworzone przez podmiot uwierzytelniający, czyli podmiot inicjujący uwierzytelnienie.
      *
      * @param  Operations\GetSessionListRequest  $request
@@ -208,7 +208,7 @@ class Sessions
     public function getList(Operations\GetSessionListRequest $request, ?Options $options = null): Operations\GetSessionListResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions');
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
 
@@ -281,7 +281,7 @@ class Sessions
      *
      * Sprawdza bieżący status sesji o podanym numerze referencyjnym.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @return Operations\GetSessionStatusResponse
@@ -293,7 +293,7 @@ class Sessions
             referenceNumber: $referenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}', Operations\GetSessionStatusRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/{referenceNumber}', Operations\GetSessionStatusRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/json';
@@ -359,7 +359,7 @@ class Sessions
      *
      * Zwraca XML zawierający zbiorcze UPO dla sesji.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `Introspection`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  string  $referenceNumber
      * @param  string  $upoReferenceNumber
@@ -373,7 +373,7 @@ class Sessions
             upoReferenceNumber: $upoReferenceNumber,
         );
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/{referenceNumber}/upo/{upoReferenceNumber}', Operations\GetSessionUpoRequest::class, $request);
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/{referenceNumber}/upo/{upoReferenceNumber}', Operations\GetSessionUpoRequest::class, $request);
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $httpOptions['headers']['Accept'] = 'application/xml';
@@ -443,7 +443,7 @@ class Sessions
      * Aby generować dokumenty UPO w wersji v4-3 w ramach sesji, należy przy jej otwarciu przesłać nagłówek <b>X-KSeF-Feature: upo-v4-3</b>.
      * Od 22 grudnia 2025 wersja UPO v4-3 będzie generowana domyślnie.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `EnforcementOperations`.
      *
      * @param  ?Operations\OpenBatchSessionRequest  $request
      * @return Operations\OpenBatchSessionResponse
@@ -452,7 +452,7 @@ class Sessions
     public function openBatch(?Operations\OpenBatchSessionRequest $request = null, ?Options $options = null): Operations\OpenBatchSessionResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/batch');
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/batch');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');
@@ -529,7 +529,7 @@ class Sessions
      * Aby generować dokumenty UPO w wersji v4-3 w ramach sesji, należy przy jej otwarciu przesłać nagłówek <b>X-KSeF-Feature: upo-v4-3</b>.
      * Od 22 grudnia 2025 wersja UPO v4-3 będzie generowana domyślnie.
      *
-     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`.
+     * **Wymagane uprawnienia**: `InvoiceWrite`, `PefInvoiceWrite`, `EnforcementOperations`.
      *
      * @param  ?Operations\OpenOnlineSessionRequest  $request
      * @return Operations\OpenOnlineSessionResponse
@@ -538,7 +538,7 @@ class Sessions
     public function openOnline(?Operations\OpenOnlineSessionRequest $request = null, ?Options $options = null): Operations\OpenOnlineSessionResponse
     {
         $baseUrl = $this->sdkConfiguration->getTemplatedServerUrl();
-        $url = Utils\Utils::generateUrl($baseUrl, '/api/v2/sessions/online');
+        $url = Utils\Utils::generateUrl($baseUrl, '/sessions/online');
         $urlOverride = null;
         $httpOptions = ['http_errors' => false];
         $body = Utils\Utils::serializeRequestBody($request, 'request', 'json');

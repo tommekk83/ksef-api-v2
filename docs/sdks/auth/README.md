@@ -26,7 +26,7 @@ Zwraca listę aktywnych sesji uwierzytelnienia.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getCurrentSessions" method="get" path="/api/v2/auth/sessions" -->
+<!-- UsageSnippet language="php" operationID="getCurrentSessions" method="get" path="/auth/sessions" -->
 ```php
 declare(strict_types=1);
 
@@ -80,7 +80,7 @@ Sposób uwierzytelnienia: `RefreshToken` lub `AccessToken`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="revokeCurrentSession" method="delete" path="/api/v2/auth/sessions/current" -->
+<!-- UsageSnippet language="php" operationID="revokeCurrentSession" method="delete" path="/auth/sessions/current" -->
 ```php
 declare(strict_types=1);
 
@@ -125,7 +125,7 @@ Unieważnienie sesji sprawia, że powiązany z nią refresh token przestaje dzia
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="revokeSession" method="delete" path="/api/v2/auth/sessions/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="revokeSession" method="delete" path="/auth/sessions/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -173,7 +173,7 @@ Generuje unikalny challenge wymagany w kolejnym kroku operacji uwierzytelnienia.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="challenge" method="post" path="/api/v2/auth/challenge" -->
+<!-- UsageSnippet language="php" operationID="challenge" method="post" path="/auth/challenge" -->
 ```php
 declare(strict_types=1);
 
@@ -220,7 +220,7 @@ Rozpoczyna operację uwierzytelniania za pomocą dokumentu XML podpisanego podpi
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="authWithXades" method="post" path="/api/v2/auth/xades-signature" -->
+<!-- UsageSnippet language="php" operationID="authWithXades" method="post" path="/auth/xades-signature" -->
 ```php
 declare(strict_types=1);
 
@@ -283,7 +283,7 @@ Token KSeF wraz z timestampem ze wcześniej wygenerowanego challenge'a (w formac
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="authWithKsefToken" method="post" path="/api/v2/auth/ksef-token" -->
+<!-- UsageSnippet language="php" operationID="authWithKsefToken" method="post" path="/auth/ksef-token" -->
 ```php
 declare(strict_types=1);
 
@@ -342,7 +342,7 @@ Sposób uwierzytelnienia: `AuthenticationToken` otrzymany przy rozpoczęciu oper
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="getAuthStatus" method="get" path="/api/v2/auth/{referenceNumber}" -->
+<!-- UsageSnippet language="php" operationID="getAuthStatus" method="get" path="/auth/{referenceNumber}" -->
 ```php
 declare(strict_types=1);
 
@@ -393,7 +393,7 @@ Sposób uwierzytelnienia: `AuthenticationToken` otrzymany przy rozpoczęciu oper
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="redeemAuthToken" method="post" path="/api/v2/auth/token/redeem" -->
+<!-- UsageSnippet language="php" operationID="redeemAuthToken" method="post" path="/auth/token/redeem" -->
 ```php
 declare(strict_types=1);
 
@@ -437,7 +437,7 @@ Sposób uwierzytelnienia: `RefreshToken`.
 
 ### Example Usage
 
-<!-- UsageSnippet language="php" operationID="refreshAuthToken" method="post" path="/api/v2/auth/token/refresh" -->
+<!-- UsageSnippet language="php" operationID="refreshAuthToken" method="post" path="/auth/token/refresh" -->
 ```php
 declare(strict_types=1);
 
